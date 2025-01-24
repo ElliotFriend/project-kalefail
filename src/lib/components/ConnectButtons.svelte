@@ -20,8 +20,15 @@
 <script lang="ts">
     // We're using toasts to display errors to the user. We're not doing much
     // error _handling_, though. So, use whatever techniques you see fit.
-    import { getToastStore } from '@skeletonlabs/skeleton';
+    import { clipboard, getModalStore, getToastStore, popup, type ModalSettings } from '@skeletonlabs/skeleton';
     const toastStore = getToastStore();
+    const modalStore = getModalStore();
+
+    import { account, send, getWalletAddress } from '$lib/passkeyClient';
+    import { keyId } from '$lib/stores/keyId';
+    import { walletAddress } from '$lib/stores/walletAddress';
+
+    let userName = $state('')
 
     /**
      * Sign up as a new user, creating a smart wallet along the way.
@@ -29,7 +36,29 @@
     async function signup() {
         console.log('signing up');
         try {
-            // Implement the signup logic here
+            await new Promise<string>((resolve) => {
+                const modal: ModalSettings = {
+                    type: 'prompt',
+                    title: 'Enter Name',
+                    body: 'Please provide a username below.',
+                    valueAttr: { type: 'text', required: true },
+                    response: (r: string) => resolve(r),
+                };
+                modalStore.trigger(modal);
+            }).then((r) => (userName = r))
+
+            const {
+                keyIdBase64,
+                contractId,
+                signedTx,
+            } = await account.createWallet('The KALEfail Project', userName);
+
+            await send(signedTx)
+
+            keyId.set(keyIdBase64);
+            console.log('keyId', $keyId)
+            walletAddress.set(contractId);
+            console.log('walletAddress', $walletAddress)
         } catch (err) {
             console.error(err);
             toastStore.trigger({
@@ -45,7 +74,14 @@
     async function login() {
         console.log('logging in');
         try {
-            // Implement the login logic here
+            const { keyIdBase64, contractId } = await account.connectWallet({
+                getContractId: getWalletAddress,
+            });
+
+            keyId.set(keyIdBase64);
+            console.log('keyId', $keyId)
+            walletAddress.set(contractId);
+            console.log('walletAddress', $walletAddress)
         } catch (err) {
             console.error(err);
             toastStore.trigger({
@@ -61,7 +97,10 @@
     async function logout() {
         console.log('logging out');
         try {
-            // Implement the logout logic here
+            keyId.reset();
+            walletAddress.set('');
+            localStorage.removeItem('kf:keyId')
+            window.location.reload();
         } catch (err) {
             console.error(err);
             toastStore.trigger({
@@ -73,7 +112,10 @@
 </script>
 
 <div class="flex space-x-1 md:space-x-2">
-    <button class="btn variant-filled-primary" onclick={signup}>Signup</button>
-    <button class="btn variant-soft-primary" onclick={login}>Login</button>
-    <button class="btn variant-soft-error" onclick={logout}>Logout</button>
+    {#if !$walletAddress}
+        <button class="btn variant-filled-primary" onclick={signup}>Signup</button>
+        <button class="btn variant-soft-primary" onclick={login}>Login</button>
+    {:else}
+        <button class="btn variant-soft-error" onclick={logout}>Logout</button>
+    {/if}
 </div>
