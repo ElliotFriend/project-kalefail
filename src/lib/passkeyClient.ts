@@ -1,10 +1,12 @@
 import { Server } from '@stellar/stellar-sdk/rpc';
+import { Asset } from '@stellar/stellar-sdk';
 import { PasskeyKit, SACClient } from 'passkey-kit';
 
 import {
     PUBLIC_STELLAR_RPC_URL,
     PUBLIC_STELLAR_NETWORK_PASSPHRASE,
     PUBLIC_WALLET_WASM_HASH,
+    PUBLIC_KALE_ISSUER,
 } from '$env/static/public';
 import type { Tx } from '@stellar/stellar-sdk/contract';
 
@@ -31,6 +33,9 @@ export const sac = new SACClient({
     rpcUrl: PUBLIC_STELLAR_RPC_URL,
     networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
 });
+
+export const kaleSacAddress = new Asset('KALE', PUBLIC_KALE_ISSUER).contractId(PUBLIC_STELLAR_NETWORK_PASSPHRASE);
+export const kaleSacClient = sac.getSACClient(kaleSacAddress);
 
 /**
  * A wrapper function so it's easier for our client-side code to access the

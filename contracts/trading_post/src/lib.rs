@@ -23,7 +23,7 @@ pub struct TradingPostContract;
 pub trait OwnerTrait {
     fn __constructor(
         env: Env,
-        admin: Address,
+        owner: Address,
         kale: Address,
         vegetables: Option<Vec<Address>>,
         max_vegetables: Option<u32>,
@@ -45,7 +45,5 @@ pub trait OwnerTrait {
 }
 
 pub trait CustomerTrait {
-    fn trade(env: Env, customer: Address, vegetable: Address, amount: i128);
-
-    fn trade_for_kale(env: Env, customer: Address, vegetable: Address, amount: i128);
+    fn trade(env: Env, customer: Address, vegetable: Address, amount: i128, buy_kale: bool);
 }

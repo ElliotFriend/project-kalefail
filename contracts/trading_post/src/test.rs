@@ -100,7 +100,7 @@ fn test_trade_happy_path() {
     assert_eq!(100i128, kale_client.balance(&farmer));
 
     // exchange 25 stroops of kale for broccoli
-    trading_post_client.trade(&farmer, &broccoli.address(), &25i128);
+    trading_post_client.trade(&farmer, &broccoli.address(), &25i128, &false);
     assert_eq!(75i128, kale_client.balance(&farmer));
     assert_eq!(25i128, kale_client.balance(&trading_post_address));
     assert_eq!(25i128, broccoli_client.balance(&farmer));
@@ -146,7 +146,7 @@ fn test_trade_for_kale_happy_path() {
     assert_eq!(25i128, broccoli_client.balance(&farmer));
 
     // exchange 25 stroops of broccoli for kale
-    trading_post_client.trade_for_kale(&farmer, &broccoli.address(), &25i128);
+    trading_post_client.trade(&farmer, &broccoli.address(), &25i128, &true);
     assert_eq!(25i128, kale_client.balance(&farmer));
     assert_eq!(75i128, kale_client.balance(&trading_post_address));
 }
@@ -186,7 +186,7 @@ fn test_cannot_trade_untradable_vegetable() {
 
     // create a dummy token that we can _try_ to swap for
     let pumpkin = env.register_stellar_asset_contract_v2(admin.clone());
-    trading_post_client.trade(&farmer, &pumpkin.address(), &25i128);
+    trading_post_client.trade(&farmer, &pumpkin.address(), &25i128, &false);
 }
 
 #[test]
@@ -224,7 +224,7 @@ fn test_trade_trading_post_closed() {
     assert_eq!(100i128, kale_client.balance(&farmer));
 
     // exchange 25 stroops of kale for broccoli
-    trading_post_client.trade(&farmer, &broccoli.address(), &25i128);
+    trading_post_client.trade(&farmer, &broccoli.address(), &25i128, &false);
 }
 
 #[test]
@@ -524,6 +524,6 @@ fn test_cannot_trade_for_kale_with_insufficient_balance() {
     assert_eq!(25i128, broccoli_client.balance(&farmer));
 
     // exchange 25 stroops of broccoli for kale
-    trading_post_client.trade_for_kale(&farmer, &broccoli.address(), &25i128);
+    trading_post_client.trade(&farmer, &broccoli.address(), &25i128, &true);
     assert_eq!(25i128, kale_client.balance(&farmer));
 }

@@ -23,6 +23,9 @@ importers:
       svelte-persisted-store:
         specifier: ^0.12.0
         version: 0.12.0(svelte@5.19.1)
+      trading_post:
+        specifier: file:packages/trading_post
+        version: file:packages/trading_post
     devDependencies:
       '@playwright/test':
         specifier: ^1.49.1
@@ -1705,6 +1708,9 @@ packages:
   totalist@3.0.1:
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
     engines: {node: '>=6'}
+
+  trading_post@file:packages/trading_post:
+    resolution: {directory: packages/trading_post, type: directory}
 
   ts-api-utils@2.0.0:
     resolution: {integrity: sha512-xCt/TOAc+EOHS1XPnijD3/yzpH6qg2xppZO1YDqGoVsNXfQfzHpOdNuXwrwOU8u4ITXJyDCTyt8w5g1sZv9ynQ==}
@@ -3418,6 +3424,13 @@ snapshots:
   toml@3.0.0: {}
 
   totalist@3.0.1: {}
+
+  trading_post@file:packages/trading_post:
+    dependencies:
+      '@stellar/stellar-sdk': 13.1.0
+      buffer: 6.0.3
+    transitivePeerDependencies:
+      - debug
 
   ts-api-utils@2.0.0(typescript@5.7.3):
     dependencies:

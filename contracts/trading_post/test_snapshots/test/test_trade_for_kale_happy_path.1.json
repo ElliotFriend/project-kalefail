@@ -165,7 +165,7 @@
           "function": {
             "contract_fn": {
               "contract_address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK3IM",
-              "function_name": "trade_for_kale",
+              "function_name": "trade",
               "args": [
                 {
                   "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFCT4"
@@ -178,6 +178,9 @@
                     "hi": 0,
                     "lo": 25
                   }
+                },
+                {
+                  "bool": true
                 }
               ]
             }

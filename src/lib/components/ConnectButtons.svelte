@@ -27,6 +27,8 @@
     import { account, send, getWalletAddress } from '$lib/passkeyClient';
     import { keyId } from '$lib/stores/keyId';
     import { walletAddress } from '$lib/stores/walletAddress';
+    import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
+    import Balances from '$lib/components/Balances.svelte';
 
     let userName = $state('')
 
@@ -111,11 +113,13 @@
     }
 </script>
 
-<div class="flex space-x-1 md:space-x-2">
+<div class="flex space-x-1 md:space-x-2 items-center">
     {#if !$walletAddress}
-        <button class="btn variant-filled-primary" onclick={signup}>Signup</button>
-        <button class="btn variant-soft-primary" onclick={login}>Login</button>
+        <button class="btn btn-sm variant-filled-primary" onclick={signup}>Signup</button>
+        <button class="btn btn-sm variant-soft-primary" onclick={login}>Login</button>
     {:else}
-        <button class="btn variant-soft-error" onclick={logout}>Logout</button>
+        <TruncatedAddress address={$walletAddress} />
+        <Balances />
+        <button class="btn btn-sm variant-soft-error" onclick={logout}>Logout</button>
     {/if}
 </div>

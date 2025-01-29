@@ -7,10 +7,8 @@ use crate::{
 };
 
 use soroban_sdk::{
-    auth::{Context, CustomAccountInterface},
     contractimpl,
-    crypto::Hash,
-    panic_with_error, token, Address, BytesN, Env, Val, Vec,
+    panic_with_error, token, Address, BytesN, Env, Vec,
 };
 
 use crate::{
@@ -314,23 +312,5 @@ impl OwnerTrait for TradingPostContract {
         set_is_open(&env, false);
 
         // no `extend_instance_ttl` as we're closing up shop
-    }
-}
-
-#[contractimpl]
-impl CustomAccountInterface for TradingPostContract {
-    type Error = Errors;
-    type Signature = Option<Vec<Val>>;
-
-    fn __check_auth(
-        env: Env,
-        _signature_payload: Hash<32>,
-        _signatures: Option<Vec<Val>>,
-        _auth_contexts: Vec<Context>,
-    ) -> Result<(), Errors> {
-        let owner = get_owner(&env);
-        owner.require_auth();
-
-        Ok(())
     }
 }

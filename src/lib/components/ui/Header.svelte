@@ -25,6 +25,11 @@
             href: '/trading-post',
             icon: Store,
         },
+        {
+            name: 'Kitchen',
+            href: '/kitchen',
+            icon: CookingPot,
+        },
     ];
 </script>
 
@@ -40,28 +45,29 @@
     // docs](https://lucide.dev/guide/packages/lucide-svelte#example), at least.
     import Menu from 'lucide-svelte/icons/menu';
     import Store from 'lucide-svelte/icons/store';
+    import CookingPot from 'lucide-svelte/icons/cooking-pot';
 
     import ConnectButtons from '$lib/components/ConnectButtons.svelte';
 </script>
 
-<header class="flex-none shadow-xl z-5">
+<header class="flex-none shadow-xl">
     <div class="flex flex-col bg-surface-100-800-token space-y-4 p-3 md:p-4">
         <div class="grid grid-cols-[auto_1fr_auto] gap-2 md:gap-8">
             <!-- The "hamburger" button will not appear on large screens -->
-            <div class="lg:!hidden self-center">
+            <div class="md:!hidden self-center">
                 <button class="btn-icon btn-icon-sm" onclick={() => drawerStore.open()}>
                     <Menu />
                 </button>
             </div>
             <div class="flex-none flex items-center">
                 <a href="/" title="Dapp homepage">
-                    <span class="text-lg md:text-xl"> 🥬 KALEFAIL </span>
+                    <span class="text-lg"> 🥬 KaleFail<sup>TM</sup> </span>
                 </a>
             </div>
-            <!-- The "topnav" buttons will not appear on medium or smaller screens -->
-            <div class="hidden lg:block flex lg:space-x-4">
+            <!-- The "topnav" buttons will not appear on small or smaller screens -->
+            <div class="hidden md:block flex md:space-x-4">
                 {#each menuItems as item}
-                    <a href={item.href} class="btn hover:variant-soft-primary">
+                    <a href={item.href} class="btn btn-sm hover:variant-soft-primary">
                         <span><item.icon /></span>
                         <span>{item.name}</span>
                     </a>
