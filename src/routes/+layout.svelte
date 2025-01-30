@@ -7,10 +7,12 @@
     import Footer from '$lib/components/ui/Footer.svelte';
 
     import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
-    import { initializeStores, storePopup, Modal, Toast } from '@skeletonlabs/skeleton';
+    import { initializeStores, storePopup, Modal, Toast, autoModeWatcher } from '@skeletonlabs/skeleton';
     storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
     initializeStores();
 </script>
+
+<svelte:head>{@html `<script>(${autoModeWatcher.toString()})();</script>`}</svelte:head>
 
 <Toast />
 <SidebarDrawer />

@@ -2,15 +2,18 @@
     import { getToastStore } from '@skeletonlabs/skeleton';
     const toastStore = getToastStore();
 
-    import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
     import trading_post from '$lib/contracts/trading_post';
     import { walletAddress } from '$lib/stores/walletAddress';
     import { account, send } from '$lib/passkeyClient';
+    import type { VegetableAsset } from '$lib/types';
 
     import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down'
 
     import type { PageData } from './$types';
     import { keyId } from '$lib/stores/keyId';
+    import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
+    import StatusDefListItem from '$lib/components/ui/StatusDefListItem.svelte';
+    import StellarExpertLink from '$lib/components/ui/StellarExpertLink.svelte';
     let { data }: { data: PageData } = $props();
 
     let isLoading = $state(false);
@@ -32,12 +35,9 @@
                 buy_kale: buyKale,
             })
 
-            // console.log('at', at)
             let txn = await account.sign(at.built!, { keyId: $keyId })
-            console.log('signed at', txn.built?.toXDR())
 
             let result = await send(txn.built!);
-            console.log('result', result)
         } catch (err) {
             console.log(err)
             toastStore.trigger({
@@ -52,49 +52,53 @@
 
 <h1 class="h1">Trading Post</h1>
 
-<p>Exchange your hard-earned KALE tokens for other, related vegetables. Always available at a 1:1 ratio, since they're all the same species of plant.</p>
+<p>Exchange your hard-earned KALE tokens for other, related vegetables. Or trade them back to KALE. Always available at a 1:1 ratio, since they're all the same species of plant.</p>
 
-<h2 class="h2">Status</h2>
-
-<p><strong>Trading Post Address:</strong> <TruncatedAddress address={trading_post.options.contractId} startChars={10} /></p>
-
-<p><strong>Trading Post Status:</strong> {data.instance.IsOpen ? 'Open' : 'Closed'}</p>
-
-<p><strong>KALE stored in trading post:</strong> {Number(data.balances['KALE']) / 10_000_000}</p>
-
-<p><strong>Vegetables available for trading:</strong></p>
-
-<ul class="list">
-    {#each data.vegetables as vegetable}
-        <li>
-            <span>(icon)</span>
-            <span class="flex-auto"><code class="code">{vegetable.assetCode}</code></span>
-        </li>
-    {/each}
-</ul>
-
-<h2 class="h2">Make a Trade</h2>
-
-<div class="card p-4 space-y-4">
-    <label class="label">
-        <span>You send</span>
-        {@render amount(false)}
-    </label>
-
-    <div class="flex flex-row place-items-center">
-        <div class="grow"><hr class="!border-t-2" /></div>
-        <div class="px-2">
-            <button class="btn-icon btn-icon-sm variant-filled-primary" onclick={toggleBuyKale}><ArrowUpDown size={16} /></button>
-        </div>
-        <div class="grow"><hr class="!border-t-2" /></div>
+<div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="card bg-initial">
+        <header class="card-header">
+            <h2 class="h2 text-center">Trading Post Status</h2>
+        </header>
+        <section class="p-4 space-y-4">
+            <dl class="list-dl">
+                <StatusDefListItem title="Trading Post Address" value={trading_post.options.contractId} isAddress />
+                <StatusDefListItem title="Open for Business" value={data.instance.IsOpen} />
+                <StatusDefListItem title="KALE Asset Contract" value={data.instance.KaleAddress} isAddress />
+                <StatusDefListItem title="KALE Currently Deposited" value={(Number(data.balances.KALE) / 10_000_000).toFixed(7)} />
+                <StatusDefListItem title="Current Shelf Space" value={data.instance.MaxVegetables} />
+                <StatusDefListItem title="Owner" value={data.instance.Owner} isAddress />
+                <StatusDefListItem title="Vegetables Available" value={data.vegetables} />
+            </dl>
+        </section>
     </div>
 
-    <label class="label">
-        <span>You receive</span>
-        {@render amount(true)}
-    </label>
+    <div class="flex flex-col card bg-initial justify-between text-center">
+        <header class="card-header">
+            <h2 class="h2">Make a Trade</h2>
+        </header>
+        <section class="p-4 space-y-4">
+            <label class="label">
+                <span>You send</span>
+                {@render amount(false)}
+            </label>
 
-    <button class="btn variant-filled-primary" onclick={makeTrade} disabled={isLoading}>Make Trade!</button>
+            <div class="flex flex-row place-items-center">
+                <div class="grow"><hr class="!border-t-2" /></div>
+                <div class="px-2">
+                    <button class="btn-icon btn-icon-sm variant-filled-primary" onclick={toggleBuyKale}><ArrowUpDown size={16} /></button>
+                </div>
+                <div class="grow"><hr class="!border-t-2" /></div>
+            </div>
+
+            <label class="label">
+                <span>You receive</span>
+                {@render amount(true)}
+            </label>
+        </section>
+        <footer class="card-footer">
+            <button class="btn variant-filled-primary" onclick={makeTrade} disabled={isLoading}>Make Trade!</button>
+        </footer>
+    </div>
 </div>
 
 {#snippet amount(isReceive: boolean)}

@@ -1,7 +1,5 @@
 import { json } from '@sveltejs/kit';
-
 import { server } from '$lib/server/passkeyServer';
-
 import type { RequestHandler } from './$types';
 
 /**

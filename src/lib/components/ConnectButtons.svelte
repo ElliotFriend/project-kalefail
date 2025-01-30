@@ -27,7 +27,7 @@
     import { account, send, getWalletAddress } from '$lib/passkeyClient';
     import { keyId } from '$lib/stores/keyId';
     import { walletAddress } from '$lib/stores/walletAddress';
-    import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
+    import StellarExpertLink from '$lib/components/ui/StellarExpertLink.svelte';
     import Balances from '$lib/components/Balances.svelte';
 
     let userName = $state('')
@@ -118,7 +118,7 @@
         <button class="btn btn-sm variant-filled-primary" onclick={signup}>Signup</button>
         <button class="btn btn-sm variant-soft-primary" onclick={login}>Login</button>
     {:else}
-        <TruncatedAddress address={$walletAddress} />
+        <StellarExpertLink address={$walletAddress} />
         <Balances />
         <button class="btn btn-sm variant-soft-error" onclick={logout}>Logout</button>
     {/if}
