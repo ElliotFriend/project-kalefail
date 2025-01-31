@@ -5,7 +5,7 @@
     import trading_post from '$lib/contracts/trading_post';
     import { keyId } from '$lib/state/keyId';
     import { wallet } from '$lib/state/Wallet.svelte';
-    import { account, send } from '$lib/passkeyClient';
+    import { account, kaleSacClient, sac, send } from '$lib/passkeyClient';
 
     import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
     import StatusDefListItem from '$lib/components/ui/StatusDefListItem.svelte';
@@ -17,6 +17,9 @@
     let vegetableToTrade: string = $state(data.vegetables[0].contractAddress);
     let numTokens: number = $state(0);
     let buyKale: boolean = $state(false);
+    let transferNumTokens: number = $state(0);
+    let transferDestination: string = $state('');
+    let transferVegetable: string = $state('KALE');
 
     function toggleBuyKale() {
         buyKale = !buyKale;
@@ -40,6 +43,34 @@
             console.log(err);
             toastStore.trigger({
                 message: 'Something went wrong trading your KALE. Please try again later.',
+                background: 'variant-filled-error',
+            });
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    async function transferProduce() {
+        try {
+            isLoading = true;
+            let sacClient = transferVegetable === 'KALE'
+                ? kaleSacClient
+                : sac.getSACClient(transferVegetable)
+
+            let at = await sacClient.transfer({
+                from: wallet.address,
+                to: transferDestination,
+                amount: BigInt(transferNumTokens * 10_000_000),
+            });
+
+            let txn = await account.sign(at.built!, { keyId: $keyId });
+            await send(txn.built!);
+
+            wallet.getBalances(data.vegetables);
+        } catch (err) {
+            console.log(err);
+            toastStore.trigger({
+                message: 'Something went wrong transferring your produce. Please try again later.',
                 background: 'variant-filled-error',
             });
         } finally {
@@ -116,6 +147,33 @@
         <footer class="card-footer">
             <button class="btn variant-filled-primary" onclick={makeTrade} disabled={isLoading}
                 >Make Trade!</button
+            >
+        </footer>
+    </div>
+</div>
+
+<div class="w-full grid grid-cols-1">
+    <div class="card bg-initial text-center">
+        <header class="card-header">
+            <h3 class="h3">Transfer Produce</h3>
+        </header>
+        <section class="p-4 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="input-group input-group-divider grid-cols-[1fr_auto]">
+                    <input type="number" placeholder="Amount" bind:value={transferNumTokens} />
+                    <select bind:value={transferVegetable}>
+                        <option>KALE</option>
+                        {#each data.vegetables as vegetable}
+                            <option value={vegetable.contractAddress}>{vegetable.assetCode}</option>
+                        {/each}
+                    </select>
+                </div>
+                <input class="input" type="text" placeholder="Destination" bind:value={transferDestination} />
+            </div>
+        </section>
+        <footer class="card-footer">
+            <button class="btn variant-filled-primary" onclick={transferProduce} disabled={isLoading}
+                >Send that produce!</button
             >
         </footer>
     </div>
