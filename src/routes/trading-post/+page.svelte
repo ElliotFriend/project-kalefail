@@ -3,18 +3,16 @@
     const toastStore = getToastStore();
 
     import trading_post from '$lib/contracts/trading_post';
-    import { walletAddress } from '$lib/stores/walletAddress';
+    import { keyId } from '$lib/state/keyId';
+    import { wallet } from '$lib/state/Wallet.svelte';
     import { account, send } from '$lib/passkeyClient';
-    import type { VegetableAsset } from '$lib/types';
 
     import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down'
+    import StatusDefListItem from '$lib/components/ui/StatusDefListItem.svelte';
 
     import type { PageData } from './$types';
-    import { keyId } from '$lib/stores/keyId';
-    import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
-    import StatusDefListItem from '$lib/components/ui/StatusDefListItem.svelte';
-    import StellarExpertLink from '$lib/components/ui/StellarExpertLink.svelte';
     let { data }: { data: PageData } = $props();
+
 
     let isLoading = $state(false);
     let vegetableToTrade: string = $state(data.vegetables[0].contractAddress);
@@ -29,15 +27,16 @@
         try {
             isLoading = true;
             let at = await trading_post.trade({
-                customer: $walletAddress,
+                customer: wallet.address,
                 vegetable: vegetableToTrade,
                 amount: BigInt(numTokens * 10_000_000),
                 buy_kale: buyKale,
             })
 
             let txn = await account.sign(at.built!, { keyId: $keyId })
+            await send(txn.built!);
 
-            let result = await send(txn.built!);
+            wallet.getBalances(data.vegetables);
         } catch (err) {
             console.log(err)
             toastStore.trigger({
@@ -64,7 +63,7 @@
                 <StatusDefListItem title="Trading Post Address" value={trading_post.options.contractId} isAddress />
                 <StatusDefListItem title="Open for Business" value={data.instance.IsOpen} />
                 <StatusDefListItem title="KALE Asset Contract" value={data.instance.KaleAddress} isAddress />
-                <StatusDefListItem title="KALE Currently Deposited" value={(Number(data.balances.KALE) / 10_000_000).toFixed(7)} />
+                <StatusDefListItem title="KALE Currently Deposited" value={(Number(data.contractKale) / 10_000_000).toFixed(7)} />
                 <StatusDefListItem title="Current Shelf Space" value={data.instance.MaxVegetables} />
                 <StatusDefListItem title="Owner" value={data.instance.Owner} isAddress />
                 <StatusDefListItem title="Vegetables Available" value={data.vegetables} />

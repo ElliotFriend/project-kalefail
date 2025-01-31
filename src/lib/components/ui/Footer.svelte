@@ -4,7 +4,7 @@
 </script>
 
 <footer class="flex-none bg-surface-100-800-token shadow-xl p-4">
-    <div class="flex flex-col md:flex-row justify-around align-center mx-auto">
+    <div class="flex flex-col md:flex-row space-y-6 md:space-y-0 justify-around align-center mx-auto">
         <div class="space-y-1">
             <h6 class="h6">The KALEpail Project</h6>
             <ul>
@@ -28,7 +28,7 @@
                 </li>
             </ul>
         </div>
-        <div class="hidden md:grid grid-cols-1">
+        <div class="md:grid grid-cols-1">
             <div class="space-y-1">
                 <h6 class="h6">The KaleFail<sup>TM</sup> Project</h6>
                 <ul>
@@ -53,7 +53,7 @@
                 </ul>
             </div>
         </div>
-        <div class="hidden md:grid grid-cols-1">
+        <div class="md:grid grid-cols-1">
             <div class="space-y-1">
                 <h6 class="h6">More Info</h6>
                 <ul>

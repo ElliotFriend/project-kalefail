@@ -8,8 +8,12 @@
 
     import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
     import { initializeStores, storePopup, Modal, Toast, autoModeWatcher } from '@skeletonlabs/skeleton';
+    import type { LayoutProps } from './$types';
     storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
     initializeStores();
+
+    let { children }: LayoutProps = $props()
+    import Balances from '$lib/components/Balances.svelte';
 </script>
 
 <svelte:head>{@html `<script>(${autoModeWatcher.toString()})();</script>`}</svelte:head>
@@ -20,8 +24,11 @@
 
 <div class="w-full h-screen flex flex-col overflow-hidden">
     <Header />
+    <Balances />
+
     <PageContent>
-        <slot />
+        {@render children()}
     </PageContent>
+
     <Footer />
 </div>

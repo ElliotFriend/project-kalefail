@@ -48,6 +48,9 @@
     import CookingPot from 'lucide-svelte/icons/cooking-pot';
 
     import ConnectButtons from '$lib/components/ConnectButtons.svelte';
+    import { page } from '$app/state';
+    import { wallet } from '$lib/state/Wallet.svelte';
+    import Balances from '../Balances.svelte';
 </script>
 
 <header class="flex-none shadow-xl">
@@ -61,13 +64,14 @@
             </div>
             <div class="flex-none flex items-center">
                 <a href="/" title="Dapp homepage">
-                    <span class="text-lg"> 🥬 KaleFail<sup>TM</sup> </span>
+                    <span class="text-lg"> 🥬 KaleFail </span><sup>TM</sup>
                 </a>
             </div>
             <!-- The "topnav" buttons will not appear on small or smaller screens -->
             <div class="hidden md:block flex md:space-x-4">
                 {#each menuItems as item}
-                    <a href={item.href} class="btn btn-sm hover:variant-soft-primary">
+                {@const className = `btn btn-sm hover:variant-soft-primary${page.url.pathname.startsWith(item.href) ? ' variant-soft-primary' : ''}`}
+                    <a href={item.href} class={className}>
                         <span><item.icon /></span>
                         <span>{item.name}</span>
                     </a>

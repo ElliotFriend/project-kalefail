@@ -6,7 +6,7 @@
 
 <div class="container h-full mx-auto flex justify-center items-center">
     <div class="space-y-5">
-        <h1 class="h1">{data.greeting.join(', ')}!</h1>
+        <h1 class="h1">Welcome to KaleFail!</h1>
         <h2 class="h2">Let's build a dapp!!</h2>
         <p>Start by exploring:</p>
         <ul>

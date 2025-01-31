@@ -1,17 +1,17 @@
 <script lang="ts">
     import { PUBLIC_STELLAR_NETWORK } from "$env/static/public";
-    import type { VegetableAsset } from "$lib/types";
+    import type { InstanceStorageValue } from "$lib/types";
     import StellarExpertLink from "./StellarExpertLink.svelte";
 
     import Banknote from 'lucide-svelte/icons/banknote'
 
-    let { title, value, isAddress = false }: { title: string, value: string | VegetableAsset[] | boolean, isAddress?: boolean } = $props();
+    let { title, value, isAddress = false }: { title: string, value: InstanceStorageValue, isAddress?: boolean } = $props();
 </script>
 
 <div>
     <span class="flex-auto">
         <dt class="font-bold">{title}</dt>
-        <dd class="opacity-50">
+        <dd class="opacity-80">
             {#if typeof value === 'object'}
                 <ul class="list">
                     {#each value as vegetable}

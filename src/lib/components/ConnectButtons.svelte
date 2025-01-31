@@ -1,22 +1,3 @@
-<!--
- @component
- This component holds the buttons and logic for our signup/login/logout
- functionality. We're keeping the button UI and function logic in the same file
- for the sake of simplicity. This component is then imported and used in the
- `$lib/components/ui/Header.svelte` component, which in turn is placed on the
- page in the `/src/routes/+layout.svelte` file.
-
- In its bare state, all the buttons will always show, and there's no actual
- logging in, signing up, etc. taking place. We've also not pre-coded any way to
- _store_ the passkey ID or smart wallet address, once it is known. Perhaps for
- that, you'll use a database, or localStorage, or something else entirely. It's
- up to _you_ to provide the functionality you want to see here, this component
- is merely a canvas for you to paint on.
-
- We do provide some toast logic for informing users of errors, but you can
- modify/delete that as you see fit.
--->
-
 <script lang="ts">
     // We're using toasts to display errors to the user. We're not doing much
     // error _handling_, though. So, use whatever techniques you see fit.
@@ -25,10 +6,11 @@
     const modalStore = getModalStore();
 
     import { account, send, getWalletAddress } from '$lib/passkeyClient';
-    import { keyId } from '$lib/stores/keyId';
-    import { walletAddress } from '$lib/stores/walletAddress';
+    import { keyId } from '$lib/state/keyId';
+    import { wallet } from '$lib/state/Wallet.svelte';
     import StellarExpertLink from '$lib/components/ui/StellarExpertLink.svelte';
-    import Balances from '$lib/components/Balances.svelte';
+    import { page } from '$app/state';
+    // import { vBalances } from '$lib/stores/VegetableBalances.svelte';
 
     let userName = $state('')
 
@@ -59,8 +41,8 @@
 
             keyId.set(keyIdBase64);
             console.log('keyId', $keyId)
-            walletAddress.set(contractId);
-            console.log('walletAddress', $walletAddress)
+            wallet.address = contractId;
+            console.log('walletAddress', wallet.address)
         } catch (err) {
             console.error(err);
             toastStore.trigger({
@@ -82,8 +64,10 @@
 
             keyId.set(keyIdBase64);
             console.log('keyId', $keyId)
-            walletAddress.set(contractId);
-            console.log('walletAddress', $walletAddress)
+            wallet.address = contractId;
+            console.log('walletAddress', wallet.address)
+
+            wallet.getBalances(page.data.vegetables)
         } catch (err) {
             console.error(err);
             toastStore.trigger({
@@ -100,7 +84,7 @@
         console.log('logging out');
         try {
             keyId.reset();
-            walletAddress.set('');
+            wallet.reset();
             localStorage.removeItem('kf:keyId')
             window.location.reload();
         } catch (err) {
@@ -114,12 +98,11 @@
 </script>
 
 <div class="flex space-x-1 md:space-x-2 items-center">
-    {#if !$walletAddress}
+    {#if !wallet.address}
         <button class="btn btn-sm variant-filled-primary" onclick={signup}>Signup</button>
         <button class="btn btn-sm variant-soft-primary" onclick={login}>Login</button>
     {:else}
-        <StellarExpertLink address={$walletAddress} />
-        <Balances />
+        <StellarExpertLink address={wallet.address} />
         <button class="btn btn-sm variant-soft-error" onclick={logout}>Logout</button>
     {/if}
 </div>
