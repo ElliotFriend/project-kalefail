@@ -6,6 +6,9 @@
 
 <h1 class="h1">Kitchen</h1>
 
-<p>Bored of getting all your nutrients one vegetable at a time? Yeah, me too! Here, in the kitchen, cook up some ways to make your diet more interesting and unique!</p>
+<p>
+    Bored of getting all your nutrients one vegetable at a time? Yeah, me too! Here, in the kitchen,
+    cook up some ways to make your diet more interesting and unique!
+</p>
 
 <p>Coming soon...</p>

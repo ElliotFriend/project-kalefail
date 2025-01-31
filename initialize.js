@@ -4,7 +4,7 @@ import { execSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { sync as glob } from 'glob';
-import { Asset } from '@stellar/stellar-sdk'
+import { Asset } from '@stellar/stellar-sdk';
 
 // Load environment variables starting with `PUBLIC_` into the environment, so
 // we don't need to specify duplicate variables in .env
@@ -28,7 +28,7 @@ const VEGETABLES = [
     new Asset('BROCCOLI', process.env.FAIL_ISSUER),
     new Asset('CABBAGE', process.env.FAIL_ISSUER),
     new Asset('KOHLRABI', process.env.FAIL_ISSUER),
-]
+];
 
 /**
  * This function logs and then executes a shell command.
@@ -89,12 +89,12 @@ function filenameNoExtension(filename) {
  */
 function deploy(wasm) {
     const alias = filenameNoExtension(wasm);
-    let constructor_args
+    let constructor_args;
     switch (alias) {
         case 'trading_post':
-            constructor_args = `-- --owner ${process.env.STELLAR_ACCOUNT} --kale ${kaleSacAddress} --vegetables '${JSON.stringify(VEGETABLES.map((v) => v.contractId(process.env.STELLAR_NETWORK_PASSPHRASE)))}'`
+            constructor_args = `-- --owner ${process.env.STELLAR_ACCOUNT} --kale ${kaleSacAddress} --vegetables '${JSON.stringify(VEGETABLES.map((v) => v.contractId(process.env.STELLAR_NETWORK_PASSPHRASE)))}'`;
         default:
-            ''
+            '';
     }
     exe(
         `stellar contract deploy --wasm ${wasm} --ignore-checks --alias ${alias} ${constructor_args}`,
@@ -201,9 +201,7 @@ function importAll() {
 }
 
 function sacDeploy(veg) {
-    exe(
-        `stellar contract asset deploy --asset ${veg.code}:${veg.issuer} | true`
-    );
+    exe(`stellar contract asset deploy --asset ${veg.code}:${veg.issuer} | true`);
 }
 
 function sacDeployAll() {
@@ -214,23 +212,19 @@ function sacAdmin() {
     contracts.forEach(({ alias, id }) => {
         if (alias === 'trading_post') {
             VEGETABLES.forEach((v) => {
-                const sac = v.contractId(process.env.STELLAR_NETWORK_PASSPHRASE)
-                exe(
-                    `stellar contract invoke --id ${sac} -- set_admin --new_admin ${id}`
-                )
-            })
+                const sac = v.contractId(process.env.STELLAR_NETWORK_PASSPHRASE);
+                exe(`stellar contract invoke --id ${sac} -- set_admin --new_admin ${id}`);
+            });
         }
-    })
+    });
 }
 
 function openTradingPost() {
     contracts().forEach(({ alias, id }) => {
         if (alias === 'trading_post') {
-            exe(
-                `stellar contract invoke --id ${id} -- open`
-            )
+            exe(`stellar contract invoke --id ${id} -- open`);
         }
-    })
+    });
 }
 
 /* Now, we call the functions we've written in the order we want them to happen: */

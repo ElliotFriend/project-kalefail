@@ -16,6 +16,6 @@ export const POST: RequestHandler = async ({ url, request }) => {
         const res = await server.send(xdr);
         return json(res);
     } else {
-        error(403, { message: 'hostname mismatch'})
+        error(403, { message: 'hostname mismatch' });
     }
 };

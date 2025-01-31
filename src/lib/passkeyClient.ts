@@ -34,7 +34,9 @@ export const sac = new SACClient({
     networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
 });
 
-export const kaleSacAddress = new Asset('KALE', PUBLIC_KALE_ISSUER).contractId(PUBLIC_STELLAR_NETWORK_PASSPHRASE);
+export const kaleSacAddress = new Asset('KALE', PUBLIC_KALE_ISSUER).contractId(
+    PUBLIC_STELLAR_NETWORK_PASSPHRASE,
+);
 export const kaleSacClient = sac.getSACClient(kaleSacAddress);
 
 /**

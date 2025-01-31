@@ -70,7 +70,7 @@
             <!-- The "topnav" buttons will not appear on small or smaller screens -->
             <div class="hidden md:block flex md:space-x-4">
                 {#each menuItems as item}
-                {@const className = `btn btn-sm hover:variant-soft-primary${page.url.pathname.startsWith(item.href) ? ' variant-soft-primary' : ''}`}
+                    {@const className = `btn btn-sm hover:variant-soft-primary${page.url.pathname.startsWith(item.href) ? ' variant-soft-primary' : ''}`}
                     <a href={item.href} class={className}>
                         <span><item.icon /></span>
                         <span>{item.name}</span>

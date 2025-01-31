@@ -1,7 +1,13 @@
 <script lang="ts">
     // We're using toasts to display errors to the user. We're not doing much
     // error _handling_, though. So, use whatever techniques you see fit.
-    import { clipboard, getModalStore, getToastStore, popup, type ModalSettings } from '@skeletonlabs/skeleton';
+    import {
+        clipboard,
+        getModalStore,
+        getToastStore,
+        popup,
+        type ModalSettings,
+    } from '@skeletonlabs/skeleton';
     const toastStore = getToastStore();
     const modalStore = getModalStore();
 
@@ -10,9 +16,8 @@
     import { wallet } from '$lib/state/Wallet.svelte';
     import StellarExpertLink from '$lib/components/ui/StellarExpertLink.svelte';
     import { page } from '$app/state';
-    // import { vBalances } from '$lib/stores/VegetableBalances.svelte';
 
-    let userName = $state('')
+    let userName = $state('');
 
     /**
      * Sign up as a new user, creating a smart wallet along the way.
@@ -29,20 +34,19 @@
                     response: (r: string) => resolve(r),
                 };
                 modalStore.trigger(modal);
-            }).then((r) => (userName = r))
+            }).then((r) => (userName = r));
 
-            const {
-                keyIdBase64,
-                contractId,
-                signedTx,
-            } = await account.createWallet('The KALEfail Project', userName);
+            const { keyIdBase64, contractId, signedTx } = await account.createWallet(
+                'The KALEfail Project',
+                userName,
+            );
 
-            await send(signedTx)
+            await send(signedTx);
 
             keyId.set(keyIdBase64);
-            console.log('keyId', $keyId)
+            console.log('keyId', $keyId);
             wallet.address = contractId;
-            console.log('walletAddress', wallet.address)
+            console.log('walletAddress', wallet.address);
         } catch (err) {
             console.error(err);
             toastStore.trigger({
@@ -63,11 +67,11 @@
             });
 
             keyId.set(keyIdBase64);
-            console.log('keyId', $keyId)
+            console.log('keyId', $keyId);
             wallet.address = contractId;
-            console.log('walletAddress', wallet.address)
+            console.log('walletAddress', wallet.address);
 
-            wallet.getBalances(page.data.vegetables)
+            wallet.getBalances(page.data.vegetables);
         } catch (err) {
             console.error(err);
             toastStore.trigger({
@@ -85,7 +89,7 @@
         try {
             keyId.reset();
             wallet.reset();
-            localStorage.removeItem('kf:keyId')
+            localStorage.removeItem('kf:keyId');
             window.location.reload();
         } catch (err) {
             console.error(err);

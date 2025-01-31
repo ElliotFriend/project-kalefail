@@ -7,20 +7,19 @@
     import { wallet } from '$lib/state/Wallet.svelte';
     import { account, send } from '$lib/passkeyClient';
 
-    import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down'
+    import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
     import StatusDefListItem from '$lib/components/ui/StatusDefListItem.svelte';
 
     import type { PageData } from './$types';
     let { data }: { data: PageData } = $props();
 
-
     let isLoading = $state(false);
     let vegetableToTrade: string = $state(data.vegetables[0].contractAddress);
-    let numTokens: number = $state(0)
+    let numTokens: number = $state(0);
     let buyKale: boolean = $state(false);
 
     function toggleBuyKale() {
-        buyKale = !buyKale
+        buyKale = !buyKale;
     }
 
     async function makeTrade() {
@@ -31,27 +30,30 @@
                 vegetable: vegetableToTrade,
                 amount: BigInt(numTokens * 10_000_000),
                 buy_kale: buyKale,
-            })
+            });
 
-            let txn = await account.sign(at.built!, { keyId: $keyId })
+            let txn = await account.sign(at.built!, { keyId: $keyId });
             await send(txn.built!);
 
             wallet.getBalances(data.vegetables);
         } catch (err) {
-            console.log(err)
+            console.log(err);
             toastStore.trigger({
                 message: 'Something went wrong trading your KALE. Please try again later.',
                 background: 'variant-filled-error',
-            })
+            });
         } finally {
-            isLoading = false
+            isLoading = false;
         }
     }
 </script>
 
 <h1 class="h1">Trading Post</h1>
 
-<p>Exchange your hard-earned KALE tokens for other, related vegetables. Or trade them back to KALE. Always available at a 1:1 ratio, since they're all the same species of plant.</p>
+<p>
+    Exchange your hard-earned KALE tokens for other, related vegetables. Or trade them back to KALE.
+    Always available at a 1:1 ratio, since they're all the same species of plant.
+</p>
 
 <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="card bg-initial">
@@ -60,11 +62,25 @@
         </header>
         <section class="p-4 space-y-4">
             <dl class="list-dl">
-                <StatusDefListItem title="Trading Post Address" value={trading_post.options.contractId} isAddress />
+                <StatusDefListItem
+                    title="Trading Post Address"
+                    value={trading_post.options.contractId}
+                    isAddress
+                />
                 <StatusDefListItem title="Open for Business" value={data.instance.IsOpen} />
-                <StatusDefListItem title="KALE Asset Contract" value={data.instance.KaleAddress} isAddress />
-                <StatusDefListItem title="KALE Currently Deposited" value={(Number(data.contractKale) / 10_000_000).toFixed(7)} />
-                <StatusDefListItem title="Current Shelf Space" value={data.instance.MaxVegetables} />
+                <StatusDefListItem
+                    title="KALE Asset Contract"
+                    value={data.instance.KaleAddress}
+                    isAddress
+                />
+                <StatusDefListItem
+                    title="KALE Currently Deposited"
+                    value={(Number(data.contractKale) / 10_000_000).toFixed(7)}
+                />
+                <StatusDefListItem
+                    title="Current Shelf Space"
+                    value={data.instance.MaxVegetables}
+                />
                 <StatusDefListItem title="Owner" value={data.instance.Owner} isAddress />
                 <StatusDefListItem title="Vegetables Available" value={data.vegetables} />
             </dl>
@@ -84,7 +100,10 @@
             <div class="flex flex-row place-items-center">
                 <div class="grow"><hr class="!border-t-2" /></div>
                 <div class="px-2">
-                    <button class="btn-icon btn-icon-sm variant-filled-primary" onclick={toggleBuyKale}><ArrowUpDown size={16} /></button>
+                    <button
+                        class="btn-icon btn-icon-sm variant-filled-primary"
+                        onclick={toggleBuyKale}><ArrowUpDown size={16} /></button
+                    >
                 </div>
                 <div class="grow"><hr class="!border-t-2" /></div>
             </div>
@@ -95,7 +114,9 @@
             </label>
         </section>
         <footer class="card-footer">
-            <button class="btn variant-filled-primary" onclick={makeTrade} disabled={isLoading}>Make Trade!</button>
+            <button class="btn variant-filled-primary" onclick={makeTrade} disabled={isLoading}
+                >Make Trade!</button
+            >
         </footer>
     </div>
 </div>
