@@ -1,6 +1,6 @@
 {
-    "name": "soroban-template-sveltekit-passkeys",
-    "version": "0.0.1",
+    "name": "kalefail",
+    "version": "0.1.0",
     "private": true,
     "scripts": {
         "setup": "node initialize.js",
