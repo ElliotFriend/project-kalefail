@@ -1,0 +1,43 @@
+VERSION="2.1.0"
+
+NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
+
+ACCOUNTS=[
+  "GCTCZ4M6ZC5K2QGLUP4JGXLXWIBE2LNXJBFEDEARUSNU3VROSRMZFAIL"
+]
+
+[DOCUMENTATION]
+ORG_NAME = "The KaleFail Project"
+ORG_URL="https://kalefail.elliotfriend.com"
+ORG_DESCRIPTION = "A goofy riff on the KALE asset and community"
+ORG_TWITTER="elliotfriend"
+ORG_GITHUB = "https://github.com/elliotfriend"
+
+[[PRINCIPALS]]
+name="Elliot Voris"
+email="elliot@stellar.org"
+discord="elliotfriend"
+twitter="elliotfriend"
+github="elliotfriend"
+keybase="elliotfriend"
+
+[[CURRENCIES]]
+code = "BROCCOLI"
+issuer = "GCTCZ4M6ZC5K2QGLUP4JGXLXWIBE2LNXJBFEDEARUSNU3VROSRMZFAIL"
+name = "The Blockchain Tree Food"
+desc = "A cultivar of the ever-popular KALE asset, powered by Soroban"
+image = "https://kalefail.elliotfriend.com/assets/broccoli.png"
+
+[[CURRENCIES]]
+code = "CABBAGE"
+issuer = "GCTCZ4M6ZC5K2QGLUP4JGXLXWIBE2LNXJBFEDEARUSNU3VROSRMZFAIL"
+name = "The Blockchain Head Food"
+desc = "A cultivar of the ever-popular KALE asset, powered by Soroban"
+image = "https://kalefail.elliotfriend.com/assets/cabbage.png"
+
+[[CURRENCIES]]
+code = "KOHLRABI"
+issuer = "GCTCZ4M6ZC5K2QGLUP4JGXLXWIBE2LNXJBFEDEARUSNU3VROSRMZFAIL"
+name = "The Blockchain Turnip Food"
+desc = "A cultivar of the ever-popular KALE asset, powered by Soroban"
+image = "https://kalefail.elliotfriend.com/assets/kohlrabi.png"
