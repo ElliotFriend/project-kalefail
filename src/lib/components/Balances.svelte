@@ -3,6 +3,8 @@
     import { page } from '$app/state';
     import RefreshCw from 'lucide-svelte/icons/refresh-cw';
 
+    import BalanceBadge from '$lib/components/BalanceBadge.svelte';
+
     import { slide } from 'svelte/transition';
     let numBalances = $derived(page.data.vegetables.length + 1);
 </script>
@@ -15,11 +17,8 @@
                     <div class="placeholder w-36"></div>
                 {/each}
             {:then}
-                {#each Object.entries(wallet.balances) as [vAsset, vBalance]}
-                    {@const className = `badge variant-filled-${vAsset === 'KALE' ? 'success' : 'primary'}`}
-                    <span class={className}
-                        >{vBalance === 0 ? vBalance : vBalance.toFixed(7)} {vAsset}</span
-                    >
+                {#each Object.entries(wallet.balances) as [asset, balance]}
+                    <BalanceBadge {asset} {balance} />
                 {/each}
             {/await}
             <RefreshCw

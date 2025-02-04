@@ -38,6 +38,11 @@
             let txn = await account.sign(at.built!, { keyId: $keyId });
             await send(txn.built!);
 
+            toastStore.trigger({
+                message: 'Successfully traded your produce. Enjoy!!',
+                background: 'variant-filled-success'
+            });
+
             wallet.getBalances(data.vegetables);
         } catch (err) {
             console.log(err);
@@ -65,6 +70,11 @@
 
             let txn = await account.sign(at.built!, { keyId: $keyId });
             await send(txn.built!);
+
+            toastStore.trigger({
+                message: 'Successfully transferred your produce. Congrats!!',
+                background: 'variant-filled-success'
+            });
 
             wallet.getBalances(data.vegetables);
         } catch (err) {
