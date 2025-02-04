@@ -11,7 +11,7 @@
 
 {#if wallet.address}
     <div transition:slide class="flex bg-secondary-100-800-token p-2 gap-2 justify-center">
-        <div class="flex gap-1">
+        <div class="flex gap-2 items-center">
             {#await wallet.getBalances(page.data.vegetables)}
                 {#each { length: numBalances }}
                     <div class="placeholder w-36"></div>
