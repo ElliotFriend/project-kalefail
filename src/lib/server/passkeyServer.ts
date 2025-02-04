@@ -11,7 +11,7 @@ export const server = new PasskeyServer({
     rpcUrl: PUBLIC_STELLAR_RPC_URL,
     launchtubeUrl: PUBLIC_LAUNCHTUBE_URL,
     launchtubeJwt: PRIVATE_LAUNCHTUBE_JWT,
-    mercuryProjectName: 'smart-wallets-next-dima',
+    mercuryProjectName: 'smart-wallets-kalefail',
     mercuryUrl: PUBLIC_MERCURY_URL,
     mercuryKey: PRIVATE_MERCURY_TOKEN,
 });
