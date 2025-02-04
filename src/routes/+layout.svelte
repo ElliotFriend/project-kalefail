@@ -3,6 +3,7 @@
 
     import Header from '$lib/components/ui/Header.svelte';
     import SidebarDrawer from '$lib/components/ui/SidebarDrawer.svelte';
+    import Balances from '$lib/components/Balances.svelte';
     import PageContent from '$lib/components/ui/PageContent.svelte';
     import Footer from '$lib/components/ui/Footer.svelte';
 
@@ -19,7 +20,6 @@
     initializeStores();
 
     let { children }: LayoutProps = $props();
-    import Balances from '$lib/components/Balances.svelte';
 </script>
 
 <svelte:head>{@html `<script>(${autoModeWatcher.toString()})();</script>`}</svelte:head>
