@@ -12,7 +12,8 @@
     const modalStore = getModalStore();
 
     import Copy from 'lucide-svelte/icons/copy'
-    import { account, send, getWalletAddress } from '$lib/passkeyClient';
+    import { account, send, getWalletAddress, createWallet } from '$lib/passkeyClient';
+    import { PasskeyClient } from 'passkey-kit';
     import { keyId } from '$lib/state/keyId';
     import { wallet } from '$lib/state/Wallet.svelte';
     import StellarExpertLink from '$lib/components/ui/StellarExpertLink.svelte';
@@ -26,23 +27,46 @@
     async function signup() {
         console.log('signing up');
         try {
-            await new Promise<string>((resolve) => {
-                const modal: ModalSettings = {
-                    type: 'prompt',
-                    title: 'Enter Name',
-                    body: 'Please provide a username below.',
-                    valueAttr: { type: 'text', required: true },
-                    response: (r: string) => resolve(r),
-                };
-                modalStore.trigger(modal);
-            }).then((r) => (userName = r));
+            let { keyIdBase64, contractId, signedTxXdr } = await createWallet('The KaleFail Project', 'KaleFail User')
+            // console.log('something', something)
+            // const { keyId: kid, keyIdBase64, publicKey } = await account.createKey(
+            //     'The KaleFail Project',
+            //     'KaleFail User',
+            // )
 
-            const { keyIdBase64, contractId, signedTx } = await account.createWallet(
-                'The KALEfail Project',
-                userName,
-            );
+            // await new Promise<string>((resolve) => {
+            //     const modal: ModalSettings = {
+            //         type: 'prompt',
+            //         title: 'Enter Name',
+            //         body: 'Please provide a username below.',
+            //         valueAttr: { type: 'text', required: true },
+            //         response: (r: string) => resolve(r),
+            //     };
+            //     modalStore.trigger(modal);
+            // }).then((r) => (userName = r));
 
-            await send(signedTx);
+            // const { keyIdBase64, contractId, signedTx } = await account.createWallet(
+            //     'The KaleFail Project',
+            //     'KaleFail User',
+            // );
+
+            // console.log('here is signedTx', signedTx.operations)
+            // let at = PasskeyClient.deploy({
+            //     signer: {
+            //         tag: 'Secp256r1',
+            //         values: [
+            //             kid,
+            //             publicKey,
+            //             [undefined],
+            //             [undefined],
+            //             { tag: 'Persistent', values: undefined },
+            //         ],
+            //     },
+            // },
+            // {
+            //     rpcUrl: PUBLI
+            // })
+            await send(signedTxXdr);
 
             keyId.set(keyIdBase64);
             console.log('keyId', $keyId);

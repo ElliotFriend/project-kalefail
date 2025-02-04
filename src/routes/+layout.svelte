@@ -22,7 +22,7 @@
     let { children }: LayoutProps = $props();
 </script>
 
-<svelte:head>{@html `<script>(${autoModeWatcher.toString()})();</script>`}</svelte:head>
+<svelte:head>{@html '<script>(' + autoModeWatcher.toString() + ')();</script>'}</svelte:head>
 
 <Toast />
 <SidebarDrawer />
