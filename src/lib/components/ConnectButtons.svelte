@@ -11,6 +11,7 @@
     const toastStore = getToastStore();
     const modalStore = getModalStore();
 
+    import Copy from 'lucide-svelte/icons/copy'
     import { account, send, getWalletAddress } from '$lib/passkeyClient';
     import { keyId } from '$lib/state/keyId';
     import { wallet } from '$lib/state/Wallet.svelte';
@@ -107,6 +108,7 @@
         <button class="btn btn-sm variant-soft-primary" onclick={login}>Login</button>
     {:else}
         <StellarExpertLink address={wallet.address} />
+        <button class="btn-icon btn-icon-sm" use:clipboard={wallet.address}><Copy size="14" /></button>
         <button class="btn btn-sm variant-soft-error" onclick={logout}>Logout</button>
     {/if}
 </div>
