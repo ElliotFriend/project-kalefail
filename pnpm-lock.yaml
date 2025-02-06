@@ -14,6 +14,9 @@ importers:
       '@stellar/stellar-sdk':
         specifier: ^13.1.0
         version: 13.1.0
+      base64url:
+        specifier: ^3.0.1
+        version: 3.0.1
       passkey-kit:
         specifier: ^0.10.10
         version: 0.10.10

@@ -52,6 +52,7 @@
     "dependencies": {
         "@floating-ui/dom": "^1.6.13",
         "@stellar/stellar-sdk": "^13.1.0",
+        "base64url": "^3.0.1",
         "passkey-kit": "^0.10.10",
         "svelte-persisted-store": "^0.12.0",
         "trading_post": "file:packages/trading_post"

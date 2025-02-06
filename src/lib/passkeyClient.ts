@@ -31,49 +31,49 @@ export const account = new PasskeyKit({
  * suitable for Mainnet, since it uses the Genesis account to sign the inner
  * transaction. This sidesteps that for the time-being.
  */
-export async function createWallet(app: string, user: string) {
-    const { keyId, keyIdBase64, publicKey } = await account.createKey(
-        app,
-        user,
-    )
+// export async function createWallet(app: string, user: string) {
+//     const { keyId, keyIdBase64, publicKey } = await account.createKey(
+//         app,
+//         user,
+//     )
 
-    let at = await PasskeyClient.deploy({
-        signer: {
-            tag: 'Secp256r1',
-            values: [
-                keyId,
-                publicKey,
-                [undefined],
-                [undefined],
-                { tag: 'Persistent', values: undefined },
-            ],
-        },
-    },
-    {
-        rpcUrl: PUBLIC_STELLAR_RPC_URL,
-        wasmHash: PUBLIC_WALLET_WASM_HASH,
-        networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
-        publicKey: PUBLIC_FAIL_WALLET_DEPLOYER_ADDRESS,
-        salt: hash(keyId),
-    })
+//     let at = await PasskeyClient.deploy({
+//         signer: {
+//             tag: 'Secp256r1',
+//             values: [
+//                 keyId,
+//                 publicKey,
+//                 [undefined],
+//                 [undefined],
+//                 { tag: 'Persistent', values: undefined },
+//             ],
+//         },
+//     },
+//     {
+//         rpcUrl: PUBLIC_STELLAR_RPC_URL,
+//         wasmHash: PUBLIC_WALLET_WASM_HASH,
+//         networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
+//         publicKey: PUBLIC_FAIL_WALLET_DEPLOYER_ADDRESS,
+//         salt: hash(keyId),
+//     })
 
-    const contractId = at.result.options.contractId
+//     const contractId = at.result.options.contractId
 
-    account.wallet = new PasskeyClient({
-        contractId,
-        networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
-        rpcUrl: PUBLIC_STELLAR_RPC_URL,
-    })
+//     account.wallet = new PasskeyClient({
+//         contractId,
+//         networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
+//         rpcUrl: PUBLIC_STELLAR_RPC_URL,
+//     })
 
-    let { signedTxXdr }  = await deploySign(at.toXDR())
+//     let { signedTxXdr }  = await deploy(at.toXDR())
 
-    return {
-        keyId,
-        keyIdBase64,
-        contractId,
-        signedTxXdr,
-    }
-}
+//     return {
+//         keyId,
+//         keyIdBase64,
+//         contractId,
+//         signedTxXdr,
+//     }
+// }
 
 /**
  * A client allowing us to easily create SAC clients for any asset on the
@@ -119,13 +119,8 @@ export async function send(tx: Tx | string) {
  * @returns An object containing a signed, base64-encoded transaction which is
  * ready to submit to the network
  */
-async function deploySign(xdr: string) {
-    return fetch('/api/deploy', {
-        method: 'POST',
-        body: JSON.stringify({
-            xdr,
-        }),
-    }).then(async (res) => {
+export async function deploy(id: string, pk: string) {
+    return fetch(`/api/deploy?id=${id}&pk=${pk}`).then(async (res) => {
         if (res.ok) return res.json();
         else throw await res.text();
     });

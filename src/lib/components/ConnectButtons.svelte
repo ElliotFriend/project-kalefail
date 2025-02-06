@@ -12,14 +12,14 @@
     const modalStore = getModalStore();
 
     import Copy from 'lucide-svelte/icons/copy'
-    import { account, send, getWalletAddress, createWallet } from '$lib/passkeyClient';
+    import { account, send, getWalletAddress, deploy } from '$lib/passkeyClient';
     import { PasskeyClient } from 'passkey-kit';
     import { keyId } from '$lib/state/keyId';
     import { wallet } from '$lib/state/Wallet.svelte';
     import StellarExpertLink from '$lib/components/ui/StellarExpertLink.svelte';
     import { page } from '$app/state';
-
-    let userName = $state('');
+    import base64url from 'base64url'
+    import { PUBLIC_STELLAR_NETWORK_PASSPHRASE, PUBLIC_STELLAR_RPC_URL } from '$env/static/public';
 
     /**
      * Sign up as a new user, creating a smart wallet along the way.
@@ -27,51 +27,23 @@
     async function signup() {
         console.log('signing up');
         try {
-            let { keyIdBase64, contractId, signedTxXdr } = await createWallet('The KaleFail Project', 'KaleFail User')
-            // console.log('something', something)
-            // const { keyId: kid, keyIdBase64, publicKey } = await account.createKey(
-            //     'The KaleFail Project',
-            //     'KaleFail User',
-            // )
+            const { keyIdBase64, publicKey } = await account.createKey(
+                'The KaleFail Project',
+                'KaleFail User',
+            )
 
-            // await new Promise<string>((resolve) => {
-            //     const modal: ModalSettings = {
-            //         type: 'prompt',
-            //         title: 'Enter Name',
-            //         body: 'Please provide a username below.',
-            //         valueAttr: { type: 'text', required: true },
-            //         response: (r: string) => resolve(r),
-            //     };
-            //     modalStore.trigger(modal);
-            // }).then((r) => (userName = r));
+            const { contractId } = await deploy(keyIdBase64, base64url(publicKey));
 
-            // const { keyIdBase64, contractId, signedTx } = await account.createWallet(
-            //     'The KaleFail Project',
-            //     'KaleFail User',
-            // );
-
-            // console.log('here is signedTx', signedTx.operations)
-            // let at = PasskeyClient.deploy({
-            //     signer: {
-            //         tag: 'Secp256r1',
-            //         values: [
-            //             kid,
-            //             publicKey,
-            //             [undefined],
-            //             [undefined],
-            //             { tag: 'Persistent', values: undefined },
-            //         ],
-            //     },
-            // },
-            // {
-            //     rpcUrl: PUBLI
-            // })
-            await send(signedTxXdr);
+            account.wallet = new PasskeyClient({
+                contractId,
+                rpcUrl: PUBLIC_STELLAR_RPC_URL,
+                networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
+            });
 
             keyId.set(keyIdBase64);
             console.log('keyId', $keyId);
             wallet.address = contractId;
-            console.log('walletAddress', wallet.address);
+            console.log('wallet.address', wallet.address);
         } catch (err) {
             console.error(err);
             toastStore.trigger({
