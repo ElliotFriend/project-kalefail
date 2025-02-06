@@ -19,15 +19,15 @@ import { server } from '$lib/server/passkeyServer';
  * @returns JSON object containing the newly deployed contract ID.
  */
 export const GET: RequestHandler = async ({ request, url }) => {
+    if (!request.headers.get('referer')?.includes(url.origin)) {
+        error(403, { message: 'hostname mismatch' });
+    }
+
     const id = url.searchParams.get('id')?.toString();
     const pk = url.searchParams.get('pk')?.toString();
 
     if (!id || !pk) {
         error(400, { message: 'passkey id and public key are required' });
-    }
-
-    if (!request.headers.get('referer')?.includes(url.origin)) {
-        error(403, { message: 'hostname mismatch' });
     }
 
     const deployerKp = Keypair.fromSecret(PRIVATE_FAIL_WALLET_DEPLOYER_SECRET);
