@@ -11,6 +11,7 @@
     import StatusDefListItem from '$lib/components/ui/StatusDefListItem.svelte';
 
     import type { PageData } from './$types';
+    import { invalidate } from '$app/navigation';
     let { data }: { data: PageData } = $props();
 
     let isLoading = $state(false);
@@ -44,6 +45,7 @@
             });
 
             wallet.getBalances(data.vegetables);
+            invalidate('kf:trading-post:status');
         } catch (err) {
             console.log(err);
             toastStore.trigger({

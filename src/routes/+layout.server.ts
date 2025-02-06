@@ -6,7 +6,7 @@ import type { Storage } from 'trading_post';
 import type { VegetableAsset } from '$lib/types';
 import { PUBLIC_STELLAR_NETWORK_PASSPHRASE } from '$env/static/public';
 
-export const load: LayoutServerLoad = async () => {
+export const load: LayoutServerLoad = async ({ depends }) => {
     const tradingPostContract = new Contract(trading_post.options.contractId);
 
     let returnObj: Record<string, any> = {
@@ -79,6 +79,8 @@ export const load: LayoutServerLoad = async () => {
             });
         }
     });
+
+    depends('kf:trading-post:status');
 
     return returnObj;
 };
