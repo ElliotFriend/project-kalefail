@@ -23,8 +23,8 @@
             A thought occurred to me in January, "wouldn't it be great to use <code class="code"
                 >KALE</code
             >
-            as a springboard to even more more exciting blockchain hijinks!?" KailFail is now an
-            attempt to riff on the success and community surrounding <code class="code">KALE</code>
+            as a springboard to even more more exciting blockchain hijinks!?" KailFail is now an attempt
+            to riff on the success and community surrounding <code class="code">KALE</code>
             in fun and interesting new ways. Every week, the goal is to experiment with some
             <em>new</em>
             and exciting way of utilizing <code class="code">KALE</code> for more.

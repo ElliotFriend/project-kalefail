@@ -7,12 +7,7 @@
     import PageContent from '$lib/components/ui/PageContent.svelte';
     import Footer from '$lib/components/ui/Footer.svelte';
 
-    import {
-        initializeStores,
-        Modal,
-        Toast,
-        autoModeWatcher,
-    } from '@skeletonlabs/skeleton';
+    import { initializeStores, Modal, Toast, autoModeWatcher } from '@skeletonlabs/skeleton';
     import type { LayoutProps } from './$types';
     initializeStores();
 
