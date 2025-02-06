@@ -7,16 +7,13 @@
     import PageContent from '$lib/components/ui/PageContent.svelte';
     import Footer from '$lib/components/ui/Footer.svelte';
 
-    import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
     import {
         initializeStores,
-        storePopup,
         Modal,
         Toast,
         autoModeWatcher,
     } from '@skeletonlabs/skeleton';
     import type { LayoutProps } from './$types';
-    storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
     initializeStores();
 
     let { children }: LayoutProps = $props();

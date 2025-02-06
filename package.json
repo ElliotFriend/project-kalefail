@@ -21,7 +21,8 @@
         "@skeletonlabs/skeleton": "^2.10.4",
         "@skeletonlabs/tw-plugin": "^0.4.0",
         "@sveltejs/adapter-auto": "^4.0.0",
-        "@sveltejs/kit": "^2.16.1",
+        "@sveltejs/adapter-vercel": "^5.6.1",
+        "@sveltejs/kit": "^2.17.1",
         "@sveltejs/vite-plugin-svelte": "^5.0.3",
         "@tailwindcss/forms": "^0.5.10",
         "@tailwindcss/typography": "^0.5.16",
@@ -50,7 +51,6 @@
     },
     "type": "module",
     "dependencies": {
-        "@floating-ui/dom": "^1.6.13",
         "@stellar/stellar-sdk": "^13.1.0",
         "base64url": "^3.0.1",
         "passkey-kit": "^0.10.10",
