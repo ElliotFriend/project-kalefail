@@ -1,15 +1,14 @@
 import { Server } from '@stellar/stellar-sdk/rpc';
-import { Asset, hash, TransactionBuilder, Transaction, type Operation } from '@stellar/stellar-sdk';
-import { PasskeyClient, PasskeyKit, SACClient } from 'passkey-kit';
+import { Asset } from '@stellar/stellar-sdk';
+import { PasskeyKit, SACClient } from 'passkey-kit';
 
 import {
     PUBLIC_STELLAR_RPC_URL,
     PUBLIC_STELLAR_NETWORK_PASSPHRASE,
     PUBLIC_WALLET_WASM_HASH,
     PUBLIC_KALE_ISSUER,
-    PUBLIC_FAIL_WALLET_DEPLOYER_ADDRESS,
 } from '$env/static/public';
-import { AssembledTransaction, basicNodeSigner, type Tx } from '@stellar/stellar-sdk/contract';
+import type { Tx } from '@stellar/stellar-sdk/contract';
 
 /**
  * A configured Stellar RPC server instance used to interact with the network
