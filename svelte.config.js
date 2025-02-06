@@ -10,7 +10,9 @@ const config = {
         inspector: true,
     },
     kit: {
-        adapter: adapter(),
+        adapter: adapter({
+            maxDuration: 30
+        }),
     },
 };
 export default config;
