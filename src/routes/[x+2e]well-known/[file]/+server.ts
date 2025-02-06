@@ -52,14 +52,15 @@ image="https://kalefail.elliotfriend.com/assets/kohlrabi.png"
 is_asset_anchored=false
 `
 
-export const GET: RequestHandler = async ({ params }) => {
+export const GET: RequestHandler = async ({ params, setHeaders }) => {
     if (params.file !== 'stellar.toml') {
         error(404, { message: 'well known file not found' })
     }
 
-    return text(TOML_CONTENTS, {
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-        },
+    setHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
     });
+
+    return text(TOML_CONTENTS);
 };
