@@ -21,7 +21,6 @@ ORG_GITHUB="elliotfriend"
 [[PRINCIPALS]]
 name="Elliot Voris"
 email="elliot@stellar.org"
-discord="elliotfriend"
 twitter="elliotfriend"
 github="elliotfriend"
 keybase="elliotfriend"
