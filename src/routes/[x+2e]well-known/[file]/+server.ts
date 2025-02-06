@@ -34,6 +34,8 @@ name="Blockchain Tree"
 desc="A cultivar of the ever-popular KALE asset, powered by Soroban"
 image="https://kalefail.elliotfriend.com/assets/broccoli.png"
 is_asset_anchored=false
+anchor_asset_type="other"
+status="live"
 
 [[CURRENCIES]]
 code="CABBAGE"
@@ -42,6 +44,8 @@ name="Blockchain Head"
 desc="A cultivar of the ever-popular KALE asset, powered by Soroban"
 image="https://kalefail.elliotfriend.com/assets/cabbage.png"
 is_asset_anchored=false
+anchor_asset_type="other"
+status="live"
 
 [[CURRENCIES]]
 code="KOHLRABI"
@@ -50,6 +54,8 @@ name="Blockchain Turnip"
 desc="A cultivar of the ever-popular KALE asset, powered by Soroban"
 image="https://kalefail.elliotfriend.com/assets/kohlrabi.png"
 is_asset_anchored=false
+anchor_asset_type="other"
+status="live"
 `
 
 export const GET: RequestHandler = async ({ params, setHeaders }) => {
