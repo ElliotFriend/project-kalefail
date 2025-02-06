@@ -1,4 +1,7 @@
-VERSION="2.1.0"
+import type { RequestHandler } from './$types';
+import { error, text } from '@sveltejs/kit';
+
+const TOML_CONTENTS: string = `VERSION="2.7.0"
 
 NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
 
@@ -11,8 +14,9 @@ ACCOUNTS=[
 ORG_NAME="The KaleFail Project"
 ORG_URL="https://kalefail.elliotfriend.com"
 ORG_DESCRIPTION="A fun riff on the KALEpail project"
+ORG_KEYBASE="elliotfriend"
 ORG_TWITTER="elliotfriend"
-ORG_GITHUB="https://github.com/elliotfriend"
+ORG_GITHUB="elliotfriend"
 
 [[PRINCIPALS]]
 name="Elliot Voris"
@@ -21,24 +25,37 @@ discord="elliotfriend"
 twitter="elliotfriend"
 github="elliotfriend"
 keybase="elliotfriend"
+telegram="ElliotVoris"
 
 [[CURRENCIES]]
 code="BROCCOLI"
 issuer="GATWCHLKROX6LB2UJ6JM5VKMLLUKKQ5II6MAHFCKCEU47OYGIOENFAIL"
-name="The Blockchain Tree Food"
+name="Blockchain Tree"
 desc="A cultivar of the ever-popular KALE asset, powered by Soroban"
 image="https://kalefail.elliotfriend.com/assets/broccoli.png"
+is_asset_anchored=false
 
 [[CURRENCIES]]
 code="CABBAGE"
 issuer="GATWCHLKROX6LB2UJ6JM5VKMLLUKKQ5II6MAHFCKCEU47OYGIOENFAIL"
-name="The Blockchain Head Food"
+name="Blockchain Head"
 desc="A cultivar of the ever-popular KALE asset, powered by Soroban"
 image="https://kalefail.elliotfriend.com/assets/cabbage.png"
+is_asset_anchored=false
 
 [[CURRENCIES]]
 code="KOHLRABI"
 issuer="GATWCHLKROX6LB2UJ6JM5VKMLLUKKQ5II6MAHFCKCEU47OYGIOENFAIL"
-name="The Blockchain Turnip Food"
+name="Blockchain Turnip"
 desc="A cultivar of the ever-popular KALE asset, powered by Soroban"
 image="https://kalefail.elliotfriend.com/assets/kohlrabi.png"
+is_asset_anchored=false
+`
+
+export const GET: RequestHandler = async ({ params }) => {
+    if (params.file !== 'stellar.toml') {
+        error(404, { message: 'well known file not found' })
+    }
+
+    return text(TOML_CONTENTS);
+};
