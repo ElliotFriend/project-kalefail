@@ -40,7 +40,7 @@
 
             toastStore.trigger({
                 message: 'Successfully traded your produce. Enjoy!!',
-                background: 'variant-filled-success'
+                background: 'variant-filled-success',
             });
 
             wallet.getBalances(data.vegetables);
@@ -58,9 +58,8 @@
     async function transferProduce() {
         try {
             isLoading = true;
-            let sacClient = transferVegetable === 'KALE'
-                ? kaleSacClient
-                : sac.getSACClient(transferVegetable)
+            let sacClient =
+                transferVegetable === 'KALE' ? kaleSacClient : sac.getSACClient(transferVegetable);
 
             let at = await sacClient.transfer({
                 from: wallet.address,
@@ -73,7 +72,7 @@
 
             toastStore.trigger({
                 message: 'Successfully transferred your produce. Congrats!!',
-                background: 'variant-filled-success'
+                background: 'variant-filled-success',
             });
 
             wallet.getBalances(data.vegetables);
@@ -178,12 +177,19 @@
                         {/each}
                     </select>
                 </div>
-                <input class="input" type="text" placeholder="Destination" bind:value={transferDestination} />
+                <input
+                    class="input"
+                    type="text"
+                    placeholder="Destination"
+                    bind:value={transferDestination}
+                />
             </div>
         </section>
         <footer class="card-footer">
-            <button class="btn variant-filled-primary" onclick={transferProduce} disabled={isLoading}
-                >Send that produce!</button
+            <button
+                class="btn variant-filled-primary"
+                onclick={transferProduce}
+                disabled={isLoading}>Send that produce!</button
             >
         </footer>
     </div>

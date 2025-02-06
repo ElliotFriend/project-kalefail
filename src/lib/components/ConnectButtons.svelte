@@ -11,14 +11,14 @@
     const toastStore = getToastStore();
     const modalStore = getModalStore();
 
-    import Copy from 'lucide-svelte/icons/copy'
+    import Copy from 'lucide-svelte/icons/copy';
     import { account, send, getWalletAddress, deploy } from '$lib/passkeyClient';
     import { PasskeyClient } from 'passkey-kit';
     import { keyId } from '$lib/state/keyId';
     import { wallet } from '$lib/state/Wallet.svelte';
     import StellarExpertLink from '$lib/components/ui/StellarExpertLink.svelte';
     import { page } from '$app/state';
-    import base64url from 'base64url'
+    import base64url from 'base64url';
     import { PUBLIC_STELLAR_NETWORK_PASSPHRASE, PUBLIC_STELLAR_RPC_URL } from '$env/static/public';
 
     /**
@@ -30,7 +30,7 @@
             const { keyIdBase64, publicKey } = await account.createKey(
                 'The KaleFail Project',
                 'KaleFail User',
-            )
+            );
 
             const { contractId } = await deploy(keyIdBase64, base64url(publicKey));
 
@@ -104,7 +104,9 @@
         <button class="btn btn-sm variant-soft-primary" onclick={login}>Login</button>
     {:else}
         <StellarExpertLink address={wallet.address} />
-        <button class="btn-icon btn-icon-sm" use:clipboard={wallet.address}><Copy size="14" /></button>
+        <button class="btn-icon btn-icon-sm" use:clipboard={wallet.address}
+            ><Copy size="14" /></button
+        >
         <button class="btn btn-sm variant-soft-error" onclick={logout}>Logout</button>
     {/if}
 </div>

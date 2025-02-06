@@ -2,9 +2,13 @@ import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { Keypair, hash } from '@stellar/stellar-sdk';
 import { PRIVATE_FAIL_WALLET_DEPLOYER_SECRET } from '$env/static/private';
-import { PUBLIC_STELLAR_NETWORK_PASSPHRASE, PUBLIC_STELLAR_RPC_URL, PUBLIC_WALLET_WASM_HASH } from '$env/static/public';
+import {
+    PUBLIC_STELLAR_NETWORK_PASSPHRASE,
+    PUBLIC_STELLAR_RPC_URL,
+    PUBLIC_WALLET_WASM_HASH,
+} from '$env/static/public';
 import { basicNodeSigner } from '@stellar/stellar-sdk/contract';
-import { PasskeyClient } from 'passkey-kit'
+import { PasskeyClient } from 'passkey-kit';
 import { server } from '$lib/server/passkeyServer';
 
 /**
@@ -15,8 +19,8 @@ import { server } from '$lib/server/passkeyServer';
  * @returns JSON object containing the newly deployed contract ID.
  */
 export const GET: RequestHandler = async ({ request, url }) => {
-    const id = url.searchParams.get('id')?.toString()
-    const pk = url.searchParams.get('pk')?.toString()
+    const id = url.searchParams.get('id')?.toString();
+    const pk = url.searchParams.get('pk')?.toString();
 
     if (!id || !pk) {
         error(400, { message: 'passkey id and public key are required' });
@@ -26,7 +30,7 @@ export const GET: RequestHandler = async ({ request, url }) => {
         error(403, { message: 'hostname mismatch' });
     }
 
-    const deployerKp = Keypair.fromSecret(PRIVATE_FAIL_WALLET_DEPLOYER_SECRET)
+    const deployerKp = Keypair.fromSecret(PRIVATE_FAIL_WALLET_DEPLOYER_SECRET);
     const at = await PasskeyClient.deploy(
         {
             signer: {
@@ -45,21 +49,22 @@ export const GET: RequestHandler = async ({ request, url }) => {
             wasmHash: PUBLIC_WALLET_WASM_HASH,
             networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
             publicKey: deployerKp.publicKey(),
-            salt: hash(Buffer.from(id, 'base64'))
-        }
-    )
+            salt: hash(Buffer.from(id, 'base64')),
+        },
+    );
 
-    const contractId = at.result.options.contractId
+    const contractId = at.result.options.contractId;
 
     await at.sign({
-        signTransaction: basicNodeSigner(deployerKp, PUBLIC_STELLAR_NETWORK_PASSPHRASE).signTransaction
-    })
+        signTransaction: basicNodeSigner(deployerKp, PUBLIC_STELLAR_NETWORK_PASSPHRASE)
+            .signTransaction,
+    });
 
     if (at.signed) {
-        await server.send(at.signed)
+        await server.send(at.signed);
     }
 
     return json({
         contractId,
-    })
+    });
 };
