@@ -57,5 +57,9 @@ export const GET: RequestHandler = async ({ params }) => {
         error(404, { message: 'well known file not found' })
     }
 
-    return text(TOML_CONTENTS);
+    return text(TOML_CONTENTS, {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },
+    });
 };
