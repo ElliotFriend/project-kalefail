@@ -20,6 +20,20 @@
     import { page } from '$app/state';
     import base64url from 'base64url';
     import { PUBLIC_STELLAR_NETWORK_PASSPHRASE, PUBLIC_STELLAR_RPC_URL } from '$env/static/public';
+    import { onMount } from 'svelte';
+
+    onMount(async () => {
+        if ($keyId) {
+            console.log('keyId', $keyId);
+            const { contractId } = await account.connectWallet({
+                keyId: $keyId,
+                getContractId: getWalletAddress,
+            });
+
+            wallet.address = contractId;
+            console.log('walletAddress', wallet.address);
+        }
+    })
 
     /**
      * Sign up as a new user, creating a smart wallet along the way.
