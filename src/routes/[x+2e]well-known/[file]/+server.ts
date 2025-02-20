@@ -29,7 +29,7 @@ telegram="ElliotVoris"
 [[CURRENCIES]]
 code="BROCCOLI"
 issuer="GATWCHLKROX6LB2UJ6JM5VKMLLUKKQ5II6MAHFCKCEU47OYGIOENFAIL"
-name="Blockchain Tree"
+name="Broccoli"
 desc="A cultivar of the ever-popular KALE asset, powered by Soroban"
 image="https://kalefail.elliotfriend.com/assets/broccoli.png"
 is_asset_anchored=false
@@ -39,7 +39,7 @@ status="live"
 [[CURRENCIES]]
 code="CABBAGE"
 issuer="GATWCHLKROX6LB2UJ6JM5VKMLLUKKQ5II6MAHFCKCEU47OYGIOENFAIL"
-name="Blockchain Head"
+name="Cabbage"
 desc="A cultivar of the ever-popular KALE asset, powered by Soroban"
 image="https://kalefail.elliotfriend.com/assets/cabbage.png"
 is_asset_anchored=false
@@ -49,9 +49,19 @@ status="live"
 [[CURRENCIES]]
 code="KOHLRABI"
 issuer="GATWCHLKROX6LB2UJ6JM5VKMLLUKKQ5II6MAHFCKCEU47OYGIOENFAIL"
-name="Blockchain Turnip"
+name="Kohlrabi"
 desc="A cultivar of the ever-popular KALE asset, powered by Soroban"
 image="https://kalefail.elliotfriend.com/assets/kohlrabi.png"
+is_asset_anchored=false
+anchor_asset_type="other"
+status="live"
+
+[[CURRENCIES]]
+code="BRSPROUTS"
+issuer="GATWCHLKROX6LB2UJ6JM5VKMLLUKKQ5II6MAHFCKCEU47OYGIOENFAIL"
+name="Brussels Sprouts"
+desc="A cultivar of the ever-popular KALE asset, powered by Soroban"
+image="https://kalefail.elliotfriend.com/assets/brussels-sprouts.png"
 is_asset_anchored=false
 anchor_asset_type="other"
 status="live"
