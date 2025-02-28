@@ -6,6 +6,7 @@ members = [
 
 [workspace.dependencies]
 soroban-sdk = "22.0.6"
+soroban-nft-interface = { path = "contracts/nft_interface" }
 
 [profile.release]
 opt-level = "z"
