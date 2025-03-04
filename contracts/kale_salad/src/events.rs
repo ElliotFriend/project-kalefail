@@ -29,7 +29,7 @@ pub fn emit_burn(env: &Env, owner: &Address, token_id: &u32) {
 }
 
 pub fn emit_mint(env: &Env, owner: &Address, token_id: &u32) {
-    let issuer: Address = env.storage().instance().get(&Storage::Issuer).unwrap();
-    let topics = (symbol_short!("mint"), issuer, owner);
+    let admin: Address = env.storage().instance().get(&Storage::Admin).unwrap();
+    let topics = (symbol_short!("mint"), &admin, owner);
     env.events().publish(topics, token_id);
 }

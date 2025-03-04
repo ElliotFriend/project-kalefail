@@ -2,7 +2,7 @@
 
 use constants::{MAXIMUM_TOKENS_PER_ADDRESS, MAXIMUM_TOKENS_TO_BE_MINTED};
 use errors::Errors;
-use events::{emit_approve, emit_approve_all, emit_burn, emit_transfer};
+use events::{emit_approve, emit_approve_all, emit_burn, emit_mint, emit_transfer};
 use soroban_nft_interface::{
     NonFungibleTokenEnumerable, NonFungibleTokenInterface, NonFungibleTokenMetadata,
 };
@@ -12,13 +12,12 @@ use soroban_sdk::{
 };
 use storage::{
     add_token, burn_token, clear_approved_all_data, clear_approved_data, decrement_supply,
-    get_approved_all_data, get_approved_data, get_issuer, get_metadata, get_mint_index,
-    get_payment_per_token, get_supply, get_token_owner, get_tokens_owned, get_vegetables,
-    is_token_owner, set_approved_all_data, set_approved_data, set_issuer, set_metadata,
-    set_mint_index, set_payment_per_token, set_supply, set_token_owner, set_tokens_owned,
-    set_vegetables, spend_token, spender_is_approved, token_exists,
+    extend_instance_ttl, get_admin, get_approved_all_data, get_approved_data, get_metadata,
+    get_mint_index, get_payment_per_token, get_supply, get_token_owner, get_tokens_owned,
+    get_vegetables, is_token_owner, set_admin, set_approved_all_data, set_approved_data,
+    set_metadata, set_mint_index, set_payment_per_token, set_supply, set_token_owner,
+    set_tokens_owned, set_vegetables, spend_token, spender_is_approved, token_exists,
 };
-use types::Storage;
 use utils::u8_to_string;
 
 contractmeta!(key = "Title", val = "KALE Salad");
@@ -32,7 +31,7 @@ mod constants;
 mod errors;
 mod events;
 mod storage;
-mod tests;
+mod test;
 mod types;
 mod utils;
 
@@ -43,7 +42,7 @@ pub struct KaleSaladContract;
 impl KaleSaladContract {
     pub fn __constructor(
         env: Env,
-        issuer: Address,
+        admin: Address,
         nft_name: String,
         nft_symbol: String,
         base_uri: String,
@@ -54,30 +53,56 @@ impl KaleSaladContract {
             panic_with_error!(&env, Errors::TooFewVegetables);
         }
 
-        issuer.require_auth();
+        admin.require_auth();
 
-        set_issuer(&env, &issuer);
+        set_admin(&env, &admin);
         set_vegetables(&env, &vegetables);
         set_payment_per_token(&env, &(payment_each_vegetable * vegetables.len() as i128));
         set_metadata(&env, nft_name, nft_symbol, base_uri);
 
-
+        // set supply and token index to 0 to start
         set_supply(&env, &0u32);
         set_mint_index(&env, &0u32);
+
+        // extend the contract's TTL
+        extend_instance_ttl(&env);
     }
 
     pub fn upgrade(env: Env, new_wasm_hash: BytesN<32>) {
-        // require authorization from the issuer address.
-        let issuer = get_issuer(&env);
-        issuer.require_auth();
+        // require authorization from the admin address.
+        let admin = get_admin(&env);
+        admin.require_auth();
 
         // update the contract Wasm bytecode
         env.deployer().update_current_contract_wasm(new_wasm_hash);
 
         // extend the contract's TTL
-        // extend_instance_ttl(&env);
+        extend_instance_ttl(&env);
     }
 
+    /// Mint a KALE Salad NFT to the balance of `owner`.
+    ///
+    /// # Arguments
+    ///
+    /// - `owner` - The address which will own the minted NFT(s)
+    /// - `payment_each_vegetable` - How much of each vegetable (in stroops) the
+    ///   owner is paying in exchange for the NFT.
+    /// - `number_of_tokens` - The number of NFTs which should be minted to the
+    ///   owner's address.
+    ///
+    /// # Panics
+    ///
+    /// - If the payment amount does not meet the required minimum.
+    /// - If the total maximum number of NFTs has already been minted.
+    /// - If the requested number of NFTs would exceed the total maximum NFTs.
+    /// - If the requested number of NFTs would exceed the maximum NFTs allowed
+    ///   per address.
+    ///
+    /// # Events
+    ///
+    /// - Emits an event with:
+    /// - topics - `["mint", admin: Address, owner: Address]`
+    /// - data - `token_id: u32`
     pub fn mint_salad(
         env: Env,
         owner: Address,
@@ -87,29 +112,18 @@ impl KaleSaladContract {
         owner.require_auth();
 
         let mut mint_index = get_mint_index(&env);
-        if mint_index >= MAXIMUM_TOKENS_TO_BE_MINTED {
+        if mint_index + number_of_tokens > MAXIMUM_TOKENS_TO_BE_MINTED {
             panic_with_error!(&env, Errors::TooManyTokens);
         }
-        // if get_mint_index(&env) {}
 
         if number_of_tokens > MAXIMUM_TOKENS_PER_ADDRESS {
             panic_with_error!(&env, Errors::TooManyTokens);
         }
 
-        if env
-            .storage()
-            .persistent()
-            .has(&Storage::Balance(owner.clone()))
-        {
-            let current_balance: Vec<u32> = env
-                .storage()
-                .persistent()
-                .get(&Storage::Balance(owner.clone()))
-                .unwrap();
-            let future_balance = current_balance.len() + number_of_tokens;
-            if future_balance > MAXIMUM_TOKENS_PER_ADDRESS {
-                panic_with_error!(&env, Errors::TooManyTokens);
-            }
+        let mut tokens_owned = get_tokens_owned(&env, &owner);
+        let future_balance = tokens_owned.len() + number_of_tokens;
+        if future_balance > MAXIMUM_TOKENS_PER_ADDRESS {
+            panic_with_error!(&env, Errors::TooManyTokens);
         }
 
         let payment_per_token = get_payment_per_token(&env);
@@ -127,18 +141,21 @@ impl KaleSaladContract {
         }
 
         let supply = get_supply(&env);
-        // let mut mint_index = get_mint_index(&env);
-        let mut tokens_owned = get_tokens_owned(&env, &owner);
 
         for _ in 0..number_of_tokens {
             tokens_owned.push_back(mint_index);
             set_token_owner(&env, &mint_index, &owner);
+
+            // emit an event for this token's minting
+            emit_mint(&env, &owner, &mint_index);
+
+            // increment the mint index
             mint_index += 1;
         }
 
         set_supply(&env, &(supply + number_of_tokens));
         set_mint_index(&env, &mint_index);
-        set_tokens_owned(&env, &owner, tokens_owned);
+        set_tokens_owned(&env, &owner, &tokens_owned);
     }
 
     pub fn base_uri(env: Env) -> String {

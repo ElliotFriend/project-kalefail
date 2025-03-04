@@ -16,7 +16,7 @@ pub struct ApprovedData {
 #[contracttype]
 #[derive(Clone)]
 pub enum Storage {
-    Issuer,               // : address
+    Admin,                // : address
     Metadata,             // : Metadata
     Vegetables,           // : vec<address>
     PaymentPerToken,      // : i128

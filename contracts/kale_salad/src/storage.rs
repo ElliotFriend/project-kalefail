@@ -1,7 +1,7 @@
 use soroban_sdk::{panic_with_error, Address, Env, String, Vec};
 
 use crate::{
-    constants::MAXIMUM_TOKENS_TO_BE_MINTED,
+    constants::{DAY_OF_LEDGERS, MAXIMUM_TOKENS_TO_BE_MINTED, WEEK_OF_LEDGERS},
     errors::Errors,
     types::{ApprovedData, Metadata, Storage},
 };
@@ -50,22 +50,25 @@ pub fn get_mint_index(env: &Env) -> u32 {
         .unwrap_or_default()
 }
 
-pub fn set_issuer(env: &Env, issuer: &Address) {
-    env.storage().instance().set(&Storage::Issuer, issuer);
+pub fn set_admin(env: &Env, admin: &Address) {
+    env.storage().instance().set(&Storage::Admin, admin);
 }
 
-pub fn get_issuer(env: &Env) -> Address {
-    env.storage().instance().get(&Storage::Issuer).unwrap()
+pub fn get_admin(env: &Env) -> Address {
+    env.storage().instance().get(&Storage::Admin).unwrap()
 }
 
 pub fn token_exists(env: &Env, token_id: &u32) -> bool {
-    token_id < &MAXIMUM_TOKENS_TO_BE_MINTED && env.storage().persistent().has(&Storage::Owner(*token_id))
+    token_id < &MAXIMUM_TOKENS_TO_BE_MINTED
+        && env.storage().persistent().has(&Storage::Owner(*token_id))
 }
 
-pub fn set_tokens_owned(env: &Env, owner: &Address, tokens_owned: Vec<u32>) {
+pub fn set_tokens_owned(env: &Env, owner: &Address, tokens_owned: &Vec<u32>) {
     env.storage()
         .persistent()
-        .set(&Storage::Balance(owner.clone()), &tokens_owned);
+        .set(&Storage::Balance(owner.clone()), tokens_owned);
+
+    extend_balance_ttl(env, owner);
 }
 
 pub fn get_tokens_owned(env: &Env, owner: &Address) -> Vec<u32> {
@@ -95,7 +98,7 @@ pub fn spend_token(env: &Env, owner: &Address, token_id: &u32) {
 
     if balance.len() > 0 {
         // owner still has other tokens, save to storage
-        set_tokens_owned(env, owner, balance);
+        set_tokens_owned(env, owner, &balance);
     } else {
         // no tokens left for owner, remove storage
         clear_tokens_owned(env, owner);
@@ -111,13 +114,15 @@ pub fn add_token(env: &Env, owner: &Address, token_id: &u32) {
     }
 
     balance.push_back(*token_id);
-    set_tokens_owned(env, owner, balance);
+    set_tokens_owned(env, owner, &balance);
 }
 
 pub fn set_token_owner(env: &Env, token_id: &u32, owner: &Address) {
     env.storage()
         .persistent()
         .set(&Storage::Owner(token_id.clone()), owner);
+
+    extend_owner_ttl(env, token_id);
 }
 
 pub fn get_token_owner(env: &Env, token_id: &u32) -> Address {
@@ -253,15 +258,30 @@ pub fn spender_is_approved(env: &Env, owner: &Address, spender: &Address, token_
     return approved || approved_all;
 }
 
-// pub fn use_approval(env: &Env, owner: Address, operator: Address, token_id: u32) {
-//     let approval = get_approval(env, token_id);
-//     if approval.expiration_ledger < env.ledger().sequence() {
-//         panic_with_error!(env, Errors::InsufficientApproval);
-//     }
+pub fn extend_instance_ttl(env: &Env) {
+    let max_ttl = env.storage().max_ttl();
 
-//     env.storage().temporary().remove(&Storage::Approval(token_id));
-// }
+    env.storage()
+        .instance()
+        .extend_ttl(max_ttl - WEEK_OF_LEDGERS, max_ttl);
+}
 
-// pub fn spend_balance(env: &Env, owner: Address, token_id: u32) {
-//     let balance
-// }
+pub fn extend_balance_ttl(env: &Env, owner: &Address) {
+    let max_ttl = env.storage().max_ttl();
+
+    env.storage().persistent().extend_ttl(
+        &Storage::Balance(owner.clone()),
+        max_ttl - DAY_OF_LEDGERS,
+        max_ttl,
+    );
+}
+
+pub fn extend_owner_ttl(env: &Env, token_id: &u32) {
+    let max_ttl = env.storage().max_ttl();
+
+    env.storage().persistent().extend_ttl(
+        &Storage::Owner(token_id.clone()),
+        max_ttl - DAY_OF_LEDGERS,
+        max_ttl,
+    );
+}
