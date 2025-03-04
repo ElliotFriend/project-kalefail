@@ -1,5 +1,3 @@
-// use crate::tests::test_fixture::TestFixture;
-
 use super::*;
 
 #[test]
@@ -20,9 +18,9 @@ fn test_metadata_interface() {
         String::from_str(&env, IPFS_URI)
     );
 
-    // TODO: since this panics with un-minted NFTs, it throws in this test...
-    // assert_eq!(
-    //     kale_salad_client.token_uri(&192),
-    //     String::from_str(&env, TOKEN_192_URI,)
-    // );
+    kale_salad_client.mint_salad(&fixture.owners.get(0).unwrap(), &(10 * 10_000_000), &5);
+    assert_eq!(
+        kale_salad_client.token_uri(&4),
+        String::from_str(&env, TOKEN_4_URI,)
+    );
 }

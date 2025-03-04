@@ -1,12 +1,10 @@
 use soroban_sdk::{panic_with_error, Address, Env, String, Vec};
 
 use crate::{
-    constants::MAXIMUM_TOKENS,
+    constants::MAXIMUM_TOKENS_TO_BE_MINTED,
     errors::Errors,
     types::{ApprovedData, Metadata, Storage},
 };
-
-// pub const METADATA: Symbol = symbol_short!("METADATA");
 
 pub fn set_metadata(env: &Env, name: String, symbol: String, uri: String) {
     let metadata = Metadata {
@@ -61,7 +59,7 @@ pub fn get_issuer(env: &Env) -> Address {
 }
 
 pub fn token_exists(env: &Env, token_id: &u32) -> bool {
-    token_id < &MAXIMUM_TOKENS && env.storage().persistent().has(&Storage::Owner(*token_id))
+    token_id < &MAXIMUM_TOKENS_TO_BE_MINTED && env.storage().persistent().has(&Storage::Owner(*token_id))
 }
 
 pub fn set_tokens_owned(env: &Env, owner: &Address, tokens_owned: Vec<u32>) {

@@ -3,7 +3,6 @@ use super::*;
 #[test]
 fn test_constructor() {
     let fixture = TestFixture::create();
-
     let env = fixture.env;
     let issuer = fixture.issuer;
     let kale_salad_client = fixture.kale_salad_client;
@@ -38,4 +37,24 @@ fn test_constructor() {
             .unwrap()
     });
     assert_eq!(payment_per_token, (10 * 4 * 10_000_000) as i128);
+}
+
+#[test]
+#[should_panic(expected = "Error(Contract, #4)")]
+fn test_cannot_construct_with_too_few_vegetables() {
+    let fixture = TestFixture::create();
+    let env = fixture.env;
+    let [(broc, _), (cabb, _), (kohl, _), _] = fixture.vegetables;
+
+    env.register(
+        KaleSaladContract,
+         (
+            fixture.issuer,
+            String::from_str(&env, NFT_NAME),
+            String::from_str(&env, NFT_SYMBOL),
+            String::from_str(&env, IPFS_URI),
+            vec![&env, broc.address, cabb.address, kohl.address],
+            (10 * 10_000_000) as i128,
+        ),
+    );
 }

@@ -1,5 +1,3 @@
-extern crate std;
-
 use soroban_sdk::{testutils::Address as _, token::StellarAssetClient};
 
 use super::*;
@@ -19,6 +17,26 @@ fn create_stellar_token<'a>(
     return (contract_address, sac_client, sep_client);
 }
 
+pub fn create_owners_vec<'a>(
+    env: &Env,
+    num_owners: &u8,
+) -> Vec<Address> {
+    let mut owners_vec = vec![env];
+    for _ in 0..*num_owners {
+        owners_vec.push_back(Address::generate(env));
+    }
+
+    return owners_vec;
+}
+
+pub fn mint_vegetables_to_owners<'a>(owners: &Vec<Address>, vegetables: [&StellarAssetClient<'a>; 4]) {
+    owners.iter().for_each(|owner| {
+        vegetables.iter().for_each(|vegetable| {
+            vegetable.mint(&owner, &(1000 * 10_000_000));
+        })
+    })
+}
+
 pub struct TestFixture<'a> {
     pub env: Env,
     pub issuer: Address,
@@ -33,11 +51,7 @@ impl TestFixture<'_> {
         env.mock_all_auths();
 
         let issuer = Address::generate(&env);
-        let nft_owner_1 = Address::generate(&env);
-        let nft_owner_2 = Address::generate(&env);
-        let nft_owner_3 = Address::generate(&env);
-        let nft_owner_4 = Address::generate(&env);
-        let owners = vec![&env, nft_owner_1, nft_owner_2, nft_owner_3, nft_owner_4];
+        let owners = create_owners_vec(&env, &4);
 
         let (broc_id, broc_sac, broc_sep) = create_stellar_token(&env, &issuer);
         let (cabb_id, cabb_sac, cabb_sep) = create_stellar_token(&env, &issuer);
@@ -45,12 +59,13 @@ impl TestFixture<'_> {
         let (brsp_id, brsp_sac, brsp_sep) = create_stellar_token(&env, &issuer);
 
 
-        owners.iter().for_each(|owner| {
-            broc_sac.mint(&owner, &(1000 * 10_000_000));
-            cabb_sac.mint(&owner, &(1000 * 10_000_000));
-            kohl_sac.mint(&owner, &(1000 * 10_000_000));
-            brsp_sac.mint(&owner, &(1000 * 10_000_000));
-        });
+        // owners.iter().for_each(|owner| {
+        //     broc_sac.mint(&owner, &(1000 * 10_000_000));
+        //     cabb_sac.mint(&owner, &(1000 * 10_000_000));
+        //     kohl_sac.mint(&owner, &(1000 * 10_000_000));
+        //     brsp_sac.mint(&owner, &(1000 * 10_000_000));
+        // });
+        mint_vegetables_to_owners(&owners, [&broc_sac, &cabb_sac, &kohl_sac, &brsp_sac]);
 
         let vegetables = [
             (broc_sac, broc_sep),
@@ -58,6 +73,7 @@ impl TestFixture<'_> {
             (kohl_sac, kohl_sep),
             (brsp_sac, brsp_sep),
         ];
+        // mint_vegetables_to_owners(&owners, vegetables);
 
         let kale_address = env.register(
             KaleSaladContract,

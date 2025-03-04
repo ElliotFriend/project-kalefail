@@ -1,6 +1,6 @@
 #![no_std]
 
-use constants::MAXIMUM_TOKENS_PER_ADDRESS;
+use constants::{MAXIMUM_TOKENS_PER_ADDRESS, MAXIMUM_TOKENS_TO_BE_MINTED};
 use errors::Errors;
 use events::{emit_approve, emit_approve_all, emit_burn, emit_transfer};
 use soroban_nft_interface::{
@@ -50,12 +50,18 @@ impl KaleSaladContract {
         vegetables: Vec<Address>,
         payment_each_vegetable: i128,
     ) {
+        if vegetables.len() < 4 {
+            panic_with_error!(&env, Errors::TooFewVegetables);
+        }
+
         issuer.require_auth();
 
         set_issuer(&env, &issuer);
         set_vegetables(&env, &vegetables);
         set_payment_per_token(&env, &(payment_each_vegetable * vegetables.len() as i128));
         set_metadata(&env, nft_name, nft_symbol, base_uri);
+
+
         set_supply(&env, &0u32);
         set_mint_index(&env, &0u32);
     }
@@ -79,6 +85,12 @@ impl KaleSaladContract {
         number_of_tokens: u32,
     ) {
         owner.require_auth();
+
+        let mut mint_index = get_mint_index(&env);
+        if mint_index >= MAXIMUM_TOKENS_TO_BE_MINTED {
+            panic_with_error!(&env, Errors::TooManyTokens);
+        }
+        // if get_mint_index(&env) {}
 
         if number_of_tokens > MAXIMUM_TOKENS_PER_ADDRESS {
             panic_with_error!(&env, Errors::TooManyTokens);
@@ -115,13 +127,13 @@ impl KaleSaladContract {
         }
 
         let supply = get_supply(&env);
-        let mut mint_index = get_mint_index(&env);
+        // let mut mint_index = get_mint_index(&env);
         let mut tokens_owned = get_tokens_owned(&env, &owner);
 
         for _ in 0..number_of_tokens {
-            mint_index += 1;
             tokens_owned.push_back(mint_index);
             set_token_owner(&env, &mint_index, &owner);
+            mint_index += 1;
         }
 
         set_supply(&env, &(supply + number_of_tokens));
@@ -169,7 +181,7 @@ impl KaleSaladContract {
 
         // check spender is approved
         if !spender_is_approved(&env, &owner, &spender, &token_id) {
-            panic_with_error!(&env, Errors::InsufficientApproval);
+            panic_with_error!(&env, Errors::InvalidSpender);
         }
 
         // remove the token from owner's balance vector
@@ -255,6 +267,10 @@ impl NonFungibleTokenInterface for KaleSaladContract {
     fn approve(env: Env, owner: Address, spender: Address, token_id: u32, expiration_ledger: u32) {
         owner.require_auth();
 
+        if owner == spender {
+            panic_with_error!(&env, Errors::CannotApproveOwner);
+        }
+
         // if the token_id does not exist, panic!
         if !token_exists(&env, &token_id) {
             panic_with_error!(&env, Errors::NonExistentToken);
@@ -308,6 +324,10 @@ impl NonFungibleTokenInterface for KaleSaladContract {
 
     fn approve_all(env: Env, owner: Address, spender: Address, expiration_ledger: u32) {
         owner.require_auth();
+
+        if owner == spender {
+            panic_with_error!(&env, Errors::CannotApproveOwner);
+        }
 
         if expiration_ledger == 0 {
             if let Some(approval_data) = get_approved_all_data(&env, &owner) {
@@ -382,7 +402,7 @@ impl NonFungibleTokenInterface for KaleSaladContract {
         }
 
         if !spender_is_approved(&env, &owner, &spender, &token_id) {
-            panic_with_error!(&env, Errors::InsufficientApproval);
+            panic_with_error!(&env, Errors::InvalidSpender);
         }
 
         // remove the token from `from`

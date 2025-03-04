@@ -1186,14 +1186,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "soroban-nft-contract"
-version = "0.0.1"
-dependencies = [
- "soroban-nft-interface",
- "soroban-sdk",
-]
-
-[[package]]
 name = "soroban-nft-interface"
 version = "0.0.1"
 dependencies = [
