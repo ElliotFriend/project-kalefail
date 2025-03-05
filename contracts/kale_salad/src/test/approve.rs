@@ -10,7 +10,7 @@ fn test_approve() {
     let spender = fixture.owners.get(3).unwrap();
 
     // mint some NFTs to owner1
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &5);
+    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(5));
 
     // approve spender for token 0
     kale_salad_client.approve(&owner1, &spender, &0, &500);
@@ -50,7 +50,7 @@ fn test_approve_to_remove() {
     let spender = fixture.owners.get(2).unwrap();
 
     // mint some NFTs to owner1
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &5);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
 
     kale_salad_client.approve(&owner, &spender, &0, &500);
     kale_salad_client.approve(&owner, &spender, &0, &0);
@@ -71,7 +71,7 @@ fn test_expired_approval() {
     let owner = fixture.owners.get(1).unwrap();
     let spender = fixture.owners.get(2).unwrap();
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &5);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
 
     kale_salad_client.approve(&owner, &spender, &0, &500);
 
@@ -117,7 +117,7 @@ fn test_cannot_approve_unowned_token() {
     let spender = fixture.owners.get(2).unwrap();
 
     // mint some NFTs to owner1
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &5);
+    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(5));
 
     kale_salad_client.approve(&owner2, &spender, &0, &500);
 }
@@ -135,7 +135,7 @@ fn test_cannot_approve_with_expired_approval() {
     let owner = fixture.owners.get(1).unwrap();
     let spender = fixture.owners.get(2).unwrap();
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &5);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
 
     kale_salad_client.approve(&owner, &spender, &0, &500);
 }

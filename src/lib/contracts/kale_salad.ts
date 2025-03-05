@@ -1,4 +1,4 @@
-import * as Client from 'trading_post';
+import * as Client from 'kale_salad';
 import { PUBLIC_STELLAR_RPC_URL } from '$env/static/public';
 
 export default new Client.Client({

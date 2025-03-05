@@ -9,7 +9,7 @@ fn test_transfer() {
     let owner2 = fixture.owners.get(2).unwrap();
 
     // mint some NFTs to owner1
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &4);
+    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(4));
     // transfer 1 NFT to owner 2
     kale_salad_client.transfer(&owner1, &owner2, &2);
 
@@ -37,7 +37,7 @@ fn test_cannot_transfer_unminted_token() {
     let owner2 = fixture.owners.get(2).unwrap();
 
     // mint some NFTs to owner1
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &1);
+    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(1));
     // transfer 1 NFT to owner 2
     kale_salad_client.transfer(&owner1, &owner2, &1);
 }
@@ -53,8 +53,8 @@ fn test_cannot_transfer_unowned_token() {
     let owner2 = fixture.owners.get(2).unwrap();
 
     // mint an NFT to owner1
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &1);
-    kale_salad_client.mint_salad(&owner2, &TEN_TOKENS, &1);
+    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(1));
+    kale_salad_client.mint_salad(&owner2, &TEN_TOKENS, &Some(1));
     // transfer 1 NFT to owner 2
     kale_salad_client.transfer(&owner1, &receiver, &1);
 }
@@ -69,7 +69,7 @@ fn test_cannot_transfer_burned_token() {
     let owner = fixture.owners.get(1).unwrap();
 
     // mint an NFT to owner1
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &1);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(1));
     // burn the NFT
     kale_salad_client.burn(&owner, &0);
     // attempt the transfer
@@ -87,7 +87,7 @@ fn test_cannot_transfer_burned_from_token() {
     let spender = fixture.owners.get(2).unwrap();
 
     // mint an NFT to owner1
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &1);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(1));
     // approve spender
     kale_salad_client.approve(&owner, &spender, &0, &1000);
     // burn the NFT

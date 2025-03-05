@@ -58,12 +58,6 @@ impl TestFixture<'_> {
         let (kohl_id, kohl_sac, kohl_sep) = create_stellar_token(&env, &admin);
         let (brsp_id, brsp_sac, brsp_sep) = create_stellar_token(&env, &admin);
 
-        // owners.iter().for_each(|owner| {
-        //     broc_sac.mint(&owner, &(1000 * 10_000_000));
-        //     cabb_sac.mint(&owner, &(1000 * 10_000_000));
-        //     kohl_sac.mint(&owner, &(1000 * 10_000_000));
-        //     brsp_sac.mint(&owner, &(1000 * 10_000_000));
-        // });
         mint_vegetables_to_owners(&owners, [&broc_sac, &cabb_sac, &kohl_sac, &brsp_sac]);
 
         let vegetables = [

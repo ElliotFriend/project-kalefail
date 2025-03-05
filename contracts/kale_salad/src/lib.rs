@@ -25,7 +25,7 @@ contractmeta!(
     key = "Description",
     val = "Combine your wonderful produce into a delightful, healthy salad NFT."
 );
-contractmeta!(key = "ver", val = "0.0.1");
+contractmeta!(key = "ver", val = "0.1.0");
 
 mod constants;
 mod errors;
@@ -107,28 +107,33 @@ impl KaleSaladContract {
         env: Env,
         owner: Address,
         payment_each_vegetable: i128,
-        number_of_tokens: u32,
+        number_of_tokens: Option<u32>,
     ) {
         owner.require_auth();
 
+        let num_tokens: u32 = match number_of_tokens {
+            Some(num) => num,
+            _ => 1,
+        };
+
         let mut mint_index = get_mint_index(&env);
-        if mint_index + number_of_tokens > MAXIMUM_TOKENS_TO_BE_MINTED {
+        if mint_index + num_tokens > MAXIMUM_TOKENS_TO_BE_MINTED {
             panic_with_error!(&env, Errors::TooManyTokens);
         }
 
-        if number_of_tokens > MAXIMUM_TOKENS_PER_ADDRESS {
+        if num_tokens > MAXIMUM_TOKENS_PER_ADDRESS {
             panic_with_error!(&env, Errors::TooManyTokens);
         }
 
         let mut tokens_owned = get_tokens_owned(&env, &owner);
-        let future_balance = tokens_owned.len() + number_of_tokens;
+        let future_balance = tokens_owned.len() + num_tokens;
         if future_balance > MAXIMUM_TOKENS_PER_ADDRESS {
             panic_with_error!(&env, Errors::TooManyTokens);
         }
 
         let payment_per_token = get_payment_per_token(&env);
-        let minimum_payment = payment_per_token * number_of_tokens as i128;
-        let total_payment = payment_each_vegetable * 4 * number_of_tokens as i128;
+        let minimum_payment = payment_per_token * num_tokens as i128;
+        let total_payment = payment_each_vegetable * 4 * num_tokens as i128;
         if total_payment < minimum_payment {
             panic_with_error!(&env, Errors::InsufficientPayment);
         }
@@ -142,7 +147,7 @@ impl KaleSaladContract {
 
         let supply = get_supply(&env);
 
-        for _ in 0..number_of_tokens {
+        for _ in 0..num_tokens {
             tokens_owned.push_back(mint_index);
             set_token_owner(&env, &mint_index, &owner);
 
@@ -153,7 +158,7 @@ impl KaleSaladContract {
             mint_index += 1;
         }
 
-        set_supply(&env, &(supply + number_of_tokens));
+        set_supply(&env, &(supply + num_tokens));
         set_mint_index(&env, &mint_index);
         set_tokens_owned(&env, &owner, &tokens_owned);
     }

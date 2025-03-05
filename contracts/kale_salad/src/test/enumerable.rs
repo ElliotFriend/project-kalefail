@@ -7,7 +7,7 @@ fn test_enumerable_interface() {
 
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&receiver1, &(10 * 10_000_000), &5);
+    kale_salad_client.mint_salad(&receiver1, &(10 * 10_000_000), &Some(5));
 
     assert_eq!(kale_salad_client.total_supply(), 5);
 

@@ -17,7 +17,7 @@ fn test_can_mint() {
     assert_eq!(kohl.balance(&owner), 1000 * 10_000_000);
     assert_eq!(brsp.balance(&owner), 1000 * 10_000_000);
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &1);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(1));
 
     assert_eq!(broc.balance(&owner), 990 * 10_000_000);
     assert_eq!(cabb.balance(&owner), 990 * 10_000_000);
@@ -26,7 +26,7 @@ fn test_can_mint() {
 
     assert_eq!(kale_salad_client.balance(&owner), 1);
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &1);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(1));
 
     assert_eq!(broc.balance(&owner), 980 * 10_000_000);
     assert_eq!(cabb.balance(&owner), 980 * 10_000_000);
@@ -44,9 +44,9 @@ fn test_can_mint_again() {
     let owner = fixture.owners.get(0).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &1);
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &1);
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &3);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(1));
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(1));
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(3));
 }
 
 #[test]
@@ -57,7 +57,7 @@ fn test_cannot_exceed_maximum_tokens_per_address_one_invocation() {
     let owner = fixture.owners.get(0).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &6);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(6));
 }
 
 #[test]
@@ -68,8 +68,8 @@ fn test_cannot_exceed_maximum_tokens_per_address_multi_invocation() {
     let owner = fixture.owners.get(0).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &3);
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &3);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(3));
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(3));
 }
 
 #[test]
@@ -80,7 +80,7 @@ fn test_cannot_mint_with_small_payment() {
     let owner = fixture.owners.get(0).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner, &(5 * 10_000_000), &1);
+    kale_salad_client.mint_salad(&owner, &(5 * 10_000_000), &Some(1));
 }
 
 #[test]
@@ -91,7 +91,7 @@ fn test_can_mint_with_large_payment() {
     let kale_salad_client = fixture.kale_salad_client;
     let [(_, broc), (_, cabb), (_, kohl), (_, brsp)] = fixture.vegetables;
 
-    kale_salad_client.mint_salad(&owner, &(50 * 10_000_000), &1);
+    kale_salad_client.mint_salad(&owner, &(50 * 10_000_000), &Some(1));
     assert_eq!(kale_salad_client.balance(&owner), 1);
 
     assert_eq!(broc.balance(&owner), 950 * 10_000_000);
@@ -113,7 +113,7 @@ fn test_cannot_exceed_maximum_tokens_to_be_minted() {
 
     // the first fifty people can get their NFTs
     owners.iter().for_each(|owner| {
-        kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &5);
+        kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
     });
     owners.iter().for_each(|owner| {
         assert_eq!(kale_salad_client.balance(&owner), 5);
@@ -122,5 +122,5 @@ fn test_cannot_exceed_maximum_tokens_to_be_minted() {
     let late_owner = Address::generate(&env);
     mint_vegetables_to_owners(&vec![&env, late_owner.clone()], vegetables);
     // this should fail, even though we're willing to pay twice the price!
-    kale_salad_client.mint_salad(&late_owner, &(2 & TEN_TOKENS), &1);
+    kale_salad_client.mint_salad(&late_owner, &(2 & TEN_TOKENS), &Some(1));
 }

@@ -7,7 +7,7 @@ fn test_burn() {
     let owner = fixture.owners.get(0).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &1);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(1));
     kale_salad_client.burn(&owner, &0);
 }
 
@@ -19,7 +19,7 @@ fn test_cannot_burn_unminted_token() {
     let owner = fixture.owners.get(0).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &1);
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(1));
     kale_salad_client.burn(&owner, &1);
 }
 
@@ -32,6 +32,6 @@ fn test_cannot_burn_unowned_token() {
     let owner2 = fixture.owners.get(1).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &1);
+    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(1));
     kale_salad_client.burn(&owner2, &0);
 }

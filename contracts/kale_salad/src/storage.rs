@@ -23,7 +23,7 @@ pub fn get_metadata(env: &Env) -> Metadata {
 }
 
 pub fn set_supply(env: &Env, supply: &u32) {
-    env.storage().instance().set(&Storage::Supply, &supply);
+    env.storage().instance().set(&Storage::Supply, supply);
 }
 
 pub fn get_supply(env: &Env) -> u32 {

@@ -28,6 +28,7 @@ const VEGETABLES = [
     new Asset('BROCCOLI', process.env.FAIL_ISSUER),
     new Asset('CABBAGE', process.env.FAIL_ISSUER),
     new Asset('KOHLRABI', process.env.FAIL_ISSUER),
+    new Asset('BRSPROUTS', process.env.FAIL_ISSUER),
 ];
 
 /**
