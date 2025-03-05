@@ -3,8 +3,16 @@
 use soroban_sdk::{contract, contractmeta, Address, BytesN, Env, Vec};
 
 contractmeta!(
-    key = "KALEfail Trading Post",
+    key = "title",
+    val = "KaleFail Trading Post",
+);
+contractmeta!(
+    key = "desc",
     val = "Exchange your hard-earned KALE tokens for other, related vegetables."
+);
+contractmeta!(
+    key = "ver",
+    val = "1.1.0"
 );
 
 mod contract_customer;
@@ -42,6 +50,8 @@ pub trait OwnerTrait {
     fn open(env: Env);
 
     fn close(env: Env);
+
+    fn donate(env: Env);
 }
 
 pub trait CustomerTrait {
