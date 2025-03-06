@@ -529,10 +529,7 @@ fn test_cannot_trade_for_kale_with_insufficient_balance() {
 }
 
 #[test]
-fn test_donate() {
-    // This test doesn't work with the way the function is written in production
-    // i don't know how to get the trustline set up for the donation address, so
-    // i made it so that it would accept an argument, so the test could pass.
+fn test_burn_the_extra_kale() {
     let env = Env::default();
     env.mock_all_auths();
 
@@ -556,8 +553,8 @@ fn test_donate() {
     let trading_post_client = TradingPostContractClient::new(&env, &trading_post_address);
 
     // mint kale directly to the trading post
-    kale_sac_client.mint(&trading_post_address, &(4364 * 10_000_000 as i128));
-    trading_post_client.donate();
+    kale_sac_client.mint(&trading_post_address, &(4381456 * 10_000 as i128)); // current balance is 4381.4560000
+    trading_post_client.burn_the_extra_kale();
 
-    assert_eq!(kale_client.balance(&trading_post_address), 8728 * 10_000); // 8.728 left
+    assert_eq!(kale_client.balance(&trading_post_address), 4364 * 10_000_000); // 4364 left
 }

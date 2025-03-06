@@ -313,23 +313,18 @@ impl OwnerTrait for TradingPostContract {
         // no `extend_instance_ttl` as we're closing up shop
     }
 
-    /// Donate a portion of the trading post's holdings to the LP effort
-    fn donate(env: Env) {
-        // before we perform the donation, the trading post should be closed.
-        // this ensures that when the KALE airdrop is done, we can re-open and
-        // resume 1:1 trading.
-        check_is_closed(&env);
-
+    /// The airdrop changed from 500x to 501x, which left the trading post with
+    /// a small surplus of KALE. Let's burn it to balance out the sKALEs.
+    fn burn_the_extra_kale(env: Env) {
         // require authorization from the owner address.
         let owner = get_owner(&env);
         owner.require_auth();
 
-        let donation_address = Address::from_str(&env, &"GBMKCTG7LXF7GWV2RJC5DAA6DUEHAGERAHG7BIXFABI7TI5KHT5RCOMM");
         let kale_address = get_kale_address(&env);
         let kale_client = token::Client::new(&env, &kale_address);
 
         let tp_kale_balance = kale_client.balance(&env.current_contract_address());
-        let amount_to_donate = tp_kale_balance - (tp_kale_balance / 500);
-        kale_client.transfer(&env.current_contract_address(), &donation_address, &amount_to_donate);
+        let amount_to_burn = tp_kale_balance - (4364 * 10_000_000);
+        kale_client.burn(&env.current_contract_address(), &amount_to_burn);
     }
 }

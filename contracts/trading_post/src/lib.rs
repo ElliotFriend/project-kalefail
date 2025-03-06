@@ -51,7 +51,7 @@ pub trait OwnerTrait {
 
     fn close(env: Env);
 
-    fn donate(env: Env);
+    fn burn_the_extra_kale(env: Env);
 }
 
 pub trait CustomerTrait {
