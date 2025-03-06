@@ -12,7 +12,7 @@ contractmeta!(
 );
 contractmeta!(
     key = "ver",
-    val = "1.1.0"
+    val = "1.2.0"
 );
 
 mod contract_customer;
