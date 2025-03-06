@@ -11,7 +11,7 @@
             <h6 class="h6">The KALEpail Project</h6>
             <ul>
                 <li>
-                    <a class="anchor" target="_blank" href="https://farm.kalepail.com/">
+                    <a class="anchor" target="_blank" href="https://kalefarm.xyz/">
                         Farm KALE
                     </a>
                 </li>

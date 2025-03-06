@@ -527,3 +527,34 @@ fn test_cannot_trade_for_kale_with_insufficient_balance() {
     trading_post_client.trade(&farmer, &broccoli.address(), &25i128, &true);
     assert_eq!(25i128, kale_client.balance(&farmer));
 }
+
+#[test]
+fn test_burn_the_extra_kale() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    // set up some users
+    let admin = Address::generate(&env);
+
+    // set up some assets
+    let kale = env.register_stellar_asset_contract_v2(admin.clone());
+    let kale_client = token::Client::new(&env, &kale.address());
+    let kale_sac_client = token::StellarAssetClient::new(&env, &kale.address());
+
+    let trading_post_address = env.register(
+        TradingPostContract,
+        (
+            &admin,
+            &kale.address(),
+            None::<Vec<Address>>,
+            None::<u32>,
+        ),
+    );
+    let trading_post_client = TradingPostContractClient::new(&env, &trading_post_address);
+
+    // mint kale directly to the trading post
+    kale_sac_client.mint(&trading_post_address, &(4381456 * 10_000 as i128)); // current balance is 4381.4560000
+    trading_post_client.burn_the_extra_kale();
+
+    assert_eq!(kale_client.balance(&trading_post_address), 4364 * 10_000_000); // 4364 left
+}

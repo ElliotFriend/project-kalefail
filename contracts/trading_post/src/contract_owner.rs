@@ -1,7 +1,6 @@
 use crate::{
     storage::{
-        extend_instance_ttl, get_is_open, get_max_vegetables, get_owner, get_vegetables_for_trade,
-        set_kale_address, set_max_vegetables, set_vegetables_for_trade,
+        extend_instance_ttl, get_is_open, get_kale_address, get_max_vegetables, get_owner, get_vegetables_for_trade, set_kale_address, set_max_vegetables, set_vegetables_for_trade
     },
     TradingPostContractArgs,
 };
@@ -312,5 +311,20 @@ impl OwnerTrait for TradingPostContract {
         set_is_open(&env, false);
 
         // no `extend_instance_ttl` as we're closing up shop
+    }
+
+    /// The airdrop changed from 500x to 501x, which left the trading post with
+    /// a small surplus of KALE. Let's burn it to balance out the sKALEs.
+    fn burn_the_extra_kale(env: Env) {
+        // require authorization from the owner address.
+        let owner = get_owner(&env);
+        owner.require_auth();
+
+        let kale_address = get_kale_address(&env);
+        let kale_client = token::Client::new(&env, &kale_address);
+
+        let tp_kale_balance = kale_client.balance(&env.current_contract_address());
+        let amount_to_burn = tp_kale_balance - (4364 * 10_000_000);
+        kale_client.burn(&env.current_contract_address(), &amount_to_burn);
     }
 }
