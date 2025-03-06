@@ -244,3 +244,23 @@ fn test_cannot_transfer_from_burned_from_token() {
     // attempt the transfer from
     kale_salad_client.transfer_from(&spender, &owner, &to, &2);
 }
+
+
+#[test]
+#[should_panic(expected = "Error(Contract, #2)")]
+fn test_cannot_transfer_from_if_to_already_has_max() {
+    let fixture = TestFixture::create();
+
+    let kale_salad_client = fixture.kale_salad_client;
+    let receiver = fixture.owners.get(0).unwrap();
+    let owner = fixture.owners.get(1).unwrap();
+    let spender = fixture.owners.get(2).unwrap();
+
+    // mint an NFT to owner
+    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &None::<u32>);
+    // mint 5 NFTs to receiver
+    kale_salad_client.mint_salad(&receiver, &TEN_TOKENS, &Some(5));
+
+    kale_salad_client.approve(&owner, &spender, &0, &500);
+    kale_salad_client.transfer_from(&spender, &owner, &receiver, &0);
+}

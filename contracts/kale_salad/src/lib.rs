@@ -395,7 +395,11 @@ impl NonFungibleTokenInterface for KaleSaladContract {
         }
 
         if !is_token_owner(&env, &owner, &token_id) {
-            panic_with_error!(&env, Errors::IncorrectOwner)
+            panic_with_error!(&env, Errors::IncorrectOwner);
+        }
+
+        if get_tokens_owned(&env, &to).len() == MAXIMUM_TOKENS_PER_ADDRESS {
+            panic_with_error!(&env, Errors::TooManyTokens);
         }
 
         // remove the token from `owner`
@@ -425,6 +429,10 @@ impl NonFungibleTokenInterface for KaleSaladContract {
 
         if !spender_is_approved(&env, &owner, &spender, &token_id) {
             panic_with_error!(&env, Errors::InvalidSpender);
+        }
+
+        if get_tokens_owned(&env, &to).len() == MAXIMUM_TOKENS_PER_ADDRESS {
+            panic_with_error!(&env, Errors::TooManyTokens);
         }
 
         // remove the token from `from`
