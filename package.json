@@ -53,7 +53,7 @@
     "dependencies": {
         "@stellar/stellar-sdk": "^13.1.0",
         "base64url": "^3.0.1",
-        "passkey-kit": "^0.10.10",
+        "passkey-kit": "^0.10.17",
         "svelte-persisted-store": "^0.12.0",
         "trading_post": "file:packages/trading_post",
         "kale_salad": "file:packages/kale_salad"
