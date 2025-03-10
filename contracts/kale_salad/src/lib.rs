@@ -13,19 +13,19 @@ use soroban_sdk::{
 use storage::{
     add_token, burn_token, clear_approved_all_data, clear_approved_data, decrement_supply,
     extend_instance_ttl, get_admin, get_approved_all_data, get_approved_data, get_metadata,
-    get_mint_index, get_payment_per_token, get_supply, get_token_owner, get_tokens_owned,
+    get_mint_index, get_payment_per_nft, get_supply, get_token_owner, get_tokens_owned,
     get_vegetables, is_token_owner, set_admin, set_approved_all_data, set_approved_data,
-    set_metadata, set_mint_index, set_payment_per_token, set_supply, set_token_owner,
+    set_metadata, set_mint_index, set_payment_per_nft, set_supply, set_token_owner,
     set_tokens_owned, set_vegetables, spend_token, spender_is_approved, token_exists,
 };
 use utils::u8_to_string;
 
-contractmeta!(key = "Title", val = "KALE Salad");
+contractmeta!(key = "title", val = "KALE Salad");
 contractmeta!(
-    key = "Description",
+    key = "desc",
     val = "Combine your wonderful produce into a delightful, healthy salad NFT."
 );
-contractmeta!(key = "ver", val = "0.1.0");
+contractmeta!(key = "binver", val = "0.1.0");
 
 mod constants;
 mod errors;
@@ -57,7 +57,7 @@ impl KaleSaladContract {
 
         set_admin(&env, &admin);
         set_vegetables(&env, &vegetables);
-        set_payment_per_token(&env, &(payment_each_vegetable * vegetables.len() as i128));
+        set_payment_per_nft(&env, &(payment_each_vegetable * vegetables.len() as i128));
         set_metadata(&env, nft_name, nft_symbol, base_uri);
 
         // set supply and token index to 0 to start
@@ -106,7 +106,6 @@ impl KaleSaladContract {
     pub fn mint_salad(
         env: Env,
         owner: Address,
-        payment_each_vegetable: i128,
         number_of_tokens: Option<u32>,
     ) {
         owner.require_auth();
@@ -131,15 +130,12 @@ impl KaleSaladContract {
             panic_with_error!(&env, Errors::TooManyTokens);
         }
 
-        let payment_per_token = get_payment_per_token(&env);
-        let minimum_payment = payment_per_token * num_tokens as i128;
-        let total_payment = payment_each_vegetable * 4 * num_tokens as i128;
-        if total_payment < minimum_payment {
-            panic_with_error!(&env, Errors::InsufficientPayment);
-        }
+        let mut payment_per_nft = get_payment_per_nft(&env);
+        let vegetables = get_vegetables(&env);
+
+        let payment_each_vegetable = payment_per_nft / 4 * num_tokens as i128;
 
         // burn the payment amount from each vegetable
-        let vegetables = get_vegetables(&env);
         for vegetable in vegetables {
             let vegetable_client = token::Client::new(&env, &vegetable);
             vegetable_client.burn(&owner, &payment_each_vegetable);

@@ -33,7 +33,7 @@ fn test_constructor() {
     let payment_per_token: i128 = env.as_contract(&kale_salad_contract, || {
         env.storage()
             .instance()
-            .get(&Storage::PaymentPerToken)
+            .get(&Storage::PaymentPerNft)
             .unwrap()
     });
     assert_eq!(payment_per_token, (10 * 4 * 10_000_000) as i128);

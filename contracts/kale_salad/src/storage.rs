@@ -152,16 +152,16 @@ pub fn get_vegetables(env: &Env) -> Vec<Address> {
     env.storage().instance().get(&Storage::Vegetables).unwrap()
 }
 
-pub fn set_payment_per_token(env: &Env, payment: &i128) {
+pub fn set_payment_per_nft(env: &Env, payment: &i128) {
     env.storage()
         .instance()
-        .set(&Storage::PaymentPerToken, payment);
+        .set(&Storage::PaymentPerNft, payment);
 }
 
-pub fn get_payment_per_token(env: &Env) -> i128 {
+pub fn get_payment_per_nft(env: &Env) -> i128 {
     env.storage()
         .instance()
-        .get(&Storage::PaymentPerToken)
+        .get(&Storage::PaymentPerNft)
         .unwrap()
 }
 

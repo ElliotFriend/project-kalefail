@@ -19,7 +19,7 @@ pub enum Storage {
     Admin,                // : address
     Metadata,             // : Metadata
     Vegetables,           // : vec<address>
-    PaymentPerToken,      // : i128
+    PaymentPerNft,      // : i128
     Supply,               // : u32
     MintIndex,            // : u32
     Balance(Address),     // : vec<u32>
