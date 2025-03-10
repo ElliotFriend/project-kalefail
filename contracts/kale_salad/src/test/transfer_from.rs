@@ -11,7 +11,7 @@ fn test_transfer_from_approved() {
     let owner2 = fixture.owners.get(2).unwrap();
 
     // mint some NFTs to owner1
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner1, &Some(5));
 
     // approve spender for token 0
     kale_salad_client.approve(&owner1, &spender, &0, &500);
@@ -42,7 +42,7 @@ fn test_transfer_from_approved_all() {
     let owner2 = fixture.owners.get(2).unwrap();
 
     // mint some NFTs to owner1
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner1, &Some(5));
 
     // approve spender for owner1
     kale_salad_client.approve_all(&owner1, &spender, &500);
@@ -75,7 +75,7 @@ fn test_cannot_transfer_from_if_not_approved() {
     let owner2 = fixture.owners.get(2).unwrap();
 
     // mint some NFTs to owner1
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner1, &Some(5));
 
     // have spender transfer it to owner2
     kale_salad_client.transfer_from(&spender, &owner1, &owner2, &0);
@@ -92,7 +92,7 @@ fn test_cannot_transfer_from_if_not_approved_for_token() {
     let owner2 = fixture.owners.get(2).unwrap();
 
     // mint some NFTs to owner1
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner1, &Some(5));
 
     // approve spender for token 0
     kale_salad_client.approve(&owner1, &spender, &0, &500);
@@ -113,7 +113,7 @@ fn test_cannot_transfer_from_with_expired_approval() {
     let owner2 = fixture.owners.get(2).unwrap();
 
     // mint some NFTs to owner1
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner1, &Some(5));
 
     // approve spender for token 0
     kale_salad_client.approve(&owner1, &spender, &0, &500);
@@ -140,7 +140,7 @@ fn test_cannot_transfer_from_with_expired_approval_all() {
     let owner2 = fixture.owners.get(2).unwrap();
 
     // mint some NFTs to owner1
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner1, &Some(5));
 
     // approve spender for token 0
     kale_salad_client.approve_all(&owner1, &spender, &500);
@@ -167,7 +167,7 @@ fn test_cannot_transfer_from_already_transferred_token() {
     let another_to = fixture.owners.get(3).unwrap();
 
     // mint NFTs
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner, &Some(5));
     // approve spender for token 2
     kale_salad_client.approve(&owner, &spender, &2, &1000);
     assert!(kale_salad_client.get_approved(&2).is_some());
@@ -193,7 +193,7 @@ fn test_cannot_transfer_from_already_transferred_from_token() {
     let another_to = fixture.owners.get(3).unwrap();
 
     // mint NFTs
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner, &Some(5));
     // approve spender for token 2
     kale_salad_client.approve(&owner, &spender, &2, &1000);
     // transfer token 2 without spender
@@ -214,7 +214,7 @@ fn test_cannot_transfer_from_burned_token() {
     let to = fixture.owners.get(2).unwrap();
 
     // mint NFTs
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner, &Some(5));
     // approve spender for token 2
     kale_salad_client.approve(&owner, &spender, &2, &1000);
     // burn token 2 without spender
@@ -235,7 +235,7 @@ fn test_cannot_transfer_from_burned_from_token() {
     let to = fixture.owners.get(2).unwrap();
 
     // mint NFTs
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner, &Some(5));
     // approve spender for token 2
     kale_salad_client.approve(&owner, &spender, &2, &1000);
     // burn from token 2
@@ -257,9 +257,9 @@ fn test_cannot_transfer_from_if_to_already_has_max() {
     let spender = fixture.owners.get(2).unwrap();
 
     // mint an NFT to owner
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &None::<u32>);
+    kale_salad_client.mint_salad(&owner, &None::<u32>);
     // mint 5 NFTs to receiver
-    kale_salad_client.mint_salad(&receiver, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&receiver, &Some(5));
 
     kale_salad_client.approve(&owner, &spender, &0, &500);
     kale_salad_client.transfer_from(&spender, &owner, &receiver, &0);

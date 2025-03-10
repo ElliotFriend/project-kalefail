@@ -130,7 +130,7 @@ impl KaleSaladContract {
             panic_with_error!(&env, Errors::TooManyTokens);
         }
 
-        let mut payment_per_nft = get_payment_per_nft(&env);
+        let payment_per_nft = get_payment_per_nft(&env);
         let vegetables = get_vegetables(&env);
 
         let payment_each_vegetable = payment_per_nft / 4 * num_tokens as i128;

@@ -10,7 +10,7 @@ fn test_approve_all() {
     let spender = fixture.owners.get(3).unwrap();
 
     // mint some NFTs to owner
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner, &Some(5));
 
     // approve spender for all NFTs
     kale_salad_client.approve_all(&owner, &spender, &500);

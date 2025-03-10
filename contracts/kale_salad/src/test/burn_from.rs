@@ -8,7 +8,7 @@ fn test_burn_from() {
     let spender = fixture.owners.get(1).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner, &Some(5));
     kale_salad_client.approve(&owner, &spender, &2, &500);
 
     assert_eq!(kale_salad_client.balance(&owner), 5);
@@ -24,7 +24,7 @@ fn test_burn_from_approved_all() {
     let spender = fixture.owners.get(1).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner, &Some(5));
     kale_salad_client.approve_all(&owner, &spender, &500);
 
     assert_eq!(kale_salad_client.balance(&owner), 5);
@@ -41,7 +41,7 @@ fn test_cannot_burn_from_unminted_tokens() {
     let spender = fixture.owners.get(1).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner, &Some(5));
     kale_salad_client.approve(&owner, &spender, &2, &500);
 
     kale_salad_client.burn_from(&spender, &owner, &6);
@@ -57,8 +57,8 @@ fn test_cannot_burn_from_unowned_tokens() {
     let owner2 = fixture.owners.get(2).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner1, &TEN_TOKENS, &Some(5));
-    kale_salad_client.mint_salad(&owner2, &TEN_TOKENS, &Some(1));
+    kale_salad_client.mint_salad(&owner1, &Some(5));
+    kale_salad_client.mint_salad(&owner2, &Some(1));
     kale_salad_client.approve(&owner1, &spender, &2, &500);
 
     kale_salad_client.burn_from(&spender, &owner2, &5);
@@ -73,7 +73,7 @@ fn test_cannot_burn_from_with_expired_approval() {
     let spender = fixture.owners.get(1).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner, &Some(5));
     kale_salad_client.approve(&owner, &spender, &2, &500);
 
     fixture.env.ledger().set(LedgerInfo {
@@ -93,7 +93,7 @@ fn test_cannot_burn_from_with_expired_approval_all() {
     let spender = fixture.owners.get(1).unwrap();
     let kale_salad_client = fixture.kale_salad_client;
 
-    kale_salad_client.mint_salad(&owner, &TEN_TOKENS, &Some(5));
+    kale_salad_client.mint_salad(&owner, &Some(5));
     kale_salad_client.approve_all(&owner, &spender, &500);
 
     fixture.env.ledger().set(LedgerInfo {

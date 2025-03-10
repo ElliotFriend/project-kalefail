@@ -18,7 +18,7 @@ fn test_metadata_interface() {
         String::from_str(&env, IPFS_URI)
     );
 
-    kale_salad_client.mint_salad(&fixture.owners.get(0).unwrap(), &(10 * 10_000_000), &Some(5));
+    kale_salad_client.mint_salad(&fixture.owners.get(0).unwrap(), &Some(5));
     assert_eq!(
         kale_salad_client.token_uri(&4),
         String::from_str(&env, TOKEN_4_URI,)

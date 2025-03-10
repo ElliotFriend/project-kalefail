@@ -9,7 +9,6 @@ use soroban_sdk::{
 };
 use test_fixture::TestFixture;
 
-const TEN_TOKENS: i128 = 10 * 10_000_000;
 const NFT_NAME: &str = "KALE Salad";
 const NFT_SYMBOL: &str = "KS";
 const IPFS_URI: &str = "ipfs://bafybeie3mktwdqsslpdvgxat2cgbkseiln6dnrd7pwitsiq7jel74g4qr4/";

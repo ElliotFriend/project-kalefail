@@ -1643,7 +1643,7 @@
                         "key": {
                           "vec": [
                             {
-                              "symbol": "PaymentPerToken"
+                              "symbol": "PaymentPerNft"
                             }
                           ]
                         },

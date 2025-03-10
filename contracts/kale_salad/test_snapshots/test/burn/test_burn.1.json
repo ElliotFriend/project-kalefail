@@ -619,12 +619,6 @@
                   "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFCT4"
                 },
                 {
-                  "i128": {
-                    "hi": 0,
-                    "lo": 100000000
-                  }
-                },
-                {
                   "u32": 1
                 }
               ]
@@ -1839,7 +1833,7 @@
                         "key": {
                           "vec": [
                             {
-                              "symbol": "PaymentPerToken"
+                              "symbol": "PaymentPerNft"
                             }
                           ]
                         },
