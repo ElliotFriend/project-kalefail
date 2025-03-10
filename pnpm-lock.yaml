@@ -15,8 +15,8 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       passkey-kit:
-        specifier: ^0.10.10
-        version: 0.10.10
+        specifier: ^0.10.17
+        version: 0.10.17
       svelte-persisted-store:
         specifier: ^0.12.0
         version: 0.12.0(svelte@5.19.8)
@@ -1459,8 +1459,8 @@ packages:
   passkey-kit-sdk@0.6.5:
     resolution: {integrity: sha512-MxbtPPUmX+ycgw3rpXWizEps7foVMzVlR7hZrRpZmsuox1fHXycw3Ge18SZU3Cmt0xjgaPjCI1d2vnMbdEeDVQ==}
 
-  passkey-kit@0.10.10:
-    resolution: {integrity: sha512-KlzytjHAyUtMKMPMfVN/HXGxsvqde80COGtUMj1j871bEKwFjXokmhXAOxDVvW1dfalvP1TDX8jcIJ20hnwrFA==}
+  passkey-kit@0.10.17:
+    resolution: {integrity: sha512-Bba47xRP/81OprwfBxrrYXjKApI51FPFffSqixx8n+jEXDNRWjFpMkwRKvWGO8yOP8F0GW0oMOSMkaTm1YCxSQ==}
 
   path-exists@4.0.0:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
@@ -3283,7 +3283,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  passkey-kit@0.10.10:
+  passkey-kit@0.10.17:
     dependencies:
       '@simplewebauthn/browser': 13.1.0
       '@stellar/stellar-sdk': 13.1.0
