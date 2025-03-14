@@ -575,7 +575,7 @@
                   "string": "KSLD"
                 },
                 {
-                  "string": "ipfs://bafybeie3mktwdqsslpdvgxat2cgbkseiln6dnrd7pwitsiq7jel74g4qr4/"
+                  "string": "ipfs://bafybeifmrpa7cpep7j6thdgs4dsteev7lvfwwvxuywofarnghdwevizdsa/"
                 },
                 {
                   "vec": [
@@ -2027,7 +2027,7 @@
                                 "symbol": "base_uri"
                               },
                               "val": {
-                                "string": "ipfs://bafybeie3mktwdqsslpdvgxat2cgbkseiln6dnrd7pwitsiq7jel74g4qr4/"
+                                "string": "ipfs://bafybeifmrpa7cpep7j6thdgs4dsteev7lvfwwvxuywofarnghdwevizdsa/"
                               }
                             },
                             {

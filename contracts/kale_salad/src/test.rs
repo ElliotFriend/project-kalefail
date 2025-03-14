@@ -11,8 +11,8 @@ use test_fixture::TestFixture;
 
 const NFT_NAME: &str = "KALE Salad";
 const NFT_SYMBOL: &str = "KSLD";
-const IPFS_URI: &str = "ipfs://bafybeie3mktwdqsslpdvgxat2cgbkseiln6dnrd7pwitsiq7jel74g4qr4/";
-const TOKEN_4_URI: &str = "ipfs://bafybeie3mktwdqsslpdvgxat2cgbkseiln6dnrd7pwitsiq7jel74g4qr4/4";
+const IPFS_URI: &str = "ipfs://bafybeifmrpa7cpep7j6thdgs4dsteev7lvfwwvxuywofarnghdwevizdsa/";
+const TOKEN_4_URI: &str = "ipfs://bafybeifmrpa7cpep7j6thdgs4dsteev7lvfwwvxuywofarnghdwevizdsa/4";
 
 // bring in our test fixtures
 mod test_fixture;

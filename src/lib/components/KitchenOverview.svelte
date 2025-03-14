@@ -18,8 +18,8 @@
     <div>
         <img
             class="rounded-2xl"
-            src="https://ipfs.io/ipfs/QmS2AV5RqMti1MnVGDVsnic5oAWDrpE6qLpbjxPYHebCsP"
-            alt="The very first KALE salad to be minted."
+            src="https://ipfs.io/ipfs/QmVHteaHaCGDX28cPHCJiaNNgwNCJFCUkZ9o3AqtvFNNXc"
+            alt="The very first KALE Salad to be minted."
         />
     </div>
     <div class="flex flex-col justify-center gap-6">
