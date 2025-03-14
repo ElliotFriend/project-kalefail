@@ -19,12 +19,6 @@ fn test_transfer() {
 
     // check the owner of token2
     assert_eq!(kale_salad_client.owner_of(&2), owner2);
-
-    // check the indexes of each owner
-    assert_eq!(kale_salad_client.token_of_owner_by_index(&owner1, &0), 0);
-    assert_eq!(kale_salad_client.token_of_owner_by_index(&owner1, &1), 1);
-    assert_eq!(kale_salad_client.token_of_owner_by_index(&owner1, &2), 3);
-    assert_eq!(kale_salad_client.token_of_owner_by_index(&owner2, &0), 2);
 }
 
 #[test]

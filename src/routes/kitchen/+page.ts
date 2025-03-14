@@ -1,9 +1,11 @@
 import type { PageLoad } from './$types';
-import kale_salad from '$lib/contracts/kale_salad';
 
-export const load: PageLoad = async () => {
-
-    return {
-        instance: true,
-    };
-}
+export const load: PageLoad = async ({ fetch }) => {
+    let response = await fetch('/api/kitchen')
+    if (response.ok) {
+        let returnObj = await response.json()
+        return {
+            kitchen: returnObj,
+        }
+    }
+};

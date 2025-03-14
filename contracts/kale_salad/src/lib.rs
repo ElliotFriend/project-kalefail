@@ -3,9 +3,7 @@
 use constants::{MAXIMUM_TOKENS_PER_ADDRESS, MAXIMUM_TOKENS_TO_BE_MINTED};
 use errors::Errors;
 use events::{emit_approve, emit_approve_all, emit_burn, emit_mint, emit_transfer};
-use soroban_nft_interface::{
-    NonFungibleTokenEnumerable, NonFungibleTokenInterface, NonFungibleTokenMetadata,
-};
+use soroban_nft_interface::NonFungibleTokenInterface;
 use soroban_sdk::{
     contract, contractimpl, contractmeta, panic_with_error, token, Address, BytesN, Env, String,
     Vec,
@@ -23,7 +21,7 @@ use utils::u8_to_string;
 contractmeta!(key = "title", val = "KALE Salad");
 contractmeta!(
     key = "desc",
-    val = "Combine your wonderful produce into a delightful, healthy salad NFT."
+    val = "Combine your wonderful produce into a delightful, healthy salad NFT"
 );
 contractmeta!(key = "binver", val = "0.1.0");
 
@@ -78,6 +76,14 @@ impl KaleSaladContract {
 
         // extend the contract's TTL
         extend_instance_ttl(&env);
+    }
+
+    pub fn set_price(env: Env, payment_each_vegetable: i128) {
+        let admin = get_admin(&env);
+        admin.require_auth();
+
+        let vegetables = get_vegetables(&env);
+        set_payment_per_nft(&env, &(payment_each_vegetable * vegetables.len() as i128));
     }
 
     /// Mint a KALE Salad NFT to the balance of `owner`.
@@ -214,55 +220,6 @@ impl KaleSaladContract {
 
         // emit an event
         emit_burn(&env, &owner, &token_id);
-    }
-}
-
-#[contractimpl]
-impl NonFungibleTokenMetadata for KaleSaladContract {
-    fn name(env: Env) -> String {
-        return get_metadata(&env).name;
-    }
-
-    fn symbol(env: Env) -> String {
-        return get_metadata(&env).symbol;
-    }
-
-    fn token_uri(env: Env, token_id: u32) -> String {
-        if !token_exists(&env, &token_id) {
-            panic_with_error!(&env, Errors::NonExistentToken);
-        }
-
-        let base_uri = get_metadata(&env).base_uri;
-        let token_id_str = u8_to_string(&env, token_id as u8);
-        let base_uri_len = base_uri.len() as usize;
-        let token_id_str_len = token_id_str.len() as usize;
-        let combined_len = base_uri_len + token_id_str_len;
-
-        let mut slice: [u8; 70] = [0; 70];
-        base_uri.copy_into_slice(&mut slice[..base_uri_len]);
-        token_id_str.copy_into_slice(&mut slice[base_uri_len..combined_len]);
-
-        return String::from_bytes(&env, &slice[..combined_len]);
-    }
-}
-
-#[contractimpl]
-impl NonFungibleTokenEnumerable for KaleSaladContract {
-    fn total_supply(env: Env) -> u32 {
-        get_supply(&env)
-    }
-
-    fn token_by_index(env: Env, index: u32) -> u32 {
-        if index > get_supply(&env) {
-            panic_with_error!(&env, Errors::NonExistentToken);
-        }
-
-        return index;
-    }
-
-    fn token_of_owner_by_index(env: Env, owner: Address, index: u32) -> u32 {
-        let tokens_owned = get_tokens_owned(&env, &owner);
-        return tokens_owned.get(index).unwrap();
     }
 }
 
@@ -442,5 +399,31 @@ impl NonFungibleTokenInterface for KaleSaladContract {
         clear_approved_data(&env, &token_id);
         // emit the event
         emit_transfer(&env, &owner, &to, &token_id);
+    }
+
+    fn name(env: Env) -> String {
+        return get_metadata(&env).name;
+    }
+
+    fn symbol(env: Env) -> String {
+        return get_metadata(&env).symbol;
+    }
+
+    fn token_uri(env: Env, token_id: u32) -> String {
+        if !token_exists(&env, &token_id) {
+            panic_with_error!(&env, Errors::NonExistentToken);
+        }
+
+        let base_uri = get_metadata(&env).base_uri;
+        let token_id_str = u8_to_string(&env, token_id as u8);
+        let base_uri_len = base_uri.len() as usize;
+        let token_id_str_len = token_id_str.len() as usize;
+        let combined_len = base_uri_len + token_id_str_len;
+
+        let mut slice: [u8; 70] = [0; 70];
+        base_uri.copy_into_slice(&mut slice[..base_uri_len]);
+        token_id_str.copy_into_slice(&mut slice[base_uri_len..combined_len]);
+
+        return String::from_bytes(&env, &slice[..combined_len]);
     }
 }

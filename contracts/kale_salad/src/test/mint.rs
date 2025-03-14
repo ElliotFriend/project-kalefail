@@ -34,7 +34,10 @@ fn test_can_mint() {
     assert_eq!(brsp.balance(&owner), 980 * 10_000_000);
 
     assert_eq!(kale_salad_client.balance(&owner), 2);
-    assert_eq!(kale_salad_client.total_supply(), 2);
+    fixture.env.as_contract(&kale_salad_client.address, || {
+        assert_eq!(fixture.env.storage().instance().get::<_, u32>(&Storage::Supply).unwrap(), 2);
+    });
+    // assert_eq!(kale_salad_client.total_supply(), 2);
 }
 
 #[test]

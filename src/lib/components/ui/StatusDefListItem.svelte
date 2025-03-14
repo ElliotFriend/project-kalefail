@@ -10,6 +10,9 @@
         value,
         isAddress = false,
     }: { title: string; value: InstanceStorageValue; isAddress?: boolean } = $props();
+    // console.log('title', title)
+    // console.log('value', value)
+    // console.log('isAddress', isAddress)
 </script>
 
 <div>

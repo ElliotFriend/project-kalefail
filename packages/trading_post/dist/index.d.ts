@@ -1,18 +1,17 @@
 import { Buffer } from 'buffer';
-import {
-    AssembledTransaction,
-    Client as ContractClient,
-    ClientOptions as ContractClientOptions,
-    MethodOptions,
-} from '@stellar/stellar-sdk/contract';
+import { AssembledTransaction, Client as ContractClient, ClientOptions as ContractClientOptions, MethodOptions } from '@stellar/stellar-sdk/contract';
 import type { u32, i128, Option } from '@stellar/stellar-sdk/contract';
 export * from '@stellar/stellar-sdk';
 export * as contract from '@stellar/stellar-sdk/contract';
 export * as rpc from '@stellar/stellar-sdk/rpc';
 export declare const networks: {
+    readonly testnet: {
+        readonly networkPassphrase: "Test SDF Network ; September 2015";
+        readonly contractId: "CB2GGSG7S4RU7VQP6ZWQRHB4HTTC5WXRVHJ4GBSU5W2ENN6KKPQJBJ55";
+    };
     readonly public: {
-        readonly networkPassphrase: 'Public Global Stellar Network ; September 2015';
-        readonly contractId: 'CBMGLZ2ZDEJFXIUEO4L3VQO5OKS4CLY3VCYXRZAGFNEIDFIDPWZV23VB';
+        readonly networkPassphrase: "Public Global Stellar Network ; September 2015";
+        readonly contractId: "CBMGLZ2ZDEJFXIUEO4L3VQO5OKS4CLY3VCYXRZAGFNEIDFIDPWZV23VB";
     };
 };
 export declare const Errors: {
@@ -50,27 +49,22 @@ export declare const Errors: {
         message: string;
     };
 };
-export type Storage =
-    | {
-          tag: 'Owner';
-          values: void;
-      }
-    | {
-          tag: 'KaleAddress';
-          values: void;
-      }
-    | {
-          tag: 'Vegetables';
-          values: void;
-      }
-    | {
-          tag: 'MaxVegetables';
-          values: void;
-      }
-    | {
-          tag: 'IsOpen';
-          values: void;
-      };
+export type Storage = {
+    tag: 'Owner';
+    values: void;
+} | {
+    tag: 'KaleAddress';
+    values: void;
+} | {
+    tag: 'Vegetables';
+    values: void;
+} | {
+    tag: 'MaxVegetables';
+    values: void;
+} | {
+    tag: 'IsOpen';
+    values: void;
+};
 export interface Client {
     /**
      * Construct and simulate a trade transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
@@ -94,33 +88,25 @@ export interface Client {
      * * If the trading post contract does not have a high enough `KALE`
      * balance to send to the customer (if buying `KALE`).
      */
-    trade: (
-        {
-            customer,
-            vegetable,
-            amount,
-            buy_kale,
-        }: {
-            customer: string;
-            vegetable: string;
-            amount: i128;
-            buy_kale: boolean;
-        },
-        options?: {
-            /**
-             * The fee to pay for the transaction. Default: BASE_FEE
-             */
-            fee?: number;
-            /**
-             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
-             */
-            timeoutInSeconds?: number;
-            /**
-             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
-             */
-            simulate?: boolean;
-        },
-    ) => Promise<AssembledTransaction<null>>;
+    trade: ({ customer, vegetable, amount, buy_kale, }: {
+        customer: string;
+        vegetable: string;
+        amount: i128;
+        buy_kale: boolean;
+    }, options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<null>>;
     /**
      * Construct and simulate a upgrade transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
      * Upgrade the contract's Wasm bytecode. The trading post must be closed
@@ -137,27 +123,22 @@ export interface Client {
      * * If the trading post is still open.
      * * If the Wasm bytecode is not already installed on-chain.
      */
-    upgrade: (
-        {
-            new_wasm_hash,
-        }: {
-            new_wasm_hash: Buffer;
-        },
-        options?: {
-            /**
-             * The fee to pay for the transaction. Default: BASE_FEE
-             */
-            fee?: number;
-            /**
-             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
-             */
-            timeoutInSeconds?: number;
-            /**
-             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
-             */
-            simulate?: boolean;
-        },
-    ) => Promise<AssembledTransaction<null>>;
+    upgrade: ({ new_wasm_hash }: {
+        new_wasm_hash: Buffer;
+    }, options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<null>>;
     /**
      * Construct and simulate a add_vegetables transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
      * Add more vegetables which will be available to trade for using `KALE`
@@ -173,27 +154,22 @@ export interface Client {
      * * If the trading post is open for trading, but the SAC admin of a
      * provided vegetable contract is not the trading post contract address.
      */
-    add_vegetables: (
-        {
-            vegetables_to_add,
-        }: {
-            vegetables_to_add: Array<string>;
-        },
-        options?: {
-            /**
-             * The fee to pay for the transaction. Default: BASE_FEE
-             */
-            fee?: number;
-            /**
-             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
-             */
-            timeoutInSeconds?: number;
-            /**
-             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
-             */
-            simulate?: boolean;
-        },
-    ) => Promise<AssembledTransaction<null>>;
+    add_vegetables: ({ vegetables_to_add }: {
+        vegetables_to_add: Array<string>;
+    }, options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<null>>;
     /**
      * Construct and simulate a remove_vegetables transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
      * Remove vegetables so they will no longer be available to trade for using
@@ -208,27 +184,22 @@ export interface Client {
      *
      * * If a vegetable to be removed is not already available for trade.
      */
-    remove_vegetables: (
-        {
-            vegetables_to_remove,
-        }: {
-            vegetables_to_remove: Array<string>;
-        },
-        options?: {
-            /**
-             * The fee to pay for the transaction. Default: BASE_FEE
-             */
-            fee?: number;
-            /**
-             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
-             */
-            timeoutInSeconds?: number;
-            /**
-             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
-             */
-            simulate?: boolean;
-        },
-    ) => Promise<AssembledTransaction<null>>;
+    remove_vegetables: ({ vegetables_to_remove }: {
+        vegetables_to_remove: Array<string>;
+    }, options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<null>>;
     /**
      * Construct and simulate a grow_shelf_space transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
      * Increase the maximum number of vegetables available for trade.
@@ -244,27 +215,22 @@ export interface Client {
      * * If the existing maximum is equal to the provided new maximum. Why even
      * bother then?
      */
-    grow_shelf_space: (
-        {
-            new_max_vegetables,
-        }: {
-            new_max_vegetables: u32;
-        },
-        options?: {
-            /**
-             * The fee to pay for the transaction. Default: BASE_FEE
-             */
-            fee?: number;
-            /**
-             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
-             */
-            timeoutInSeconds?: number;
-            /**
-             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
-             */
-            simulate?: boolean;
-        },
-    ) => Promise<AssembledTransaction<null>>;
+    grow_shelf_space: ({ new_max_vegetables }: {
+        new_max_vegetables: u32;
+    }, options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<null>>;
     /**
      * Construct and simulate a shrink_shelf_space transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
      * Decrease the maximum number of vegetables available for trade.
@@ -282,27 +248,22 @@ export interface Client {
      * * If the number of available vegetables would be bigger than the new
      * maximum.
      */
-    shrink_shelf_space: (
-        {
-            new_max_vegetables,
-        }: {
-            new_max_vegetables: u32;
-        },
-        options?: {
-            /**
-             * The fee to pay for the transaction. Default: BASE_FEE
-             */
-            fee?: number;
-            /**
-             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
-             */
-            timeoutInSeconds?: number;
-            /**
-             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
-             */
-            simulate?: boolean;
-        },
-    ) => Promise<AssembledTransaction<null>>;
+    shrink_shelf_space: ({ new_max_vegetables }: {
+        new_max_vegetables: u32;
+    }, options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<null>>;
     /**
      * Construct and simulate a open transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
      * Open the trading post for business. The trading post is closed _by
@@ -351,29 +312,22 @@ export interface Client {
 export declare class Client extends ContractClient {
     readonly options: ContractClientOptions;
     static deploy<T = Client>(
-        /** Constructor/Initialization Args for the contract's `__constructor` method */
-        {
-            owner,
-            kale,
-            vegetables,
-            max_vegetables,
-        }: {
-            owner: string;
-            kale: string;
-            vegetables: Option<Array<string>>;
-            max_vegetables: Option<u32>;
-        },
-        /** Options for initalizing a Client as well as for calling a method, with extras specific to deploying. */
-        options: MethodOptions &
-            Omit<ContractClientOptions, 'contractId'> & {
-                /** The hash of the Wasm blob, which must already be installed on-chain. */
-                wasmHash: Buffer | string;
-                /** Salt used to generate the contract's ID. Passed through to {@link Operation.createCustomContract}. Default: random. */
-                salt?: Buffer | Uint8Array;
-                /** The format used to decode `wasmHash`, if it's provided as a string. */
-                format?: 'hex' | 'base64';
-            },
-    ): Promise<AssembledTransaction<T>>;
+    /** Constructor/Initialization Args for the contract's `__constructor` method */
+    { owner, kale, vegetables, max_vegetables, }: {
+        owner: string;
+        kale: string;
+        vegetables: Option<Array<string>>;
+        max_vegetables: Option<u32>;
+    }, 
+    /** Options for initalizing a Client as well as for calling a method, with extras specific to deploying. */
+    options: MethodOptions & Omit<ContractClientOptions, 'contractId'> & {
+        /** The hash of the Wasm blob, which must already be installed on-chain. */
+        wasmHash: Buffer | string;
+        /** Salt used to generate the contract's ID. Passed through to {@link Operation.createCustomContract}. Default: random. */
+        salt?: Buffer | Uint8Array;
+        /** The format used to decode `wasmHash`, if it's provided as a string. */
+        format?: 'hex' | 'base64';
+    }): Promise<AssembledTransaction<T>>;
     constructor(options: ContractClientOptions);
     readonly fromJSON: {
         trade: (json: string) => AssembledTransaction<null>;

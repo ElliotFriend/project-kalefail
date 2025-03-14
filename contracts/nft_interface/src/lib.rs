@@ -143,9 +143,7 @@ pub trait NonFungibleTokenInterface {
     /// - `owner` - The address that owns the NFTs.
     /// - `spender` - The address that acts on behalf of the owner.
     fn is_approved_all(env: Env, owner: Address, spender: Address) -> bool;
-}
 
-pub trait NonFungibleTokenMetadata {
     /// A descriptive name for a collection of NFTs in this contract.
     fn name(env: Env) -> String;
 
@@ -162,15 +160,4 @@ pub trait NonFungibleTokenMetadata {
     ///
     /// - If the NFT does not exist
     fn token_uri(env: Env, token_id: u32) -> String;
-}
-
-pub trait NonFungibleTokenEnumerable {
-    /// Count NFTs tracked by this contract
-    fn total_supply(env: Env) -> u32;
-
-    /// Enumerate valid NFTs
-    fn token_by_index(env: Env, index: u32) -> u32;
-
-    /// Enumerate NFTs assigned to an owner
-    fn token_of_owner_by_index(env: Env, owner: Address, index: u32) -> u32;
 }

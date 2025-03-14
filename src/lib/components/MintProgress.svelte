@@ -1,14 +1,16 @@
 <script lang="ts">
-    let { totalMinted, maxToMint } = $props();
     import { ProgressBar } from "@skeletonlabs/skeleton";
+
+    import { page } from "$app/state";
+    let kitchen = page.data.kitchen
 </script>
 
-<div class="grid gap-2">
-    <div class="flex justify-between">
-        <span><strong>{Number(totalMinted / maxToMint * 100).toFixed(1)}% minted</strong></span>
-        <span>{totalMinted} / {maxToMint}</span>
+<div class="flex flex-col gap-2">
+    <div class="flex flex-row justify-between">
+        <span><strong>{Number(kitchen.mintIndex / kitchen.maxToMint * 100).toFixed(1)}% minted</strong></span>
+        <span>{kitchen.mintIndex} / {kitchen.maxToMint}</span>
     </div>
     <div>
-        <ProgressBar value={totalMinted} max={maxToMint} />
+        <ProgressBar value={kitchen.mintIndex} max={kitchen.maxToMint} />
     </div>
 </div>
