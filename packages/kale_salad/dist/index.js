@@ -8,24 +8,45 @@ if (typeof window !== 'undefined') {
     window.Buffer = window.Buffer || Buffer;
 }
 export const networks = {
-    testnet: {
-        networkPassphrase: 'Test SDF Network ; September 2015',
-        contractId: 'CDTILMO5W7U3IFPE3YBVUZNFGYBZ77CUKNG2LZDME6BNNPPGXWBLOECA',
+    public: {
+        networkPassphrase: 'Public Global Stellar Network ; September 2015',
+        contractId: 'CC23DRQPZAUP5MRMPDFGU5R4ISZRSCWCP4TIED2ZTVJLQCPCNDLSALAD',
     },
 };
 export const Errors = {
-    1: { message: 'UnsetMetadata' },
-    2: { message: 'TooManyTokens' },
-    3: { message: 'InsufficientPayment' },
-    4: { message: 'TooFewVegetables' },
-    5: { message: 'InvalidSpender' },
-    6: { message: 'CannotApproveOwner' },
+    101: { message: 'UnsetMetadata' },
+    /**
+     * Indicates an error related to the payment vegetables. Used in `__constructor`.
+     */
+    104: { message: 'TooFewVegetables' },
+    /**
+     * Indicates an error related to the number of tokens a single address can hold.
+     */
+    201: { message: 'AllTokensMinted' },
+    /**
+     * Indicates an error related to the number of tokens ever to be minted.
+     */
+    202: { message: 'MaxTokensReached' },
+    /**
+     * Indicates a non-existent `token_id`.
+     */
     300: { message: 'NonExistentToken' },
+    /**
+     * Indicates an error related to the ownership over a particular token. Used in `transfer`s and approvals.
+     */
     301: { message: 'IncorrectOwner' },
-    302: { message: 'InvalidOperator' },
-    304: { message: 'InsufficientApproval' },
-    306: { message: 'InvalidApprover' },
-    307: { message: 'InvalidApprovalExpiration' },
+    /**
+     * Indicates a failure with the `spender`’s approval. Used in `transfer_from`s.
+     */
+    302: { message: 'InsufficientApproval' },
+    /**
+     * Indicates a failure with the `spender` of a token to be approved. Used in approvals.
+     */
+    303: { message: 'InvalidSpender' },
+    /**
+     * Indicates an invalid value for `expiration_edger` when setting approvals.
+     */
+    304: { message: 'InvalidExpirationLedger' },
 };
 export class Client extends ContractClient {
     options;
@@ -43,7 +64,7 @@ export class Client extends ContractClient {
     constructor(options) {
         super(
             new ContractSpec([
-                'AAAABAAAAAAAAAAAAAAABkVycm9ycwAAAAAADAAAAAAAAAANVW5zZXRNZXRhZGF0YQAAAAAAAAEAAAAAAAAADVRvb01hbnlUb2tlbnMAAAAAAAACAAAAAAAAABNJbnN1ZmZpY2llbnRQYXltZW50AAAAAAMAAAAAAAAAEFRvb0Zld1ZlZ2V0YWJsZXMAAAAEAAAAAAAAAA5JbnZhbGlkU3BlbmRlcgAAAAAABQAAAAAAAAASQ2Fubm90QXBwcm92ZU93bmVyAAAAAAAGAAAAAAAAABBOb25FeGlzdGVudFRva2VuAAABLAAAAAAAAAAOSW5jb3JyZWN0T3duZXIAAAAAAS0AAAAAAAAAD0ludmFsaWRPcGVyYXRvcgAAAAEuAAAAAAAAABRJbnN1ZmZpY2llbnRBcHByb3ZhbAAAATAAAAAAAAAAD0ludmFsaWRBcHByb3ZlcgAAAAEyAAAAAAAAABlJbnZhbGlkQXBwcm92YWxFeHBpcmF0aW9uAAAAAAABMw==',
+                'AAAABAAAAAAAAAAAAAAABkVycm9ycwAAAAAACQAAAAAAAAANVW5zZXRNZXRhZGF0YQAAAAAAAGUAAABOSW5kaWNhdGVzIGFuIGVycm9yIHJlbGF0ZWQgdG8gdGhlIHBheW1lbnQgdmVnZXRhYmxlcy4gVXNlZCBpbiBgX19jb25zdHJ1Y3RvcmAuAAAAAAAQVG9vRmV3VmVnZXRhYmxlcwAAAGgAAABNSW5kaWNhdGVzIGFuIGVycm9yIHJlbGF0ZWQgdG8gdGhlIG51bWJlciBvZiB0b2tlbnMgYSBzaW5nbGUgYWRkcmVzcyBjYW4gaG9sZC4AAAAAAAAPQWxsVG9rZW5zTWludGVkAAAAAMkAAABFSW5kaWNhdGVzIGFuIGVycm9yIHJlbGF0ZWQgdG8gdGhlIG51bWJlciBvZiB0b2tlbnMgZXZlciB0byBiZSBtaW50ZWQuAAAAAAAAEE1heFRva2Vuc1JlYWNoZWQAAADKAAAAJEluZGljYXRlcyBhIG5vbi1leGlzdGVudCBgdG9rZW5faWRgLgAAABBOb25FeGlzdGVudFRva2VuAAABLAAAAGdJbmRpY2F0ZXMgYW4gZXJyb3IgcmVsYXRlZCB0byB0aGUgb3duZXJzaGlwIG92ZXIgYSBwYXJ0aWN1bGFyIHRva2VuLiBVc2VkIGluIGB0cmFuc2ZlcmBzIGFuZCBhcHByb3ZhbHMuAAAAAA5JbmNvcnJlY3RPd25lcgAAAAABLQAAAE5JbmRpY2F0ZXMgYSBmYWlsdXJlIHdpdGggdGhlIGBzcGVuZGVyYOKAmXMgYXBwcm92YWwuIFVzZWQgaW4gYHRyYW5zZmVyX2Zyb21gcy4AAAAAABRJbnN1ZmZpY2llbnRBcHByb3ZhbAAAAS4AAABUSW5kaWNhdGVzIGEgZmFpbHVyZSB3aXRoIHRoZSBgc3BlbmRlcmAgb2YgYSB0b2tlbiB0byBiZSBhcHByb3ZlZC4gVXNlZCBpbiBhcHByb3ZhbHMuAAAADkludmFsaWRTcGVuZGVyAAAAAAEvAAAASUluZGljYXRlcyBhbiBpbnZhbGlkIHZhbHVlIGZvciBgZXhwaXJhdGlvbl9lZGdlcmAgd2hlbiBzZXR0aW5nIGFwcHJvdmFscy4AAAAAAAAXSW52YWxpZEV4cGlyYXRpb25MZWRnZXIAAAABMA==',
                 'AAAAAQAAAAAAAAAAAAAACE1ldGFkYXRhAAAAAwAAAAAAAAAIYmFzZV91cmkAAAAQAAAAAAAAAARuYW1lAAAAEAAAAAAAAAAGc3ltYm9sAAAAAAAQ',
                 'AAAAAQAAAAAAAAAAAAAADEFwcHJvdmVkRGF0YQAAAAIAAAAAAAAAEWV4cGlyYXRpb25fbGVkZ2VyAAAAAAAABAAAAAAAAAAHc3BlbmRlcgAAAAAT',
                 'AAAAAgAAAAAAAAAAAAAAB1N0b3JhZ2UAAAAACgAAAAAAAAAAAAAABUFkbWluAAAAAAAAAAAAAAAAAAAITWV0YWRhdGEAAAAAAAAAAAAAAApWZWdldGFibGVzAAAAAAAAAAAAAAAAAA1QYXltZW50UGVyTmZ0AAAAAAAAAAAAAAAAAAAGU3VwcGx5AAAAAAAAAAAAAAAAAAlNaW50SW5kZXgAAAAAAAABAAAAAAAAAAdCYWxhbmNlAAAAAAEAAAATAAAAAQAAAAAAAAAFT3duZXIAAAAAAAABAAAABAAAAAEAAAAAAAAACEFwcHJvdmVkAAAAAQAAAAQAAAABAAAAAAAAAAtBcHByb3ZlZEFsbAAAAAABAAAAEw==',

@@ -10,46 +10,61 @@ export * from '@stellar/stellar-sdk';
 export * as contract from '@stellar/stellar-sdk/contract';
 export * as rpc from '@stellar/stellar-sdk/rpc';
 export declare const networks: {
-    readonly testnet: {
-        readonly networkPassphrase: 'Test SDF Network ; September 2015';
-        readonly contractId: 'CDTILMO5W7U3IFPE3YBVUZNFGYBZ77CUKNG2LZDME6BNNPPGXWBLOECA';
+    readonly public: {
+        readonly networkPassphrase: 'Public Global Stellar Network ; September 2015';
+        readonly contractId: 'CC23DRQPZAUP5MRMPDFGU5R4ISZRSCWCP4TIED2ZTVJLQCPCNDLSALAD';
     };
 };
 export declare const Errors: {
-    1: {
+    101: {
         message: string;
     };
-    2: {
+    /**
+     * Indicates an error related to the payment vegetables. Used in `__constructor`.
+     */
+    104: {
         message: string;
     };
-    3: {
+    /**
+     * Indicates an error related to the number of tokens a single address can hold.
+     */
+    201: {
         message: string;
     };
-    4: {
+    /**
+     * Indicates an error related to the number of tokens ever to be minted.
+     */
+    202: {
         message: string;
     };
-    5: {
-        message: string;
-    };
-    6: {
-        message: string;
-    };
+    /**
+     * Indicates a non-existent `token_id`.
+     */
     300: {
         message: string;
     };
+    /**
+     * Indicates an error related to the ownership over a particular token. Used in `transfer`s and approvals.
+     */
     301: {
         message: string;
     };
+    /**
+     * Indicates a failure with the `spender`’s approval. Used in `transfer_from`s.
+     */
     302: {
         message: string;
     };
+    /**
+     * Indicates a failure with the `spender` of a token to be approved. Used in approvals.
+     */
+    303: {
+        message: string;
+    };
+    /**
+     * Indicates an invalid value for `expiration_edger` when setting approvals.
+     */
     304: {
-        message: string;
-    };
-    306: {
-        message: string;
-    };
-    307: {
         message: string;
     };
 };
