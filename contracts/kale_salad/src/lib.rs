@@ -23,7 +23,7 @@ contractmeta!(
     key = "desc",
     val = "Combine your wonderful produce into a delightful, healthy salad NFT"
 );
-contractmeta!(key = "binver", val = "0.1.0");
+contractmeta!(key = "binver", val = "1.0.0");
 
 mod constants;
 mod errors;
