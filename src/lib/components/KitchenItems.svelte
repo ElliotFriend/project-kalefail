@@ -8,7 +8,12 @@
 <div class="grid grid-cols-3 gap-4">
     {#each nfts as nft (nft.tokenId)}
         <div animate:flip={{ duration: 500 }}>
-            <NftCard tokenId={nft.tokenId} owner={nft.owner} imgUrl={nft.meta.url} />
+            <NftCard
+                tokenId={nft.tokenId}
+                owner={nft.owner}
+                imgUrl={nft.meta.url}
+                title={nft.meta.name}
+            />
         </div>
     {/each}
 </div>
