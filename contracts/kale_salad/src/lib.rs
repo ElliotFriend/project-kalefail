@@ -123,17 +123,17 @@ impl KaleSaladContract {
 
         let mut mint_index = get_mint_index(&env);
         if mint_index + num_tokens > MAXIMUM_TOKENS_TO_BE_MINTED {
-            panic_with_error!(&env, Errors::TooManyTokens);
+            panic_with_error!(&env, Errors::AllTokensMinted);
         }
 
         if num_tokens > MAXIMUM_TOKENS_PER_ADDRESS {
-            panic_with_error!(&env, Errors::TooManyTokens);
+            panic_with_error!(&env, Errors::MaxTokensReached);
         }
 
         let mut tokens_owned = get_tokens_owned(&env, &owner);
         let future_balance = tokens_owned.len() + num_tokens;
         if future_balance > MAXIMUM_TOKENS_PER_ADDRESS {
-            panic_with_error!(&env, Errors::TooManyTokens);
+            panic_with_error!(&env, Errors::MaxTokensReached);
         }
 
         let payment_per_nft = get_payment_per_nft(&env);
@@ -205,7 +205,7 @@ impl KaleSaladContract {
 
         // check spender is approved
         if !spender_is_approved(&env, &owner, &spender, &token_id) {
-            panic_with_error!(&env, Errors::InvalidSpender);
+            panic_with_error!(&env, Errors::InsufficientApproval);
         }
 
         // remove the token from owner's balance vector
@@ -243,7 +243,7 @@ impl NonFungibleTokenInterface for KaleSaladContract {
         owner.require_auth();
 
         if owner == spender {
-            panic_with_error!(&env, Errors::CannotApproveOwner);
+            panic_with_error!(&env, Errors::InvalidSpender);
         }
 
         // if the token_id does not exist, panic!
@@ -253,7 +253,7 @@ impl NonFungibleTokenInterface for KaleSaladContract {
 
         // if the owner does not own this token, panic!
         if !is_token_owner(&env, &owner, &token_id) {
-            panic_with_error!(&env, Errors::InvalidApprover);
+            panic_with_error!(&env, Errors::IncorrectOwner);
         }
 
         // if the expiration_ledger is 0...
@@ -265,15 +265,15 @@ impl NonFungibleTokenInterface for KaleSaladContract {
                     clear_approved_data(&env, &token_id);
                 } else {
                     // the current approval is different from `spender`, panic!
-                    panic_with_error!(&env, Errors::InvalidApprover);
+                    panic_with_error!(&env, Errors::InvalidSpender);
                 }
             } else {
-                panic_with_error!(&env, Errors::InvalidApprovalExpiration);
+                panic_with_error!(&env, Errors::InvalidExpirationLedger);
             }
         } else {
             // if the expiration is in the past, panic!
             if expiration_ledger < env.ledger().sequence() {
-                panic_with_error!(&env, Errors::InvalidApprovalExpiration);
+                panic_with_error!(&env, Errors::InvalidExpirationLedger);
             }
 
             // otherwise set the approval
@@ -301,7 +301,7 @@ impl NonFungibleTokenInterface for KaleSaladContract {
         owner.require_auth();
 
         if owner == spender {
-            panic_with_error!(&env, Errors::CannotApproveOwner);
+            panic_with_error!(&env, Errors::InvalidSpender);
         }
 
         if expiration_ledger == 0 {
@@ -312,15 +312,15 @@ impl NonFungibleTokenInterface for KaleSaladContract {
                     clear_approved_all_data(&env, &owner);
                 } else {
                     // the current approval is different from `spender`, panic!
-                    panic_with_error!(&env, Errors::InvalidApprover);
+                    panic_with_error!(&env, Errors::InvalidSpender);
                 }
             } else {
-                panic_with_error!(&env, Errors::InvalidApprovalExpiration);
+                panic_with_error!(&env, Errors::InvalidExpirationLedger);
             }
         } else {
             // if the expiration is in the past, panic
             if expiration_ledger < env.ledger().sequence() {
-                panic_with_error!(&env, Errors::InvalidApprovalExpiration);
+                panic_with_error!(&env, Errors::InvalidExpirationLedger);
             }
 
             // otherwise set the approval
@@ -352,7 +352,7 @@ impl NonFungibleTokenInterface for KaleSaladContract {
         }
 
         if get_tokens_owned(&env, &to).len() == MAXIMUM_TOKENS_PER_ADDRESS {
-            panic_with_error!(&env, Errors::TooManyTokens);
+            panic_with_error!(&env, Errors::MaxTokensReached);
         }
 
         // remove the token from `owner`
@@ -381,11 +381,11 @@ impl NonFungibleTokenInterface for KaleSaladContract {
         }
 
         if !spender_is_approved(&env, &owner, &spender, &token_id) {
-            panic_with_error!(&env, Errors::InvalidSpender);
+            panic_with_error!(&env, Errors::InsufficientApproval);
         }
 
         if get_tokens_owned(&env, &to).len() == MAXIMUM_TOKENS_PER_ADDRESS {
-            panic_with_error!(&env, Errors::TooManyTokens);
+            panic_with_error!(&env, Errors::MaxTokensReached);
         }
 
         // remove the token from `from`

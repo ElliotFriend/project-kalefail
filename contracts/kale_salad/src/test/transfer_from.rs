@@ -65,7 +65,7 @@ fn test_transfer_from_approved_all() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #5)")]
+#[should_panic(expected = "Error(Contract, #302)")]
 fn test_cannot_transfer_from_if_not_approved() {
     let fixture = TestFixture::create();
 
@@ -82,7 +82,7 @@ fn test_cannot_transfer_from_if_not_approved() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #5)")]
+#[should_panic(expected = "Error(Contract, #302)")]
 fn test_cannot_transfer_from_if_not_approved_for_token() {
     let fixture = TestFixture::create();
 
@@ -102,7 +102,7 @@ fn test_cannot_transfer_from_if_not_approved_for_token() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #5)")]
+#[should_panic(expected = "Error(Contract, #302)")]
 fn test_cannot_transfer_from_with_expired_approval() {
     let fixture = TestFixture::create();
     let env = fixture.env;
@@ -129,7 +129,7 @@ fn test_cannot_transfer_from_with_expired_approval() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #5)")]
+#[should_panic(expected = "Error(Contract, #302)")]
 fn test_cannot_transfer_from_with_expired_approval_all() {
     let fixture = TestFixture::create();
     let env = fixture.env;
@@ -156,7 +156,7 @@ fn test_cannot_transfer_from_with_expired_approval_all() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #5)")]
+#[should_panic(expected = "Error(Contract, #302)")]
 fn test_cannot_transfer_from_already_transferred_token() {
     let fixture = TestFixture::create();
     let kale_salad_client = fixture.kale_salad_client;
@@ -182,7 +182,7 @@ fn test_cannot_transfer_from_already_transferred_token() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #5)")]
+#[should_panic(expected = "Error(Contract, #302)")]
 fn test_cannot_transfer_from_already_transferred_from_token() {
     let fixture = TestFixture::create();
     let kale_salad_client = fixture.kale_salad_client;
@@ -247,7 +247,7 @@ fn test_cannot_transfer_from_burned_from_token() {
 
 
 #[test]
-#[should_panic(expected = "Error(Contract, #2)")]
+#[should_panic(expected = "Error(Contract, #202)")]
 fn test_cannot_transfer_from_if_to_already_has_max() {
     let fixture = TestFixture::create();
 

@@ -91,7 +91,7 @@ fn test_cannot_transfer_burned_from_token() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #2)")]
+#[should_panic(expected = "Error(Contract, #202)")]
 fn test_cannot_transfer_if_to_already_has_max() {
     let fixture = TestFixture::create();
 

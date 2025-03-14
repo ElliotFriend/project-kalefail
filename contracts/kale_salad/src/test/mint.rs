@@ -53,7 +53,7 @@ fn test_can_mint_again() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #2)")]
+#[should_panic(expected = "Error(Contract, #202)")]
 fn test_cannot_exceed_maximum_tokens_per_address_one_invocation() {
     let fixture = TestFixture::create();
 
@@ -64,7 +64,7 @@ fn test_cannot_exceed_maximum_tokens_per_address_one_invocation() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #2)")]
+#[should_panic(expected = "Error(Contract, #202)")]
 fn test_cannot_exceed_maximum_tokens_per_address_multi_invocation() {
     let fixture = TestFixture::create();
 
@@ -76,7 +76,7 @@ fn test_cannot_exceed_maximum_tokens_per_address_multi_invocation() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #2)")]
+#[should_panic(expected = "Error(Contract, #201)")]
 fn test_cannot_exceed_maximum_tokens_to_be_minted() {
     let fixture = TestFixture::create();
     let env = fixture.env;

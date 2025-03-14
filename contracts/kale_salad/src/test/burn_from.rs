@@ -48,7 +48,7 @@ fn test_cannot_burn_from_unminted_tokens() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #5)")]
+#[should_panic(expected = "Error(Contract, #301)")]
 fn test_cannot_burn_from_unowned_tokens() {
     let fixture = TestFixture::create();
 
@@ -61,11 +61,11 @@ fn test_cannot_burn_from_unowned_tokens() {
     kale_salad_client.mint_salad(&owner2, &Some(1));
     kale_salad_client.approve(&owner1, &spender, &2, &500);
 
-    kale_salad_client.burn_from(&spender, &owner2, &5);
+    kale_salad_client.burn_from(&spender, &owner2, &2);
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #5)")]
+#[should_panic(expected = "Error(Contract, #302)")]
 fn test_cannot_burn_from_with_expired_approval() {
     let fixture = TestFixture::create();
 
@@ -85,7 +85,7 @@ fn test_cannot_burn_from_with_expired_approval() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #5)")]
+#[should_panic(expected = "Error(Contract, #302)")]
 fn test_cannot_burn_from_with_expired_approval_all() {
     let fixture = TestFixture::create();
 

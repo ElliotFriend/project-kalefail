@@ -1,11 +1,8 @@
 <script lang="ts">
     import MintProgress from "$lib/components/MintProgress.svelte";
     import MintNftCard from "$lib/components/MintNftCard.svelte";
-
     import { page } from "$app/state";
-    import StatusDefListItem from "./ui/StatusDefListItem.svelte";
-    import kale_salad from "$lib/contracts/kale_salad";
-    console.log('page.data', page.data)
+
     let pricePerNft = $state(page.data.kitchen.pricePerNft / 10_000_000);
     let pricePerVegetable = $derived(pricePerNft / 4);
 </script>

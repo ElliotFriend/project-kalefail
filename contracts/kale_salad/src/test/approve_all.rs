@@ -50,7 +50,7 @@ fn test_expired_approval() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #6)")]
+#[should_panic(expected = "Error(Contract, #303)")]
 fn test_cannot_approve_all_owner() {
     let fixture = TestFixture::create();
 
@@ -61,7 +61,7 @@ fn test_cannot_approve_all_owner() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #307)")]
+#[should_panic(expected = "Error(Contract, #304)")]
 fn test_cannot_approve_all_with_expired_approval() {
     let fixture = TestFixture::create();
     fixture.env.ledger().set(LedgerInfo {

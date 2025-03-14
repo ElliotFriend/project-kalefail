@@ -7,7 +7,6 @@
     import { invalidate } from "$app/navigation";
     import { Api } from "@stellar/stellar-sdk/rpc";
     import StatusDefListItem from "./ui/StatusDefListItem.svelte";
-    import { page } from "$app/state";
     const toastStore = getToastStore();
 
     let maxPerAccount = $state(5)
@@ -25,8 +24,10 @@
             })
 
             if (Api.isSimulationError(at.simulation!)) {
-                if (at.simulation.error.includes('Error(Contract, #2)')) {
+                if (at.simulation.error.includes('Error(Contract, #202)')) {
                     throw 'Only 5 NFTs may be minted per account.'
+                } else if (at.simulation.error.includes('Error(Contract, #201)')) {
+                    throw 'Only 250 NFTs may be minted ever.'
                 }
                 throw ''
             }

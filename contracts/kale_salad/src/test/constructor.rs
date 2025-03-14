@@ -40,7 +40,7 @@ fn test_constructor() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #4)")]
+#[should_panic(expected = "Error(Contract, #104)")]
 fn test_cannot_construct_with_too_few_vegetables() {
     let fixture = TestFixture::create();
     let env = fixture.env;
