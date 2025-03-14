@@ -109,11 +109,7 @@ impl KaleSaladContract {
     /// - Emits an event with:
     /// - topics - `["mint", admin: Address, owner: Address]`
     /// - data - `token_id: u32`
-    pub fn mint_salad(
-        env: Env,
-        owner: Address,
-        number_of_tokens: Option<u32>,
-    ) {
+    pub fn mint_salad(env: Env, owner: Address, number_of_tokens: Option<u32>) {
         owner.require_auth();
 
         let num_tokens: u32 = match number_of_tokens {

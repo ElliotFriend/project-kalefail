@@ -22,9 +22,9 @@ mod approve;
 mod approve_all;
 mod burn;
 mod burn_from;
+mod metadata;
 mod transfer;
 mod transfer_from;
-mod metadata;
 
 // test my own functionality
 mod constructor;

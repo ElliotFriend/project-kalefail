@@ -245,7 +245,6 @@ fn test_cannot_transfer_from_burned_from_token() {
     kale_salad_client.transfer_from(&spender, &owner, &to, &2);
 }
 
-
 #[test]
 #[should_panic(expected = "Error(Contract, #202)")]
 fn test_cannot_transfer_from_if_to_already_has_max() {
