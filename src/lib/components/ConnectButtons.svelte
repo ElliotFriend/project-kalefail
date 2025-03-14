@@ -33,7 +33,7 @@
             wallet.address = contractId;
             console.log('walletAddress', wallet.address);
         }
-    })
+    });
 
     /**
      * Sign up as a new user, creating a smart wallet along the way.

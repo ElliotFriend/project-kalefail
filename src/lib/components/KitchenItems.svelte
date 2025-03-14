@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { flip } from "svelte/animate";
-    import NftCard from "$lib/components/NftCard.svelte";
+    import { flip } from 'svelte/animate';
+    import NftCard from '$lib/components/NftCard.svelte';
 
-    let { nfts } = $props()
+    let { nfts } = $props();
 </script>
 
 <div class="grid grid-cols-3 gap-4">

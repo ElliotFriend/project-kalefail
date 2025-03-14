@@ -65,11 +65,11 @@ image="https://kalefail.elliotfriend.com/assets/brussels-sprouts.png"
 is_asset_anchored=false
 anchor_asset_type="other"
 status="live"
-`
+`;
 
 export const GET: RequestHandler = async ({ params, setHeaders }) => {
     if (params.file !== 'stellar.toml') {
-        error(404, { message: 'well known file not found' })
+        error(404, { message: 'well known file not found' });
     }
 
     setHeaders({

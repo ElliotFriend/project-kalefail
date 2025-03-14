@@ -1,14 +1,14 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { rpc } from "$lib/passkeyClient";
-    import { nativeToScVal, scValToNative, xdr } from '@stellar/stellar-sdk'
-    import { contract } from "trading_post";
-    import TruncatedAddress from "./ui/TruncatedAddress.svelte";
-    import { fade, scale } from "svelte/transition";
-    import StellarExpertLink from "./ui/StellarExpertLink.svelte";
-    import { page } from "$app/state";
+    import { onMount } from 'svelte';
+    import { rpc } from '$lib/passkeyClient';
+    import { nativeToScVal, scValToNative, xdr } from '@stellar/stellar-sdk';
+    import { contract } from 'trading_post';
+    import TruncatedAddress from './ui/TruncatedAddress.svelte';
+    import { fade, scale } from 'svelte/transition';
+    import StellarExpertLink from './ui/StellarExpertLink.svelte';
+    import { page } from '$app/state';
 
-    let { tokenId, owner, imgUrl }: { tokenId: number, owner: string, imgUrl: string } = $props()
+    let { tokenId, owner, imgUrl }: { tokenId: number; owner: string; imgUrl: string } = $props();
     let tokenUri = `${page.data.baseUri}${tokenId}`;
     // let tokenUri = `https://gateway.pinata.cloud/ipfs/bafybeie3mktwdqsslpdvgxat2cgbkseiln6dnrd7pwitsiq7jel74g4qr4/249`;
     // let imgUrl = $state('')
@@ -19,10 +19,10 @@
         // console.log('results', results)
 
         if (results.ok) {
-            let jso = await results.json()
+            let jso = await results.json();
             // console.log('results', jso.url)
-            imgUrl = jso.url
-            tokenMeta = jso
+            imgUrl = jso.url;
+            tokenMeta = jso;
         }
         // console.log('meta', tokenMeta)
     }
@@ -43,7 +43,7 @@
     //     // getTokenOwner();
     // })
 
-    let title = $derived(`KALE Salad #${tokenId}`)
+    let title = $derived(`KALE Salad #${tokenId}`);
     // owner = 'GCCLIAXRIPHMJPK322CDHLRTT7M4G6MAORCKWGYMWXQANECG6D5WST5Z'
 </script>
 

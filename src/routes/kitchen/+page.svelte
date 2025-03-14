@@ -9,15 +9,19 @@
     let tabSet: number = $state(0);
     //@ts-ignore
     data.kitchen.mintedNfts.sort((a, b) => a.tokenId - b.tokenId);
-    let displayOwnedNfts = $state(false)
-    //@ts-ignore
-    let nftsToDisplay = $derived(data.kitchen.mintedNfts.filter(nft => displayOwnedNfts ? nft.owner === wallet.address : true))
+    let displayOwnedNfts = $state(false);
+    let nftsToDisplay = $derived(
+        //@ts-ignore
+        data.kitchen.mintedNfts.filter((nft) =>
+            displayOwnedNfts ? nft.owner === wallet.address : true,
+        ),
+    );
 
     function displayAllNfts() {
-        displayOwnedNfts = false
+        displayOwnedNfts = false;
     }
     function displayOnlyOwnedNfts() {
-        displayOwnedNfts = true
+        displayOwnedNfts = true;
     }
 </script>
 
@@ -32,26 +36,19 @@
     <TabGroup>
         <Tab bind:group={tabSet} name="tab-overview" value={0}>Overview</Tab>
         <Tab bind:group={tabSet} name="tab-items" value={1} onclick={displayAllNfts}>Mints</Tab>
-        <Tab bind:group={tabSet} name="tab-owned" value={2} onclick={displayOnlyOwnedNfts}>Your NFTs</Tab>
+        <Tab bind:group={tabSet} name="tab-owned" value={2} onclick={displayOnlyOwnedNfts}
+            >Your NFTs</Tab
+        >
 
         <svelte:fragment slot="panel">
             {#if tabSet === 0}
                 <KitchenOverview />
+            {:else if data.kitchen.mintIndex > 0 && nftsToDisplay.length}
+                <KitchenItems nfts={nftsToDisplay} />
+            {:else if tabSet === 2 && !wallet.address}
+                <p>Please login first.</p>
             {:else}
-                {#if data.kitchen.mintIndex > 0 && nftsToDisplay.length}
-                    <KitchenItems nfts={nftsToDisplay} />
-                {:else if tabSet === 2 && !wallet.address}
-                    <p>Please login first.</p>
-                {:else}
-                    <p>No NFTs have been minted yet.</p>
-                {/if}
-                <!-- {#if data.mintIndex > 0}
-                    <KitchenItems nfts={nftsToDisplay} />
-                {:else if tabSet === 2 && !wallet.address}
-                    <p>Please login first.</p>
-                {:else}
-                    <p>No NFTs have been minted yet.</p>
-                {/if} -->
+                <p>No NFTs have been minted yet.</p>
             {/if}
         </svelte:fragment>
     </TabGroup>
