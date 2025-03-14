@@ -23,7 +23,7 @@ contractmeta!(
     key = "desc",
     val = "Combine your wonderful produce into a delightful, healthy salad NFT"
 );
-contractmeta!(key = "binver", val = "1.0.0");
+contractmeta!(key = "binver", val = "1.1.0");
 
 mod constants;
 mod errors;
@@ -159,6 +159,15 @@ impl KaleSaladContract {
         set_supply(&env, &(supply + num_tokens));
         set_mint_index(&env, &mint_index);
         set_tokens_owned(&env, &owner, &tokens_owned);
+    }
+
+    pub fn set_base_uri(env: Env, base_uri: String) {
+        // require authorization from the admin address.
+        let admin = get_admin(&env);
+        admin.require_auth();
+
+        let metadata = get_metadata(&env);
+        set_metadata(&env, metadata.name, metadata.symbol, base_uri);
     }
 
     pub fn base_uri(env: Env) -> String {
