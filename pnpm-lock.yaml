@@ -17,6 +17,9 @@ importers:
       kale_salad:
         specifier: file:packages/kale_salad
         version: file:packages/kale_salad
+      kale_tractor:
+        specifier: file:packages/kale_tractor
+        version: file:packages/kale_tractor
       passkey-kit:
         specifier: ^0.10.17
         version: 0.10.17
@@ -1268,6 +1271,9 @@ packages:
 
   kale_salad@file:packages/kale_salad:
     resolution: {directory: packages/kale_salad, type: directory}
+
+  kale_tractor@file:packages/kale_tractor:
+    resolution: {directory: packages/kale_tractor, type: directory}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -3128,6 +3134,13 @@ snapshots:
   json-stable-stringify-without-jsonify@1.0.1: {}
 
   kale_salad@file:packages/kale_salad:
+    dependencies:
+      '@stellar/stellar-sdk': 13.1.0
+      buffer: 6.0.3
+    transitivePeerDependencies:
+      - debug
+
+  kale_tractor@file:packages/kale_tractor:
     dependencies:
       '@stellar/stellar-sdk': 13.1.0
       buffer: 6.0.3

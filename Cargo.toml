@@ -4,6 +4,7 @@ members = [
   "contracts/trading_post",
   "contracts/kale_salad",
   "contracts/kitchen",
+  "contracts/kale_tractor",
 ]
 
 [workspace.dependencies]

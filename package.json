@@ -56,6 +56,7 @@
         "passkey-kit": "^0.10.17",
         "svelte-persisted-store": "^0.12.0",
         "trading_post": "file:packages/trading_post",
-        "kale_salad": "file:packages/kale_salad"
+        "kale_salad": "file:packages/kale_salad",
+        "kale_tractor": "file:packages/kale_tractor"
     }
 }

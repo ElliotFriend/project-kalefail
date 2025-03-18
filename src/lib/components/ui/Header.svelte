@@ -30,6 +30,11 @@
             href: '/kitchen',
             icon: CookingPot,
         },
+        {
+            name: 'Tractor',
+            href: '/tractor',
+            icon: Tractor,
+        },
     ];
 </script>
 
@@ -46,11 +51,10 @@
     import Menu from 'lucide-svelte/icons/menu';
     import Store from 'lucide-svelte/icons/store';
     import CookingPot from 'lucide-svelte/icons/cooking-pot';
+    import Tractor from 'lucide-svelte/icons/tractor';
 
     import ConnectButtons from '$lib/components/ConnectButtons.svelte';
     import { page } from '$app/state';
-    import { wallet } from '$lib/state/Wallet.svelte';
-    import Balances from '../Balances.svelte';
 </script>
 
 <header class="flex-none shadow-xl">
@@ -64,7 +68,7 @@
             </div>
             <div class="flex-none flex items-center">
                 <a href="/" title="Dapp homepage">
-                    <span class="text-lg"> 🥬 KaleFail </span>
+                    <span class="text-lg"> 🥗 KaleFail </span>
                 </a>
             </div>
             <!-- The "topnav" buttons will not appear on small or smaller screens -->
