@@ -59,7 +59,7 @@
             });
 
             if (Api.isSimulationError(at.simulation!)) {
-                if (at.simulation.error.includes('Error(Contract, #9')) {
+                if (at.simulation.error.includes('Error(Contract, #9)')) {
                     throw 'Pail not found in homestead storage. Ask Elliot about that...';
                 }
                 throw '';
