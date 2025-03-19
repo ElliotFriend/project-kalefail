@@ -31,10 +31,10 @@ export const GET: RequestHandler = async ({ params }) => {
         )
     ))
 
-    let { entries: pailEntries } = await rpc.getLedgerEntries(...possiblePails)
+    let { entries: pailEntries, latestLedger } = await rpc.getLedgerEntries(...possiblePails)
     let harvestablePails = pailEntries.map(e => {
         let pail = scValToNative(e.val.contractData().val())
-        if (pail.gap && pail.zeros) {
+        if (e.liveUntilLedgerSeq && e.liveUntilLedgerSeq >= latestLedger && pail.gap && pail.zeros) {
             return e.key.contractData().key().vec()?.[2].u32()
         }
     })

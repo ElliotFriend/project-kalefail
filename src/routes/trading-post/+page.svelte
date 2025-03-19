@@ -8,6 +8,7 @@
     import { account, kaleSacClient, sac, send } from '$lib/passkeyClient';
 
     import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
+    import PageHeader from '$lib/components/ui/PageHeader.svelte';
     import StatusDefListItem from '$lib/components/ui/StatusDefListItem.svelte';
 
     import type { PageData } from './$types';
@@ -90,12 +91,8 @@
     }
 </script>
 
-<h1 class="h1">Trading Post</h1>
-
-<p>
-    Exchange your hard-earned KALE tokens for other, related vegetables. Or trade them back to KALE.
-    Always available at a 1:1 ratio, since they're all the same species of plant.
-</p>
+<PageHeader title="The Trading Post" subtitle="Exchange your hard-earned KALE tokens for other, related vegetables. Or trade them back to KALE.
+    Always available at a 1:1 ratio, since they're all the same species of plant." showDivider={false} />
 
 <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="card bg-initial">

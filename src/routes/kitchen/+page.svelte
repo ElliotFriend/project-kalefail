@@ -4,6 +4,7 @@
     import KitchenOverview from '$lib/components/KitchenOverview.svelte';
     import KitchenItems from '$lib/components/KitchenItems.svelte';
     import { wallet } from '$lib/state/Wallet.svelte';
+    import PageHeader from '$lib/components/ui/PageHeader.svelte';
 
     let { data }: PageProps = $props();
     let tabSet: number = $state(0);
@@ -25,12 +26,8 @@
     }
 </script>
 
-<h1 class="h1">Kitchen</h1>
-
-<p>
-    Bored of getting all your nutrients one vegetable at a time? Yeah, me too! Here, in the kitchen,
-    cook up some ways to make your diet more interesting and unique!
-</p>
+<PageHeader title="The Kitchen" subtitle="Bored of getting all your nutrients one vegetable at a time? Yeah, me too! Here, in the kitchen,
+    cook up some ways to make your diet more interesting and unique!" showDivider={false} />
 
 <div class="w-full">
     <TabGroup>
