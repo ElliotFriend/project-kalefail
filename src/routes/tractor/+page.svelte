@@ -7,7 +7,7 @@
     import PageHeader from '$lib/components/ui/PageHeader.svelte';
     const toastStore = getToastStore();
 
-    let farmerAddress = $state('CC4RLF6LVFPDMPTWYB2NR7HEUTEDIHZX7WQZOJLEIWOE6Z36EPBCSXHQ');
+    let farmerAddress = $state('');
     let harvestablePails: number[] = $state([]);
     let selectedPails: number[] = $state([]);
 
