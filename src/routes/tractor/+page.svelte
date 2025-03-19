@@ -5,6 +5,7 @@
     import { Api } from '@stellar/stellar-sdk/rpc';
     import { getToastStore } from '@skeletonlabs/skeleton';
     import PageHeader from '$lib/components/ui/PageHeader.svelte';
+    import StatusDefListItem from '$lib/components/ui/StatusDefListItem.svelte';
     const toastStore = getToastStore();
 
     let farmerAddress = $state('');
@@ -133,6 +134,13 @@
             <h2 class="h2 text-center">Harvest Pails</h2>
         </header>
         <section class="p-4 space-y-4">
+            <dl class="list-dl">
+                <StatusDefListItem
+                    title="Tractor Address"
+                    value={kale_tractor.options.contractId}
+                    isAddress
+                />
+            </dl>
             {#if harvestablePails.length}
                 <p>
                     Please select which pails of <code class="code">KALE</code> you'd like to harvest:
