@@ -91,8 +91,12 @@
     }
 </script>
 
-<PageHeader title="The Trading Post" subtitle="Exchange your hard-earned KALE tokens for other, related vegetables. Or trade them back to KALE.
-    Always available at a 1:1 ratio, since they're all the same species of plant." showDivider={false} />
+<PageHeader
+    title="The Trading Post"
+    subtitle="Exchange your hard-earned KALE tokens for other, related vegetables. Or trade them back to KALE.
+    Always available at a 1:1 ratio, since they're all the same species of plant."
+    showDivider={false}
+/>
 
 <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="card bg-initial">

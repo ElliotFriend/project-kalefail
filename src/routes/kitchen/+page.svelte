@@ -26,8 +26,12 @@
     }
 </script>
 
-<PageHeader title="The Kitchen" subtitle="Bored of getting all your nutrients one vegetable at a time? Yeah, me too! Here, in the kitchen,
-    cook up some ways to make your diet more interesting and unique!" showDivider={false} />
+<PageHeader
+    title="The Kitchen"
+    subtitle="Bored of getting all your nutrients one vegetable at a time? Yeah, me too! Here, in the kitchen,
+    cook up some ways to make your diet more interesting and unique!"
+    showDivider={false}
+/>
 
 <div class="w-full">
     <TabGroup>

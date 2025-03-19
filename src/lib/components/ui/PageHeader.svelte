@@ -1,5 +1,9 @@
 <script lang="ts">
-    let { title, subtitle, showDivider = true }: { title: string; subtitle: string; showDivider?: boolean } = $props();
+    let {
+        title,
+        subtitle,
+        showDivider = true,
+    }: { title: string; subtitle: string; showDivider?: boolean } = $props();
 </script>
 
 <div class="space-y-4">
