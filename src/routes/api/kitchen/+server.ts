@@ -48,7 +48,8 @@ export const GET: RequestHandler = async ({ fetch }) => {
                 meta: {},
             };
 
-            let results = await fetch(`${instance.Metadata.base_uri}${nftObj.tokenId}`);
+            const tokenUri = `${instance.Metadata.base_uri}${nftObj.tokenId}`
+            let results = await fetch(tokenUri.replace(/^ipfs\:\/\//, 'https://ipfs.io/ipfs/'));
 
             if (results.ok) {
                 let jso = await results.json();
