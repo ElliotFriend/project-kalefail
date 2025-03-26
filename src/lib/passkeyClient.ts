@@ -110,7 +110,7 @@ export async function send(tx: Tx | string) {
 
 /**
  * A wrapper function so it's easier for our client-side code to access the
- * `/api/wallet/deploy` endpoint we have created. This will sign a transaction
+ * `/api/deploy` endpoint we have created. This will sign a transaction
  * that can deploy the smart wallet to the network.
  *
  * @param xdr The base64-encoded transaction that should be signed by the
@@ -132,7 +132,7 @@ export async function deploy(id: string, pk: string) {
  * @param signer - The passkey ID we want to find an associated smart wallet for
  * @returns The contract address to which the specified signer has been added
  */
-export async function getWalletAddress(signer: string) {
+export async function getWalletAddress(signer: string): Promise<string> {
     return fetch(`/api/wallet/${signer}`).then(async (res) => {
         if (res.ok) return res.text();
         else throw await res.text();

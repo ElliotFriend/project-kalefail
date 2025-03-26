@@ -1,29 +1,12 @@
 import { Buffer } from 'buffer';
-import { Address } from '@stellar/stellar-sdk';
 import {
     AssembledTransaction,
     Client as ContractClient,
     ClientOptions as ContractClientOptions,
     MethodOptions,
-    Result,
     Spec as ContractSpec,
 } from '@stellar/stellar-sdk/contract';
-import type {
-    u32,
-    i32,
-    u64,
-    i64,
-    u128,
-    i128,
-    u256,
-    i256,
-    Option,
-    Typepoint,
-    Duration,
-} from '@stellar/stellar-sdk/contract';
-export * from '@stellar/stellar-sdk';
-export * as contract from '@stellar/stellar-sdk/contract';
-export * as rpc from '@stellar/stellar-sdk/rpc';
+import type { u32, i128, Option } from '@stellar/stellar-sdk/contract';
 
 if (typeof window !== 'undefined') {
     //@ts-ignore Buffer exists
@@ -31,6 +14,10 @@ if (typeof window !== 'undefined') {
 }
 
 export const networks = {
+    testnet: {
+        networkPassphrase: 'Test SDF Network ; September 2015',
+        contractId: 'CBOGCH2B2XDT3JSXDOUZIZJA43WTQCHLJYEOATQBTB37XC2BT7KU2F5S',
+    },
     public: {
         networkPassphrase: 'Public Global Stellar Network ; September 2015',
         contractId: 'CC23DRQPZAUP5MRMPDFGU5R4ISZRSCWCP4TIED2ZTVJLQCPCNDLSALAD',
@@ -179,6 +166,29 @@ export interface Client {
      */
     mint_salad: (
         { owner, number_of_tokens }: { owner: string; number_of_tokens: Option<u32> },
+        options?: {
+            /**
+             * The fee to pay for the transaction. Default: BASE_FEE
+             */
+            fee?: number;
+
+            /**
+             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+             */
+            timeoutInSeconds?: number;
+
+            /**
+             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+             */
+            simulate?: boolean;
+        },
+    ) => Promise<AssembledTransaction<null>>;
+
+    /**
+     * Construct and simulate a set_base_uri transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+     */
+    set_base_uri: (
+        { base_uri }: { base_uri: string },
         options?: {
             /**
              * The fee to pay for the transaction. Default: BASE_FEE
@@ -589,6 +599,7 @@ export class Client extends ContractClient {
                 'AAAAAAAAAAAAAAAHdXBncmFkZQAAAAABAAAAAAAAAA1uZXdfd2FzbV9oYXNoAAAAAAAD7gAAACAAAAAA',
                 'AAAAAAAAAAAAAAAJc2V0X3ByaWNlAAAAAAAAAQAAAAAAAAAWcGF5bWVudF9lYWNoX3ZlZ2V0YWJsZQAAAAAACwAAAAA=',
                 'AAAAAAAAAtVNaW50IGEgS0FMRSBTYWxhZCBORlQgdG8gdGhlIGJhbGFuY2Ugb2YgYG93bmVyYC4KCiMgQXJndW1lbnRzCgotIGBvd25lcmAgLSBUaGUgYWRkcmVzcyB3aGljaCB3aWxsIG93biB0aGUgbWludGVkIE5GVChzKQotIGBwYXltZW50X2VhY2hfdmVnZXRhYmxlYCAtIEhvdyBtdWNoIG9mIGVhY2ggdmVnZXRhYmxlIChpbiBzdHJvb3BzKSB0aGUKb3duZXIgaXMgcGF5aW5nIGluIGV4Y2hhbmdlIGZvciB0aGUgTkZULgotIGBudW1iZXJfb2ZfdG9rZW5zYCAtIFRoZSBudW1iZXIgb2YgTkZUcyB3aGljaCBzaG91bGQgYmUgbWludGVkIHRvIHRoZQpvd25lcidzIGFkZHJlc3MuCgojIFBhbmljcwoKLSBJZiB0aGUgcGF5bWVudCBhbW91bnQgZG9lcyBub3QgbWVldCB0aGUgcmVxdWlyZWQgbWluaW11bS4KLSBJZiB0aGUgdG90YWwgbWF4aW11bSBudW1iZXIgb2YgTkZUcyBoYXMgYWxyZWFkeSBiZWVuIG1pbnRlZC4KLSBJZiB0aGUgcmVxdWVzdGVkIG51bWJlciBvZiBORlRzIHdvdWxkIGV4Y2VlZCB0aGUgdG90YWwgbWF4aW11bSBORlRzLgotIElmIHRoZSByZXF1ZXN0ZWQgbnVtYmVyIG9mIE5GVHMgd291bGQgZXhjZWVkIHRoZSBtYXhpbXVtIE5GVHMgYWxsb3dlZApwZXIgYWRkcmVzcy4KCiMgRXZlbnRzCgotIEVtaXRzIGFuIGV2ZW50IHdpdGg6Ci0gdG9waWNzIC0gYFsibWludCIsIGFkbWluOiBBZGRyZXNzLCBvd25lcjogQWRkcmVzc11gCi0gZGF0YSAtIGB0b2tlbl9pZDogdTMyYAAAAAAAAAptaW50X3NhbGFkAAAAAAACAAAAAAAAAAVvd25lcgAAAAAAABMAAAAAAAAAEG51bWJlcl9vZl90b2tlbnMAAAPoAAAABAAAAAA=',
+                'AAAAAAAAAAAAAAAMc2V0X2Jhc2VfdXJpAAAAAQAAAAAAAAAIYmFzZV91cmkAAAAQAAAAAA==',
                 'AAAAAAAAAAAAAAAIYmFzZV91cmkAAAAAAAAAAQAAABA=',
                 'AAAAAAAAAAAAAAAIZGVjaW1hbHMAAAAAAAAAAQAAAAQ=',
                 'AAAAAAAAAAAAAAAEYnVybgAAAAIAAAAAAAAABW93bmVyAAAAAAAAEwAAAAAAAAAIdG9rZW5faWQAAAAEAAAAAA==',
@@ -612,6 +623,7 @@ export class Client extends ContractClient {
         upgrade: this.txFromJSON<null>,
         set_price: this.txFromJSON<null>,
         mint_salad: this.txFromJSON<null>,
+        set_base_uri: this.txFromJSON<null>,
         base_uri: this.txFromJSON<string>,
         decimals: this.txFromJSON<u32>,
         burn: this.txFromJSON<null>,

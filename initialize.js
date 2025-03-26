@@ -90,16 +90,25 @@ function filenameNoExtension(filename) {
  */
 function deploy(wasm) {
     const alias = filenameNoExtension(wasm);
-    let constructor_args;
-    switch (alias) {
-        case 'trading_post':
-            constructor_args = `-- --owner ${process.env.STELLAR_ACCOUNT} --kale ${kaleSacAddress} --vegetables '${JSON.stringify(VEGETABLES.map((v) => v.contractId(process.env.STELLAR_NETWORK_PASSPHRASE)))}'`;
-        default:
-            '';
+    if (alias !== 'kitchen') {
+        let constructor_args;
+        switch (alias) {
+            case 'trading_post':
+                constructor_args = `-- --owner ${process.env.STELLAR_ACCOUNT} --kale ${kaleSacAddress} --vegetables '${JSON.stringify(VEGETABLES.map((v) => v.contractId(process.env.STELLAR_NETWORK_PASSPHRASE)))}'`;
+                break;
+            case 'kale_salad':
+                constructor_args = `-- --admin ${process.env.STELLAR_ACCOUNT} --nft_name "KALE Salad" --nft_symbol "KSLD" --base_uri "ipfs://bafybeifmrpa7cpep7j6thdgs4dsteev7lvfwwvxuywofarnghdwevizdsa/" --vegetables '${JSON.stringify(VEGETABLES.map((v) => v.contractId(process.env.STELLAR_NETWORK_PASSPHRASE)))}' --payment_each_vegetable 0`;
+                break;
+            case 'kale_tractor':
+                constructor_args = `-- --farm ${kaleSacAddress}`; // this isn't right but meh
+                break;
+            default:
+                constructor_args = '';
+        }
+        exe(
+            `stellar contract deploy --wasm ${wasm} --ignore-checks --alias ${alias} ${constructor_args}`,
+        );
     }
-    exe(
-        `stellar contract deploy --wasm ${wasm} --ignore-checks --alias ${alias} ${constructor_args}`,
-    );
 }
 
 /**
@@ -179,9 +188,10 @@ function importContract({ alias }) {
     // the required imports/exports for the library
     const importContent =
         `import * as Client from '${alias}';\n` +
-        `import { PUBLIC_STELLAR_RPC_URL } from '$env/static/public';\n\n` +
+        `import { PUBLIC_STELLAR_RPC_URL, PUBLIC_STELLAR_NETWORK } from '$env/static/public';\n\n` +
         `export default new Client.Client({\n` +
-        `    ...Client.networks.${process.env.STELLAR_NETWORK},\n` +
+        `    //@ts-ignore\n` +
+        `    ...Client.networks.${process.env}[PUBLIC_STELLAR_NETWORK],\n` +
         `    rpcUrl: PUBLIC_STELLAR_RPC_URL,\n` +
         `});\n`;
 
@@ -210,7 +220,7 @@ function sacDeployAll() {
 }
 
 function sacAdmin() {
-    contracts.forEach(({ alias, id }) => {
+    contracts().forEach(({ alias, id }) => {
         if (alias === 'trading_post') {
             VEGETABLES.forEach((v) => {
                 const sac = v.contractId(process.env.STELLAR_NETWORK_PASSPHRASE);

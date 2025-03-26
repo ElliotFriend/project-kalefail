@@ -1,29 +1,12 @@
 import { Buffer } from 'buffer';
-import { Address } from '@stellar/stellar-sdk';
 import {
     AssembledTransaction,
     Client as ContractClient,
     ClientOptions as ContractClientOptions,
     MethodOptions,
-    Result,
     Spec as ContractSpec,
 } from '@stellar/stellar-sdk/contract';
-import type {
-    u32,
-    i32,
-    u64,
-    i64,
-    u128,
-    i128,
-    u256,
-    i256,
-    Option,
-    Typepoint,
-    Duration,
-} from '@stellar/stellar-sdk/contract';
-export * from '@stellar/stellar-sdk';
-export * as contract from '@stellar/stellar-sdk/contract';
-export * as rpc from '@stellar/stellar-sdk/rpc';
+import type { u32, i128, Option } from '@stellar/stellar-sdk/contract';
 
 if (typeof window !== 'undefined') {
     //@ts-ignore Buffer exists
@@ -345,6 +328,28 @@ export interface Client {
          */
         simulate?: boolean;
     }) => Promise<AssembledTransaction<null>>;
+
+    /**
+     * Construct and simulate a burn_the_extra_kale transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+     * The airdrop changed from 500x to 501x, which left the trading post with
+     * a small surplus of KALE. Let's burn it to balance out the sKALEs.
+     */
+    burn_the_extra_kale: (options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<null>>;
 }
 export class Client extends ContractClient {
     static async deploy<T = Client>(
@@ -385,6 +390,7 @@ export class Client extends ContractClient {
                 'AAAAAAAAAZpEZWNyZWFzZSB0aGUgbWF4aW11bSBudW1iZXIgb2YgdmVnZXRhYmxlcyBhdmFpbGFibGUgZm9yIHRyYWRlLgoKIyBBcmd1bWVudHMKCiogYG5ld19tYXhfdmVnZXRhYmxlc2AgLSBUaGUgbmV3IG1heGltdW0gbnVtYmVyIG9mIHZlZ2V0YWJsZXMgdGhhdCBjYW4KYmUgYXZhaWxhYmxlIHRvIHRyYWRlLgoKIyBQYW5pY3MKCiogSWYgdGhlIGV4aXN0aW5nIG1heGltdW0gaXMgbGVzcyB0aGFuIHRoZSBwcm92aWRlZCBuZXcgbWF4aW11bS4KKiBJZiB0aGUgZXhpc3RpbmcgbWF4aW11bSBpcyBlcXVhbCB0byB0aGUgcHJvdmlkZWQgbmV3IG1heGltdW0uIFdoeSBldmVuCmJvdGhlciB0aGVuPwoqIElmIHRoZSBudW1iZXIgb2YgYXZhaWxhYmxlIHZlZ2V0YWJsZXMgd291bGQgYmUgYmlnZ2VyIHRoYW4gdGhlIG5ldwptYXhpbXVtLgAAAAAAEnNocmlua19zaGVsZl9zcGFjZQAAAAAAAQAAAAAAAAASbmV3X21heF92ZWdldGFibGVzAAAAAAAEAAAAAA==',
                 'AAAAAAAAAUxPcGVuIHRoZSB0cmFkaW5nIHBvc3QgZm9yIGJ1c2luZXNzLiBUaGUgdHJhZGluZyBwb3N0IGlzIGNsb3NlZCBfYnkKZGVmYXVsdF8sIHNvIHRoaXMgZnVuY3Rpb24gd2lsbCBuZWVkIHRvIGJlIGludm9rZWQgYmVmb3JlIHRyYWRpbmcgY2FuCmJlZ2luLgoKIyBQYW5pY3MKCiogSWYgdGhlcmUgYXJlIG5vIHZlZ2V0YWJsZSBhc3NldHMgYXZhaWxhYmxlIGZvciB0cmFkZS4KKiBJZiBvbmUgb3IgbW9yZSBvZiB0aGUgYXZhaWxhYmxlIHZlZ2V0YWJsZSBhc3NldHMgZG9lcyBub3QgaGF2ZSBhIFNBQwphZG1pbiBzZXQgdG8gdGhpcyB0cmFkaW5nIHBvc3QgY29udHJhY3QncyBhZGRyZXNzLgAAAARvcGVuAAAAAAAAAAA=',
                 'AAAAAAAAABdDbG9zZSB0aGUgdHJhZGluZyBwb3N0LgAAAAAFY2xvc2UAAAAAAAAAAAAAAA==',
+                'AAAAAAAAAIlUaGUgYWlyZHJvcCBjaGFuZ2VkIGZyb20gNTAweCB0byA1MDF4LCB3aGljaCBsZWZ0IHRoZSB0cmFkaW5nIHBvc3Qgd2l0aAphIHNtYWxsIHN1cnBsdXMgb2YgS0FMRS4gTGV0J3MgYnVybiBpdCB0byBiYWxhbmNlIG91dCB0aGUgc0tBTEVzLgAAAAAAABNidXJuX3RoZV9leHRyYV9rYWxlAAAAAAAAAAAA',
                 'AAAABAAAAAAAAAAAAAAABkVycm9ycwAAAAAACwAAAAAAAAAQSW52YWxpZFZlZ2V0YWJsZQAAAAEAAAAAAAAAEVRyYWRpbmdQb3N0Q2xvc2VkAAAAAAAAAgAAAAAAAAASVmVnZXRhYmxlc1JlcXVpcmVkAAAAAAADAAAAAAAAABNDb250cmFjdE5vdFNhY0FkbWluAAAAAAQAAAAAAAAAFFZlZ2V0YWJsZU5vdEZvclRyYWRlAAAABQAAAAAAAAAYVmVnZXRhYmxlQWxyZWFkeUZvclRyYWRlAAAABgAAAAAAAAAPVHJhZGluZ1Bvc3RPcGVuAAAAAAcAAAAAAAAAEVRvb01hbnlWZWdldGFibGVzAAAAAAAACAAAAAAAAAASU2hlbGZBbHJlYWR5QmlnZ2VyAAAAAAAJAAAAAAAAABNTaGVsZkFscmVhZHlTbWFsbGVyAAAAAAoAAAAAAAAADU5vdEVub3VnaEthbGUAAAAAAAAL',
                 'AAAAAgAAAAAAAAAAAAAAB1N0b3JhZ2UAAAAABQAAAAAAAAAAAAAABU93bmVyAAAAAAAAAAAAAAAAAAALS2FsZUFkZHJlc3MAAAAAAAAAAAAAAAAKVmVnZXRhYmxlcwAAAAAAAAAAAAAAAAANTWF4VmVnZXRhYmxlcwAAAAAAAAAAAAAAAAAABklzT3BlbgAA',
             ]),
@@ -400,5 +406,6 @@ export class Client extends ContractClient {
         shrink_shelf_space: this.txFromJSON<null>,
         open: this.txFromJSON<null>,
         close: this.txFromJSON<null>,
+        burn_the_extra_kale: this.txFromJSON<null>,
     };
 }

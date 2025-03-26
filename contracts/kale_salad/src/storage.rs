@@ -202,9 +202,13 @@ pub fn extend_approved_data(env: &Env, key: &Storage, expiration_ledger: &u32) {
 }
 
 pub fn clear_approved_data(env: &Env, token_id: &u32) {
-    env.storage()
-        .temporary()
-        .remove(&Storage::Approved(*token_id));
+    let key = &Storage::Approved(*token_id);
+
+    if env.storage().temporary().has(key) {
+        env.storage()
+            .temporary()
+            .remove(key);
+    }
 }
 
 pub fn set_approved_all_data(
@@ -240,9 +244,13 @@ pub fn get_approved_all_data(env: &Env, owner: &Address) -> Option<ApprovedData>
 }
 
 pub fn clear_approved_all_data(env: &Env, owner: &Address) {
-    env.storage()
-        .temporary()
-        .remove(&Storage::ApprovedAll(owner.clone()));
+    let key = &Storage::ApprovedAll(owner.clone());
+
+    if env.storage().temporary().has(key) {
+        env.storage()
+            .temporary()
+            .remove(key);
+    }
 }
 
 pub fn spender_is_approved(env: &Env, owner: &Address, spender: &Address, token_id: &u32) -> bool {
