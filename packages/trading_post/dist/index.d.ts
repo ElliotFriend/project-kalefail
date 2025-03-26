@@ -6,9 +6,6 @@ import {
     MethodOptions,
 } from '@stellar/stellar-sdk/contract';
 import type { u32, i128, Option } from '@stellar/stellar-sdk/contract';
-export * from '@stellar/stellar-sdk';
-export * as contract from '@stellar/stellar-sdk/contract';
-export * as rpc from '@stellar/stellar-sdk/rpc';
 export declare const networks: {
     readonly testnet: {
         readonly networkPassphrase: 'Test SDF Network ; September 2015';
@@ -351,6 +348,25 @@ export interface Client {
          */
         simulate?: boolean;
     }) => Promise<AssembledTransaction<null>>;
+    /**
+     * Construct and simulate a burn_the_extra_kale transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+     * The airdrop changed from 500x to 501x, which left the trading post with
+     * a small surplus of KALE. Let's burn it to balance out the sKALEs.
+     */
+    burn_the_extra_kale: (options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<null>>;
 }
 export declare class Client extends ContractClient {
     readonly options: ContractClientOptions;
@@ -388,5 +404,6 @@ export declare class Client extends ContractClient {
         shrink_shelf_space: (json: string) => AssembledTransaction<null>;
         open: (json: string) => AssembledTransaction<null>;
         close: (json: string) => AssembledTransaction<null>;
+        burn_the_extra_kale: (json: string) => AssembledTransaction<null>;
     };
 }

@@ -6,10 +6,11 @@ import {
     MethodOptions,
 } from '@stellar/stellar-sdk/contract';
 import type { u32, i128, Option } from '@stellar/stellar-sdk/contract';
-export * from '@stellar/stellar-sdk';
-export * as contract from '@stellar/stellar-sdk/contract';
-export * as rpc from '@stellar/stellar-sdk/rpc';
 export declare const networks: {
+    readonly testnet: {
+        readonly networkPassphrase: 'Test SDF Network ; September 2015';
+        readonly contractId: 'CBOGCH2B2XDT3JSXDOUZIZJA43WTQCHLJYEOATQBTB37XC2BT7KU2F5S';
+    };
     readonly public: {
         readonly networkPassphrase: 'Public Global Stellar Network ; September 2015';
         readonly contractId: 'CC23DRQPZAUP5MRMPDFGU5R4ISZRSCWCP4TIED2ZTVJLQCPCNDLSALAD';
@@ -200,6 +201,30 @@ export interface Client {
         }: {
             owner: string;
             number_of_tokens: Option<u32>;
+        },
+        options?: {
+            /**
+             * The fee to pay for the transaction. Default: BASE_FEE
+             */
+            fee?: number;
+            /**
+             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+             */
+            timeoutInSeconds?: number;
+            /**
+             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+             */
+            simulate?: boolean;
+        },
+    ) => Promise<AssembledTransaction<null>>;
+    /**
+     * Construct and simulate a set_base_uri transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+     */
+    set_base_uri: (
+        {
+            base_uri,
+        }: {
+            base_uri: string;
         },
         options?: {
             /**
@@ -612,6 +637,7 @@ export declare class Client extends ContractClient {
         upgrade: (json: string) => AssembledTransaction<null>;
         set_price: (json: string) => AssembledTransaction<null>;
         mint_salad: (json: string) => AssembledTransaction<null>;
+        set_base_uri: (json: string) => AssembledTransaction<null>;
         base_uri: (json: string) => AssembledTransaction<string>;
         decimals: (json: string) => AssembledTransaction<number>;
         burn: (json: string) => AssembledTransaction<null>;

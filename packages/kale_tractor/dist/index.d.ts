@@ -7,6 +7,10 @@ import {
 } from '@stellar/stellar-sdk/contract';
 import type { u32, i128 } from '@stellar/stellar-sdk/contract';
 export declare const networks: {
+    readonly testnet: {
+        readonly networkPassphrase: 'Test SDF Network ; September 2015';
+        readonly contractId: 'CCYEHT7IELQH3LFQRYAE2W7W4EQ2BA5O3YTCIVHPIEA23OO67XYI5D7Q';
+    };
     readonly public: {
         readonly networkPassphrase: 'Public Global Stellar Network ; September 2015';
         readonly contractId: 'CBDM7MK5T2NNK6CSFD2IETMEYNHLSQ2MU7DAKD3J7MDFGPLFU4G2UWBI';
