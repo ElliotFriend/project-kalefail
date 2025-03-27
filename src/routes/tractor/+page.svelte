@@ -102,7 +102,7 @@
 <p>
     The tractor is here to help you reclaim your harvest. You still have to get them before they're
     evicted (they haven't paid the landlord in a while!), but now you can get back to them easier
-    then ever.
+    than ever.
 </p>
 
 <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
