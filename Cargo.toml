@@ -3,7 +3,6 @@ resolver = "2"
 members = [
   "contracts/trading_post",
   "contracts/kale_salad",
-  "contracts/kitchen",
   "contracts/kale_tractor",
   "contracts/playground",
 ]
