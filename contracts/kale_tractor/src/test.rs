@@ -2,9 +2,8 @@
 
 use super::*;
 use soroban_sdk::{
-    testutils::{Address as _, Ledger}, Env,
+    testutils::Address as _, Env,
 };
-extern crate std;
 
 mod homestead_contract {
     use soroban_sdk::auth::Context;
@@ -44,7 +43,6 @@ fn test_with_no_pails_provided() {
 #[test]
 fn test_with_all_harvestable_pails() {
     let env = Env::from_ledger_snapshot_file("snapshot.json");
-    env.ledger().set_max_entry_ttl(56000000);
 
     let homestead_address = Address::from_str(&env, &"CDL74RF5BLYR2YBLCCI7F5FB6TPSCLKEJUBSD2RSVWZ4YHF3VMFAIGWA");
 
@@ -81,7 +79,6 @@ fn test_with_all_unharvestable_pails() {
 #[test]
 fn test_with_mixed_harvestable_pails() {
     let env = Env::from_ledger_snapshot_file("snapshot.json");
-    env.ledger().set_max_entry_ttl(56000000);
 
     let homestead_address = Address::from_str(&env, &"CDL74RF5BLYR2YBLCCI7F5FB6TPSCLKEJUBSD2RSVWZ4YHF3VMFAIGWA");
 
