@@ -1,7 +1,8 @@
 #![no_std]
 
 use soroban_sdk::{
-    contract, contractclient, contracterror, contractimpl, contractmeta, panic_with_error, symbol_short, vec, Address, Env, Symbol, Vec
+    contract, contractclient, contracterror, contractimpl, contractmeta, panic_with_error,
+    symbol_short, vec, Address, Env, Symbol, Vec,
 };
 
 contractmeta!(key = "title", val = "KaleFail Tractor",);
@@ -50,9 +51,12 @@ impl KaleTractorContract {
     /// Harvest multiple pails available for your KALE farmer.
     ///
     /// # Arguments
-    ///
     /// - `farmer` - address of the farmer to harvest on behalf of
     /// - `pails` - vector of pails which should be harvested
+    ///
+    /// # Panics
+    /// - If the `pails` vector is empty
+    /// - If no pails result in a non-zero reward
     pub fn harvest(env: Env, farmer: Address, pails: Vec<u32>) -> Vec<i128> {
         if pails.len() == 0 {
             panic_with_error!(&env, Error::NoPailsProvided);
@@ -69,7 +73,7 @@ impl KaleTractorContract {
             // try to invoke the farm's `harvest` function
             let reward = match farm_client.try_harvest(&farmer, &pail) {
                 Ok(Ok(number)) => number, // successful harvest, use the reward
-                _ => 0, // unsuccessful for some reason, use 0
+                _ => 0,                   // unsuccessful for some reason, use 0
             };
             rewards.push_back(reward);
 
