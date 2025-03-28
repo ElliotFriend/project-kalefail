@@ -59,6 +59,8 @@ impl KaleTractorContract {
         }
 
         let mut rewards: Vec<i128> = vec![&env];
+        let mut at_least_one_nonzero: bool = false;
+
         let farm_address: Address = env.storage().instance().get(&FARM).unwrap();
         let farm_client = FarmClient::new(&env, &farm_address);
 
@@ -70,10 +72,14 @@ impl KaleTractorContract {
                 _ => 0, // unsuccessful for some reason, use 0
             };
             rewards.push_back(reward);
+
+            if !at_least_one_nonzero && reward > 0 {
+                at_least_one_nonzero = true;
+            }
         });
 
         // make sure we've at least harvested _some_ kale
-        if rewards.iter().sum::<i128>() == 0 {
+        if !at_least_one_nonzero {
             panic_with_error!(&env, Error::NoHarvestablePails);
         };
 
