@@ -9,7 +9,7 @@ contractmeta!(
     key = "desc",
     val = "Harvest all available KALE for your farmer.",
 );
-contractmeta!(key = "binver", val = "1.0.0",);
+contractmeta!(key = "binver", val = "2.0.0",);
 
 const FARM: Symbol = symbol_short!("FARM");
 const DAY_OF_LEDGERS: u32 = 60 * 60 * 24 / 5; // assumes 5-second ledger close times
