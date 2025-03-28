@@ -7,13 +7,23 @@ import {
 } from '@stellar/stellar-sdk/contract';
 import type { u32, i128 } from '@stellar/stellar-sdk/contract';
 export declare const networks: {
-    readonly testnet: {
-        readonly networkPassphrase: 'Test SDF Network ; September 2015';
-        readonly contractId: 'CCYEHT7IELQH3LFQRYAE2W7W4EQ2BA5O3YTCIVHPIEA23OO67XYI5D7Q';
-    };
     readonly public: {
         readonly networkPassphrase: 'Public Global Stellar Network ; September 2015';
-        readonly contractId: 'CBDM7MK5T2NNK6CSFD2IETMEYNHLSQ2MU7DAKD3J7MDFGPLFU4G2UWBI';
+        readonly contractId: 'CBGSBKYMYO6OMGHQXXNOBRGVUDFUDVC2XLC3SXON5R2SNXILR7XCKKY3';
+    };
+};
+export declare const Errors: {
+    /**
+     * No pails provided in invocation
+     */
+    1: {
+        message: string;
+    };
+    /**
+     * Harvesting all pails results in 0 reward
+     */
+    2: {
+        message: string;
     };
 };
 export interface Client {
@@ -22,9 +32,12 @@ export interface Client {
      * Harvest multiple pails available for your KALE farmer.
      *
      * # Arguments
-     *
      * - `farmer` - address of the farmer to harvest on behalf of
      * - `pails` - vector of pails which should be harvested
+     *
+     * # Panics
+     * - If the `pails` vector is empty
+     * - If no pails result in a non-zero reward
      */
     harvest: (
         {
@@ -48,7 +61,7 @@ export interface Client {
              */
             simulate?: boolean;
         },
-    ) => Promise<AssembledTransaction<i128>>;
+    ) => Promise<AssembledTransaction<Array<i128>>>;
 }
 export declare class Client extends ContractClient {
     readonly options: ContractClientOptions;
@@ -72,6 +85,6 @@ export declare class Client extends ContractClient {
     ): Promise<AssembledTransaction<T>>;
     constructor(options: ContractClientOptions);
     readonly fromJSON: {
-        harvest: (json: string) => AssembledTransaction<bigint>;
+        harvest: (json: string) => AssembledTransaction<bigint[]>;
     };
 }

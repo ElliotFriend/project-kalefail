@@ -5,14 +5,20 @@ if (typeof window !== 'undefined') {
     window.Buffer = window.Buffer || Buffer;
 }
 export const networks = {
-    testnet: {
-        networkPassphrase: 'Test SDF Network ; September 2015',
-        contractId: 'CCYEHT7IELQH3LFQRYAE2W7W4EQ2BA5O3YTCIVHPIEA23OO67XYI5D7Q',
-    },
     public: {
         networkPassphrase: 'Public Global Stellar Network ; September 2015',
-        contractId: 'CBDM7MK5T2NNK6CSFD2IETMEYNHLSQ2MU7DAKD3J7MDFGPLFU4G2UWBI',
+        contractId: 'CBGSBKYMYO6OMGHQXXNOBRGVUDFUDVC2XLC3SXON5R2SNXILR7XCKKY3',
     },
+};
+export const Errors = {
+    /**
+     * No pails provided in invocation
+     */
+    1: { message: 'NoPailsProvided' },
+    /**
+     * Harvesting all pails results in 0 reward
+     */
+    2: { message: 'NoHarvestablePails' },
 };
 export class Client extends ContractClient {
     options;
@@ -27,8 +33,9 @@ export class Client extends ContractClient {
     constructor(options) {
         super(
             new ContractSpec([
+                'AAAABAAAAAAAAAAAAAAABUVycm9yAAAAAAAAAgAAAB9ObyBwYWlscyBwcm92aWRlZCBpbiBpbnZvY2F0aW9uAAAAAA9Ob1BhaWxzUHJvdmlkZWQAAAAAAQAAAChIYXJ2ZXN0aW5nIGFsbCBwYWlscyByZXN1bHRzIGluIDAgcmV3YXJkAAAAEk5vSGFydmVzdGFibGVQYWlscwAAAAAAAg==',
                 'AAAAAAAAAAAAAAANX19jb25zdHJ1Y3RvcgAAAAAAAAEAAAAAAAAABGZhcm0AAAATAAAAAA==',
-                'AAAAAAAAALVIYXJ2ZXN0IG11bHRpcGxlIHBhaWxzIGF2YWlsYWJsZSBmb3IgeW91ciBLQUxFIGZhcm1lci4KCiMgQXJndW1lbnRzCgotIGBmYXJtZXJgIC0gYWRkcmVzcyBvZiB0aGUgZmFybWVyIHRvIGhhcnZlc3Qgb24gYmVoYWxmIG9mCi0gYHBhaWxzYCAtIHZlY3RvciBvZiBwYWlscyB3aGljaCBzaG91bGQgYmUgaGFydmVzdGVkAAAAAAAAB2hhcnZlc3QAAAAAAgAAAAAAAAAGZmFybWVyAAAAAAATAAAAAAAAAAVwYWlscwAAAAAAA+oAAAAEAAAAAQAAAAs=',
+                'AAAAAAAAAQlIYXJ2ZXN0IG11bHRpcGxlIHBhaWxzIGF2YWlsYWJsZSBmb3IgeW91ciBLQUxFIGZhcm1lci4KCiMgQXJndW1lbnRzCi0gYGZhcm1lcmAgLSBhZGRyZXNzIG9mIHRoZSBmYXJtZXIgdG8gaGFydmVzdCBvbiBiZWhhbGYgb2YKLSBgcGFpbHNgIC0gdmVjdG9yIG9mIHBhaWxzIHdoaWNoIHNob3VsZCBiZSBoYXJ2ZXN0ZWQKCiMgUGFuaWNzCi0gSWYgdGhlIGBwYWlsc2AgdmVjdG9yIGlzIGVtcHR5Ci0gSWYgbm8gcGFpbHMgcmVzdWx0IGluIGEgbm9uLXplcm8gcmV3YXJkAAAAAAAAB2hhcnZlc3QAAAAAAgAAAAAAAAAGZmFybWVyAAAAAAATAAAAAAAAAAVwYWlscwAAAAAAA+oAAAAEAAAAAQAAA+oAAAAL',
             ]),
             options,
         );
