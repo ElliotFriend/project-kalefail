@@ -1,11 +1,13 @@
 <script lang="ts">
     import kale_tractor from '$lib/contracts/kale_tractor';
     import { send } from '$lib/passkeyClient';
-    import { scValToBigInt, xdr } from '@stellar/stellar-sdk';
+    import { scValToNative, xdr } from '@stellar/stellar-sdk';
     import { Api } from '@stellar/stellar-sdk/rpc';
-    import { getToastStore } from '@skeletonlabs/skeleton';
+    import type { i128 } from '@stellar/stellar-sdk/contract';
     import PageHeader from '$lib/components/ui/PageHeader.svelte';
     import StatusDefListItem from '$lib/components/ui/StatusDefListItem.svelte';
+
+    import { getToastStore } from '@skeletonlabs/skeleton';
     const toastStore = getToastStore();
 
     let farmerAddress = $state('');
@@ -62,15 +64,20 @@
             if (Api.isSimulationError(at.simulation!)) {
                 if (at.simulation.error.includes('Error(Contract, #9)')) {
                     throw 'Pail not found in homestead storage. Ask Elliot about that...';
+                } else if (at.simulation.error.includes('Error(Contract, #1)')) {
+                    throw 'No pails requested for harvest. Please select some pails first.';
+                } else if (at.simulation.error.includes('Error(Contract, #2)')) {
+                    throw "No rewards for selected pails. Sorry, I guess you didn't work hard enough?";
                 }
                 throw '';
             }
 
             let { returnValue } = await send(at.built!);
-            let reward = scValToBigInt(xdr.ScVal.fromXDR(returnValue, 'base64'));
+            let rewards: i128[] = scValToNative(xdr.ScVal.fromXDR(returnValue, 'base64'));
+            let totalReward = rewards.reduce((total, n) => total + n, BigInt(0));
 
             toastStore.trigger({
-                message: `Sweet!! You successfully harvested ${(Number(reward) / 10_000_000).toFixed(7)} KALE.`,
+                message: `Sweet!! You successfully harvested ${(Number(totalReward) / 10_000_000).toFixed(7)} KALE.`,
                 background: 'variant-filled-success',
             });
         } catch (err: any) {
@@ -184,7 +191,7 @@
             <footer class="card-footer text-center">
                 <button
                     class="btn variant-filled"
-                    disabled={isHarvesting || isFetching}
+                    disabled={isHarvesting || isFetching || selectedPails.length == 0}
                     onclick={harvestPails}>Harvest KALE</button
                 >
             </footer>
