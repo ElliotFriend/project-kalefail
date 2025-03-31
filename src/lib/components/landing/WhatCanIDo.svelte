@@ -56,6 +56,10 @@
         </div>
     </div>
     <div class="max-w-[650px] mx-auto">
-        <img class="rounded-3xl shadow-xl" alt="Workers in a field, gathering valuable KALE" src={farmField} />
+        <img
+            class="rounded-3xl shadow-xl"
+            alt="Workers in a field, gathering valuable KALE"
+            src={farmField}
+        />
     </div>
 </div>

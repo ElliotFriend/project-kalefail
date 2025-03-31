@@ -4,9 +4,7 @@
 </script>
 
 <footer class="flex-none bg-surface-100-800-token shadow-xl p-4">
-    <div
-        class="flex flex-col md:flex-row md:space-y-0 justify-around align-center mx-auto"
-    >
+    <div class="flex flex-col md:flex-row md:space-y-0 justify-around align-center mx-auto">
         <div class="hidden md:grid space-y-1">
             <h6 class="h6">The KALE Project</h6>
             <ul>

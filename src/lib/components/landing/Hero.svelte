@@ -17,6 +17,10 @@
         <p class="!text-xl max-w-[475px]">Today, we make that possible.</p>
     </div>
     <div class="max-w-[650px] mx-auto">
-        <img class="rounded-3xl shadow-xl" alt="A brave farmer, presenting his pail-full of KALE" src={kalePail} />
+        <img
+            class="rounded-3xl shadow-xl"
+            alt="A brave farmer, presenting his pail-full of KALE"
+            src={kalePail}
+        />
     </div>
 </div>

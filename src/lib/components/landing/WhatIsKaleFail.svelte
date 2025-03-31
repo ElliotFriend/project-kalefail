@@ -4,7 +4,11 @@
 
 <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-10 items-center">
     <div class="max-w-[650px] mx-auto order-last xl:order-first">
-        <img class="rounded-3xl shadow-xl" alt="A brave farmer, presenting his pail-full of KALE" src={failedCorium} />
+        <img
+            class="rounded-3xl shadow-xl"
+            alt="A brave farmer, presenting his pail-full of KALE"
+            src={failedCorium}
+        />
     </div>
     <div class="flex flex-col items-center xl:items-start text-center xl:text-left space-y-4">
         <h2 class="h2">What is KaleFail?</h2>
