@@ -58,8 +58,6 @@
         </div>
     </div>
     <div class="max-w-[650px] mx-auto">
-        <Avatar actionParams="#BlueNight" width="w-96" shadow="shadow-xl" rounded="rounded-3xl">
-            <img alt="Workers in a field, gathering valuable KALE" src={farmField} />
-        </Avatar>
+        <img class="rounded-3xl shadow-xl" alt="Workers in a field, gathering valuable KALE" src={farmField} />
     </div>
 </div>

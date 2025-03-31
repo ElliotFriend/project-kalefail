@@ -18,8 +18,6 @@
         <p class="!text-xl max-w-[475px]">Today, we make that possible.</p>
     </div>
     <div class="max-w-[650px] mx-auto">
-        <Avatar actionParams="#BlueNight" width="w-96" shadow="shadow-xl" rounded="rounded-3xl">
-            <img alt="A brave farmer, presenting his pail-full of KALE" src={kalePail} />
-        </Avatar>
+        <img class="rounded-3xl shadow-xl" alt="A brave farmer, presenting his pail-full of KALE" src={kalePail} />
     </div>
 </div>
