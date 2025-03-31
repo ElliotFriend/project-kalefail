@@ -30,9 +30,7 @@ export const GET: RequestHandler = async ({ params }) => {
                 ).toScAddress(),
                 key: nativeToScVal([
                     nativeToScVal('Pail', { type: 'symbol' }),
-                    nativeToScVal(params.address, {
-                        type: 'address',
-                    }),
+                    nativeToScVal(params.address, { type: 'address' }),
                     nativeToScVal(p, { type: 'u32' }),
                 ]),
                 durability: xdr.ContractDataDurability.temporary(),
