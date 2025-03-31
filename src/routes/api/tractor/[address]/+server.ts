@@ -30,7 +30,7 @@ export const GET: RequestHandler = async ({ params }) => {
                 ).toScAddress(),
                 key: nativeToScVal([
                     nativeToScVal('Pail', { type: 'symbol' }),
-                    nativeToScVal('CC4RLF6LVFPDMPTWYB2NR7HEUTEDIHZX7WQZOJLEIWOE6Z36EPBCSXHQ', {
+                    nativeToScVal(params.address, {
                         type: 'address',
                     }),
                     nativeToScVal(p, { type: 'u32' }),
@@ -43,6 +43,7 @@ export const GET: RequestHandler = async ({ params }) => {
     let { entries: pailEntries, latestLedger } = await rpc.getLedgerEntries(...possiblePails);
     let harvestablePails = pailEntries.map((e) => {
         let pail = scValToNative(e.val.contractData().val());
+        console.log('pail', pail)
         if (
             e.liveUntilLedgerSeq &&
             e.liveUntilLedgerSeq >= latestLedger &&
