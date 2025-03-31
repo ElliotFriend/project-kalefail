@@ -5,10 +5,10 @@
 
 <footer class="flex-none bg-surface-100-800-token shadow-xl p-4">
     <div
-        class="flex flex-col md:flex-row space-y-6 md:space-y-0 justify-around align-center mx-auto"
+        class="flex flex-col md:flex-row md:space-y-0 justify-around align-center mx-auto"
     >
-        <div class="space-y-1">
-            <h6 class="h6">The KALEpail Project</h6>
+        <div class="hidden md:grid space-y-1">
+            <h6 class="h6">The KALE Project</h6>
             <ul>
                 <li>
                     <a class="anchor" target="_blank" href="https://kalefarm.xyz/"> Farm KALE </a>
@@ -22,7 +22,7 @@
         </div>
         <div class="md:grid grid-cols-1">
             <div class="space-y-1">
-                <h6 class="h6">The KaleFail<sup>TM</sup> Project</h6>
+                <h6 class="h6">The KaleFail Project</h6>
                 <ul>
                     <li>
                         <a
@@ -33,7 +33,7 @@
                             View Source Code
                         </a>
                     </li>
-                    <li>
+                    <li class="hidden md:grid">
                         <a
                             class="anchor"
                             target="_blank"
@@ -45,7 +45,7 @@
                 </ul>
             </div>
         </div>
-        <div class="md:grid grid-cols-1">
+        <div class="hidden md:grid grid-cols-1">
             <div class="space-y-1">
                 <h6 class="h6">More Info</h6>
                 <ul>
