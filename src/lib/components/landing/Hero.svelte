@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { Avatar } from '@skeletonlabs/skeleton';
     import kalePail from '$lib/assets/kalepail.avif';
 </script>
 

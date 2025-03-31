@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { Avatar } from '@skeletonlabs/skeleton';
     import failedCorium from '$lib/assets/failed-corium.avif';
 </script>
 

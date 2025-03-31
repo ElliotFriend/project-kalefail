@@ -1,7 +1,5 @@
 <script lang="ts">
-    import { Avatar } from '@skeletonlabs/skeleton';
     import ArrowRight from 'lucide-svelte/icons/arrow-right';
-
     import farmField from '$lib/assets/farm-field.avif';
 </script>
 
