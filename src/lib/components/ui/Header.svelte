@@ -68,7 +68,7 @@
             </div>
             <div class="flex-none flex items-center">
                 <a href="/" title="Dapp homepage">
-                    <span class="text-lg"> 🥗 KaleFail </span>
+                    <span class="text-lg"> KaleFail 🥗 </span>
                 </a>
             </div>
             <!-- The "topnav" buttons will not appear on small or smaller screens -->
