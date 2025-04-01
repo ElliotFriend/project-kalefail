@@ -20,7 +20,6 @@
         "@playwright/test": "^1.49.1",
         "@skeletonlabs/skeleton": "^2.10.4",
         "@skeletonlabs/tw-plugin": "^0.4.0",
-        "@sveltejs/adapter-auto": "^4.0.0",
         "@sveltejs/adapter-vercel": "^5.6.1",
         "@sveltejs/kit": "^2.17.1",
         "@sveltejs/vite-plugin-svelte": "^5.0.3",
@@ -53,10 +52,10 @@
     "dependencies": {
         "@stellar/stellar-sdk": "^13.1.0",
         "base64url": "^3.0.1",
+        "kale_salad": "file:packages/kale_salad",
+        "kale_tractor": "file:packages/kale_tractor",
         "passkey-kit": "^0.10.19",
         "svelte-persisted-store": "^0.12.0",
-        "trading_post": "file:packages/trading_post",
-        "kale_salad": "file:packages/kale_salad",
-        "kale_tractor": "file:packages/kale_tractor"
+        "trading_post": "file:packages/trading_post"
     }
 }

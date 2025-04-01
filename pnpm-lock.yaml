@@ -39,9 +39,6 @@ importers:
       '@skeletonlabs/tw-plugin':
         specifier: ^0.4.0
         version: 0.4.1(tailwindcss@3.4.17)
-      '@sveltejs/adapter-auto':
-        specifier: ^4.0.0
-        version: 4.0.0(@sveltejs/kit@2.17.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.8)(vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(yaml@2.7.0)))(svelte@5.19.8)(vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(yaml@2.7.0)))
       '@sveltejs/adapter-vercel':
         specifier: ^5.6.1
         version: 5.6.1(@sveltejs/kit@2.17.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.8)(vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(yaml@2.7.0)))(svelte@5.19.8)(vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(yaml@2.7.0)))(rollup@4.34.4)
@@ -518,11 +515,6 @@ packages:
 
   '@stellar/stellar-sdk@13.1.0':
     resolution: {integrity: sha512-ARQkUdyGefXdTgwSF0eONkzv/geAqUfyfheJ9Nthz6GAr5b41fNwWW9UtE8JpXC4IpvE3t5elIUN5hKJzASN9w==}
-
-  '@sveltejs/adapter-auto@4.0.0':
-    resolution: {integrity: sha512-kmuYSQdD2AwThymQF0haQhM8rE5rhutQXG4LNbnbShwhMO4qQGnKaaTy+88DuNSuoQDi58+thpq8XpHc1+oEKQ==}
-    peerDependencies:
-      '@sveltejs/kit': ^2.0.0
 
   '@sveltejs/adapter-vercel@5.6.1':
     resolution: {integrity: sha512-ljeLT7p4VQtO9ux4p7MqSkNv+yMw9LcD0K8hl0TK495DhBbaBwOCx9jcp3+/RqGPzsTvTRJSiPRafIfiCjQqjQ==}
@@ -2326,11 +2318,6 @@ snapshots:
       urijs: 1.19.11
     transitivePeerDependencies:
       - debug
-
-  '@sveltejs/adapter-auto@4.0.0(@sveltejs/kit@2.17.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.8)(vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(yaml@2.7.0)))(svelte@5.19.8)(vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(yaml@2.7.0)))':
-    dependencies:
-      '@sveltejs/kit': 2.17.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.8)(vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(yaml@2.7.0)))(svelte@5.19.8)(vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(yaml@2.7.0))
-      import-meta-resolve: 4.1.0
 
   '@sveltejs/adapter-vercel@5.6.1(@sveltejs/kit@2.17.1(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.19.8)(vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(yaml@2.7.0)))(svelte@5.19.8)(vite@6.1.0(@types/node@22.13.1)(jiti@2.4.2)(yaml@2.7.0)))(rollup@4.34.4)':
     dependencies:
