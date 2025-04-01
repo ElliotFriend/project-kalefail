@@ -41,7 +41,6 @@ export const GET: RequestHandler = async ({ params }) => {
     let { entries: pailEntries, latestLedger } = await rpc.getLedgerEntries(...possiblePails);
     let harvestablePails = pailEntries.map((e) => {
         let pail = scValToNative(e.val.contractData().val());
-        console.log('pail', pail)
         if (
             e.liveUntilLedgerSeq &&
             e.liveUntilLedgerSeq >= latestLedger &&
