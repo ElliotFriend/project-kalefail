@@ -3,6 +3,24 @@ import { error, json } from '@sveltejs/kit';
 import { rpc } from '$lib/passkeyClient';
 import { Contract, scValToNative, xdr, Address, nativeToScVal } from '@stellar/stellar-sdk';
 
+function createPailLedgerKeys(index: number, address: string): xdr.LedgerKey[] {
+    return Array.from({ length: 200 }, (_, i) => index - i).map((p) =>
+        xdr.LedgerKey.contractData(
+            new xdr.LedgerKeyContractData({
+                contract: new Address(
+                    'CDL74RF5BLYR2YBLCCI7F5FB6TPSCLKEJUBSD2RSVWZ4YHF3VMFAIGWA',
+                ).toScAddress(),
+                key: nativeToScVal([
+                    nativeToScVal('Pail', { type: 'symbol' }),
+                    nativeToScVal(address, { type: 'address' }),
+                    nativeToScVal(p, { type: 'u32' }),
+                ]),
+                durability: xdr.ContractDataDurability.temporary(),
+            }),
+        ),
+    );
+}
+
 export const GET: RequestHandler = async ({ params }) => {
     if (!params.address) {
         error(400, { message: 'address required for tractor hunt.' });
@@ -22,23 +40,17 @@ export const GET: RequestHandler = async ({ params }) => {
         error(500, 'Could not find current KALE block. Please try again later');
     }
 
-    let possiblePails = Array.from({ length: 200 }, (_, i) => searchIndex - i).map((p) =>
-        xdr.LedgerKey.contractData(
-            new xdr.LedgerKeyContractData({
-                contract: new Address(
-                    'CDL74RF5BLYR2YBLCCI7F5FB6TPSCLKEJUBSD2RSVWZ4YHF3VMFAIGWA',
-                ).toScAddress(),
-                key: nativeToScVal([
-                    nativeToScVal('Pail', { type: 'symbol' }),
-                    nativeToScVal(params.address, { type: 'address' }),
-                    nativeToScVal(p, { type: 'u32' }),
-                ]),
-                durability: xdr.ContractDataDurability.temporary(),
-            }),
-        ),
-    );
+    // search one batch of 200 pails
+    let possiblePails = createPailLedgerKeys(searchIndex, params.address);
+    let { entries: pailEntries1 } = await rpc.getLedgerEntries(...possiblePails);
 
-    let { entries: pailEntries, latestLedger } = await rpc.getLedgerEntries(...possiblePails);
+    // search for the next batch of 200 pails
+    possiblePails = createPailLedgerKeys(searchIndex - 200, params.address);
+    let { entries: pailEntries2, latestLedger } = await rpc.getLedgerEntries(...possiblePails);
+
+    // mash the two together
+    let pailEntries = [...pailEntries1, ...pailEntries2];
+
     let harvestablePails = pailEntries.map((e) => {
         let pail = scValToNative(e.val.contractData().val());
         if (
