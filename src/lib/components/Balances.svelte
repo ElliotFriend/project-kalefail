@@ -17,7 +17,7 @@
                     <div class="placeholder w-36"></div>
                 {/each}
             {:then}
-                {#each Object.entries(wallet.balances) as [asset, balance]}
+                {#each Object.entries(wallet.balances) as [asset, balance] (asset)}
                     <BalanceBadge {asset} {balance} />
                 {/each}
             {/await}

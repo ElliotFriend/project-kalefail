@@ -7,23 +7,23 @@ import { Contract, nativeToScVal, scValToNative, xdr } from '@stellar/stellar-sd
 export const GET: RequestHandler = async ({ fetch }) => {
     const saladContract = new Contract(kale_salad.options.contractId);
 
-    let instance: Record<string, any> = {};
-    let { entries: instanceEntries } = await rpc.getLedgerEntries(saladContract.getFootprint());
+    const instance: Record<string, any> = {};
+    const { entries: instanceEntries } = await rpc.getLedgerEntries(saladContract.getFootprint());
 
     instanceEntries.forEach((entry) => {
         switch (entry.val.contractData().key().switch().value) {
             case xdr.ScValType.scvLedgerKeyContractInstance().value:
-                let instanceStorage = entry.val.contractData().val().instance().storage();
-                instanceStorage!.forEach((iEntry) => {
-                    let key = scValToNative(iEntry.key())[0].toString();
-                    let value = scValToNative(iEntry.val());
-                    instance[key] = value;
-                });
+                entry.val.contractData().val().instance().storage()!
+                    .forEach((iEntry) => {
+                        const key = scValToNative(iEntry.key())[0].toString();
+                        const value = scValToNative(iEntry.val());
+                        instance[key] = value;
+                    });
                 break;
         }
     });
 
-    let ledgerKeyArray = [];
+    const ledgerKeyArray = [];
     for (let i = 0; i <= instance.MintIndex; i++) {
         ledgerKeyArray.push(
             xdr.LedgerKey.contractData(
@@ -39,20 +39,20 @@ export const GET: RequestHandler = async ({ fetch }) => {
         );
     }
 
-    let { entries: ownerEntries } = await rpc.getLedgerEntries(...ledgerKeyArray);
-    let mintedNfts: Promise<Record<string, any>[]> = Promise.all(
+    const { entries: ownerEntries } = await rpc.getLedgerEntries(...ledgerKeyArray);
+    const mintedNfts: Promise<Record<string, any>[]> = Promise.all(
         ownerEntries.map(async (entry) => {
-            let nftObj = {
+            const nftObj = {
                 tokenId: scValToNative(entry.key.contractData().key())[1],
                 owner: scValToNative(entry.val.contractData().val()),
                 meta: {},
             };
 
             const tokenUri = `${instance.Metadata.base_uri}${nftObj.tokenId}`;
-            let results = await fetch(tokenUri.replace(/^ipfs\:\/\//, 'https://ipfs.io/ipfs/'));
+            const results = await fetch(tokenUri.replace(/^ipfs:\/\//, 'https://ipfs.io/ipfs/'));
 
             if (results.ok) {
-                let jso = await results.json();
+                const jso = await results.json();
                 nftObj.meta = jso;
             }
 

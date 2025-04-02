@@ -12,7 +12,7 @@
     <div class="p-4 space-y-4 overflow-y-auto">
         <nav class="list-nav">
             <ul>
-                {#each menuItems as item}
+                {#each menuItems as item (item.name)}
                     <a
                         href={item.href}
                         class="btn variant-soft-surface"

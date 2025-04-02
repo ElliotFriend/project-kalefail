@@ -3,16 +3,12 @@
     // error _handling_, though. So, use whatever techniques you see fit.
     import {
         clipboard,
-        getModalStore,
         getToastStore,
-        popup,
-        type ModalSettings,
     } from '@skeletonlabs/skeleton';
     const toastStore = getToastStore();
-    const modalStore = getModalStore();
 
     import Copy from 'lucide-svelte/icons/copy';
-    import { account, send, getWalletAddress, deploy } from '$lib/passkeyClient';
+    import { account, getWalletAddress, deploy } from '$lib/passkeyClient';
     import { PasskeyClient } from 'passkey-kit';
     import { keyId } from '$lib/state/keyId';
     import { wallet } from '$lib/state/Wallet.svelte';

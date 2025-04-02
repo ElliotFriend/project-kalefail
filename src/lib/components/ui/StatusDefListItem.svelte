@@ -21,7 +21,7 @@
         <dd class="opacity-80">
             {#if typeof value === 'object'}
                 <ul class="list">
-                    {#each value as vegetable}
+                    {#each value as vegetable (vegetable.assetCode)}
                         {@const seHref = `https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/asset/${vegetable.assetCode}-${vegetable.issuerAddress}`}
                         <li>
                             <span><Banknote size={20} /></span>

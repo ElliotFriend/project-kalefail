@@ -175,7 +175,7 @@
                     <input type="number" placeholder="Amount" bind:value={transferNumTokens} />
                     <select bind:value={transferVegetable}>
                         <option>KALE</option>
-                        {#each data.vegetables as vegetable}
+                        {#each data.vegetables as vegetable (vegetable.assetCode)}
                             <option value={vegetable.contractAddress}>{vegetable.assetCode}</option>
                         {/each}
                     </select>
@@ -207,7 +207,7 @@
             </select>
         {:else}
             <select bind:value={vegetableToTrade}>
-                {#each data.vegetables as vegetable}
+                {#each data.vegetables as vegetable (vegetable.assetCode)}
                     <option value={vegetable.contractAddress}>{vegetable.assetCode}</option>
                 {/each}
             </select>

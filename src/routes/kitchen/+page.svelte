@@ -8,11 +8,11 @@
 
     let { data }: PageProps = $props();
     let tabSet: number = $state(0);
-    //@ts-ignore
+    // @ts-expect-error: mintedNfts somehow has lost its type safety between page.ts and here
     data.kitchen.mintedNfts.sort((a, b) => a.tokenId - b.tokenId);
     let displayOwnedNfts = $state(false);
     let nftsToDisplay = $derived(
-        //@ts-ignore
+        // @ts-expect-error: mintedNfts somehow has lost its type safety between page.ts and here
         data.kitchen.mintedNfts.filter((nft) =>
             displayOwnedNfts ? nft.owner === wallet.address : true,
         ),

@@ -168,7 +168,7 @@
                     <hr class="!border-t-2" />
 
                     <div class="columns-2">
-                        {#each harvestablePails as pail}
+                        {#each harvestablePails as pail (pail)}
                             <label class="flex items-center space-x-2">
                                 <input
                                     class="checkbox"

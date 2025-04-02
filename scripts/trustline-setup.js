@@ -4,7 +4,6 @@ import {
     Keypair,
     TransactionBuilder,
     Operation,
-    Networks,
     BASE_FEE,
     rpc,
     TimeoutInfinite,
