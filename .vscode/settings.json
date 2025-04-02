@@ -1,5 +1,6 @@
 {
     "prettier.documentSelectors": ["**/*.svelte"],
+    "eslint.validate": ["javascript", "javascriptreact", "svelte"],
     "tailwindCSS.classAttributes": [
         "class",
         "accent",
