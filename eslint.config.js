@@ -10,6 +10,13 @@ export default tseslint.config(
     ...svelte.configs.recommended,
     ...svelte.configs.prettier,
     {
+        ignores: [
+            "packages/*",
+            ".svelte-kit/*",
+            "build",
+        ],
+    },
+    {
         languageOptions: {
             globals: {
                 ...globals.browser,
@@ -25,7 +32,7 @@ export default tseslint.config(
                 extraFileExtensions: ['.svelte'],
                 parser: tseslint.parser,
                 svelteConfig,
-            }
-        }
-    }
-)
+            },
+        },
+    },
+);
