@@ -13,7 +13,11 @@ export const GET: RequestHandler = async ({ fetch }) => {
     instanceEntries.forEach((entry) => {
         switch (entry.val.contractData().key().switch().value) {
             case xdr.ScValType.scvLedgerKeyContractInstance().value:
-                entry.val.contractData().val().instance().storage()!
+                entry.val
+                    .contractData()
+                    .val()
+                    .instance()
+                    .storage()!
                     .forEach((iEntry) => {
                         const key = scValToNative(iEntry.key())[0].toString();
                         const value = scValToNative(iEntry.val());

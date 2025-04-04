@@ -1,10 +1,7 @@
 <script lang="ts">
     // We're using toasts to display errors to the user. We're not doing much
     // error _handling_, though. So, use whatever techniques you see fit.
-    import {
-        clipboard,
-        getToastStore,
-    } from '@skeletonlabs/skeleton';
+    import { clipboard, getToastStore } from '@skeletonlabs/skeleton';
     const toastStore = getToastStore();
 
     import Copy from 'lucide-svelte/icons/copy';

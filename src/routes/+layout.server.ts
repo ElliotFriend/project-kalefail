@@ -9,7 +9,11 @@ import { PUBLIC_STELLAR_NETWORK_PASSPHRASE } from '$env/static/public';
 export const load: LayoutServerLoad = async ({ depends }) => {
     const tradingPostContract = new Contract(trading_post.options.contractId);
 
-    const returnObj: {instance: Record<string, any>; contractKale: number; vegetables: VegetableAsset[]} = {
+    const returnObj: {
+        instance: Record<string, any>;
+        contractKale: number;
+        vegetables: VegetableAsset[];
+    } = {
         instance: {},
         contractKale: 0,
         vegetables: [],
@@ -35,7 +39,11 @@ export const load: LayoutServerLoad = async ({ depends }) => {
         switch (entry.val.contractData().key().switch().value) {
             case xdr.ScValType.scvLedgerKeyContractInstance().value:
                 // trading post contract instance storage
-                entry.val.contractData().val().instance().storage()!
+                entry.val
+                    .contractData()
+                    .val()
+                    .instance()
+                    .storage()!
                     .forEach((iEntry) => {
                         const key = scValToNative(iEntry.key())[0].toString();
                         const value = scValToNative(iEntry.val());

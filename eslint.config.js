@@ -10,11 +10,7 @@ export default tseslint.config(
     ...svelte.configs.recommended,
     ...svelte.configs.prettier,
     {
-        ignores: [
-            "packages/*",
-            ".svelte-kit/*",
-            "build",
-        ],
+        ignores: ['packages/*', '.svelte-kit/*', 'build'],
     },
     {
         languageOptions: {
