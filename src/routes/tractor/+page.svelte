@@ -40,11 +40,14 @@
 
             harvestablePails = tractorJson.pails;
             hasFetched = true;
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('error', err);
 
             toastStore.trigger({
-                message: err || 'Something went wrong fetching pails. Please try again later.',
+                message:
+                    err instanceof Error
+                        ? err.message
+                        : 'Something went wrong fetching pails. Please try again later.',
                 background: 'variant-filled-error',
             });
         } finally {
@@ -80,11 +83,14 @@
                 message: `Sweet!! You successfully harvested ${(Number(totalReward) / 10_000_000).toFixed(7)} KALE.`,
                 background: 'variant-filled-success',
             });
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('error', err);
 
             toastStore.trigger({
-                message: err || 'Something went wrong harvesting pails. Please try again later.',
+                message:
+                    err instanceof Error
+                        ? err.message
+                        : 'Something went wrong harvesting pails. Please try again later.',
                 background: 'variant-filled-error',
             });
         } finally {

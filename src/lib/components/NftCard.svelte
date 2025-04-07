@@ -55,7 +55,7 @@
             };
             modalStore.trigger(modal);
         })
-            .then(async (r: any) => {
+            .then(async (r: string) => {
                 if (!r) {
                     throw 'Token transfer cancelled.';
                 }
@@ -74,7 +74,7 @@
                     } else if (at.simulation.error.includes('Error(Contract, #202)')) {
                         throw 'Only 5 NFTs may be held per address.';
                     }
-                    throw '';
+                    throw at.simulation.error;
                 }
 
                 let tx = await account.sign(at.built!, { keyId: $keyId });
@@ -87,12 +87,14 @@
 
                 invalidate('/api/kitchen');
             })
-            .catch((err: any) => {
-                console.error('error', err);
+            .catch((err: unknown) => {
+                console.error(err);
 
                 toastStore.trigger({
                     message:
-                        err || 'Something went wrong transferring NFT. Please try again later.',
+                        err instanceof Error
+                            ? err.message
+                            : `Something went wrong transferring NFT. ${(err as string) || 'Please try again later.'}`,
                     background: 'variant-filled-error',
                 });
             })
@@ -116,7 +118,7 @@
             };
             modalStore.trigger(modal);
         })
-            .then(async (r: any) => {
+            .then(async (r: boolean) => {
                 if (!r) {
                     throw 'Token burn aborted. Phew!';
                 }
@@ -134,7 +136,7 @@
                     } else if (at.simulation.error.includes('Error(Contract, #301)')) {
                         throw 'Incorrect token owner.';
                     }
-                    throw '';
+                    throw at.simulation.error;
                 }
 
                 let tx = await account.sign(at.built!, { keyId: $keyId });
@@ -147,11 +149,14 @@
 
                 invalidate('/api/kitchen');
             })
-            .catch((err: any) => {
-                console.error('error', err);
+            .catch((err: unknown) => {
+                console.error(err);
 
                 toastStore.trigger({
-                    message: err || 'Something went wrong burning NFT. Please try again later.',
+                    message:
+                        err instanceof Error
+                            ? err.message
+                            : `Something went wrong burning NFT. ${(err as string) || 'Please try again later.'}`,
                     background: 'variant-filled-error',
                 });
             })

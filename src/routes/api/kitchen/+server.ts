@@ -7,7 +7,8 @@ import { Contract, nativeToScVal, scValToNative, xdr } from '@stellar/stellar-sd
 export const GET: RequestHandler = async ({ fetch }) => {
     const saladContract = new Contract(kale_salad.options.contractId);
 
-    const instance: Record<string, any> = {};
+    const instance: Record<string, string | Record<string, string> | number | string[] | bigint> =
+        {};
     const { entries: instanceEntries } = await rpc.getLedgerEntries(saladContract.getFootprint());
 
     instanceEntries.forEach((entry) => {
@@ -28,7 +29,7 @@ export const GET: RequestHandler = async ({ fetch }) => {
     });
 
     const ledgerKeyArray = [];
-    for (let i = 0; i <= instance.MintIndex; i++) {
+    for (let i = 0; i <= (instance.MintIndex as number); i++) {
         ledgerKeyArray.push(
             xdr.LedgerKey.contractData(
                 new xdr.LedgerKeyContractData({
@@ -44,7 +45,12 @@ export const GET: RequestHandler = async ({ fetch }) => {
     }
 
     const { entries: ownerEntries } = await rpc.getLedgerEntries(...ledgerKeyArray);
-    const mintedNfts: Promise<Record<string, any>[]> = Promise.all(
+    const mintedNfts: Promise<
+        Record<
+            string,
+            number | string | Record<string, string | number | Record<string, string>[]>
+        >[]
+    > = Promise.all(
         ownerEntries.map(async (entry) => {
             const nftObj = {
                 tokenId: scValToNative(entry.key.contractData().key())[1],
@@ -52,7 +58,7 @@ export const GET: RequestHandler = async ({ fetch }) => {
                 meta: {},
             };
 
-            const tokenUri = `${instance.Metadata.base_uri}${nftObj.tokenId}`;
+            const tokenUri = `${(instance.Metadata as Record<string, string>).base_uri}${nftObj.tokenId}`;
             const results = await fetch(tokenUri.replace(/^ipfs:\/\//, 'https://ipfs.io/ipfs/'));
 
             if (results.ok) {
@@ -68,7 +74,7 @@ export const GET: RequestHandler = async ({ fetch }) => {
         pricePerNft: instance.PaymentPerNft.toString(),
         mintIndex: instance.MintIndex,
         maxToMint: 250,
-        baseUri: instance.Metadata.base_uri,
+        baseUri: (instance.Metadata as Record<string, string>).base_uri,
         mintedNfts: await mintedNfts,
     });
 };

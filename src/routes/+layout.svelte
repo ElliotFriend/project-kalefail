@@ -12,6 +12,7 @@
     initializeStores();
 
     let { children }: LayoutProps = $props();
+    /* eslint svelte/no-at-html-tags: "off" */
 </script>
 
 <svelte:head>{@html '<script>(' + autoModeWatcher.toString() + ')();</script>'}</svelte:head>

@@ -47,8 +47,9 @@
 
             wallet.getBalances(data.vegetables);
             invalidate('kf:trading-post:status');
-        } catch (err) {
-            console.log(err);
+        } catch (err: unknown) {
+            console.error(err);
+
             toastStore.trigger({
                 message: 'Something went wrong trading your KALE. Please try again later.',
                 background: 'variant-filled-error',
@@ -110,10 +111,13 @@
                     value={trading_post.options.contractId}
                     isAddress
                 />
-                <StatusDefListItem title="Open for Business" value={data.instance.IsOpen} />
+                <StatusDefListItem
+                    title="Open for Business"
+                    value={data.instance.IsOpen as boolean}
+                />
                 <StatusDefListItem
                     title="KALE Asset Contract"
-                    value={data.instance.KaleAddress}
+                    value={data.instance.KaleAddress as string}
                     isAddress
                 />
                 <StatusDefListItem
@@ -122,9 +126,9 @@
                 />
                 <StatusDefListItem
                     title="Current Shelf Space"
-                    value={data.instance.MaxVegetables}
+                    value={data.instance.MaxVegetables as number}
                 />
-                <StatusDefListItem title="Owner" value={data.instance.Owner} isAddress />
+                <StatusDefListItem title="Owner" value={data.instance.Owner as string} isAddress />
                 <StatusDefListItem title="Vegetables Available" value={data.vegetables} />
             </dl>
         </section>

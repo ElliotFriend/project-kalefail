@@ -17,7 +17,6 @@
         console.log('minting NFTs');
         isMinting = true;
         try {
-            // do something
             let at = await kale_salad.mint_salad({
                 owner: wallet.address,
                 number_of_tokens: nftsToMint,
@@ -29,7 +28,7 @@
                 } else if (at.simulation.error.includes('Error(Contract, #201)')) {
                     throw 'Only 250 NFTs may be minted ever.';
                 }
-                throw '';
+                throw at.simulation.error;
             }
 
             let tx = await account.sign(at.built!, { keyId: $keyId });
@@ -40,11 +39,14 @@
                 background: 'variant-filled-success',
             });
             invalidate('/api/kitchen');
-        } catch (err: any) {
-            console.error('error', err);
+        } catch (err: unknown) {
+            console.error(err);
 
             toastStore.trigger({
-                message: err || 'Something went wrong minting NFTs. Please try again later.',
+                message:
+                    err instanceof Error
+                        ? err.message
+                        : `Something went wrong minting NFTs. ${(err as string) || 'Please try again later.'}`,
                 background: 'variant-filled-error',
             });
         } finally {

@@ -10,9 +10,6 @@
         value,
         isAddress = false,
     }: { title: string; value: InstanceStorageValue; isAddress?: boolean } = $props();
-    // console.log('title', title)
-    // console.log('value', value)
-    // console.log('isAddress', isAddress)
 </script>
 
 <div>
@@ -35,7 +32,7 @@
                 </ul>
             {:else if typeof value === 'boolean'}
                 {value ? 'Open' : 'Closed'}
-            {:else if isAddress}
+            {:else if isAddress && typeof value === 'string'}
                 <StellarExpertLink address={value} />
             {:else}
                 {value}

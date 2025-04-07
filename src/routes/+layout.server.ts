@@ -2,7 +2,6 @@ import { kaleSacAddress, rpc } from '$lib/passkeyClient';
 import { xdr, Address, Contract, scValToNative, nativeToScVal, Asset } from '@stellar/stellar-sdk';
 import type { LayoutServerLoad } from './$types';
 import trading_post from '$lib/contracts/trading_post';
-// import type { Storage } from 'trading_post';
 import type { VegetableAsset } from '$lib/types';
 import { PUBLIC_STELLAR_NETWORK_PASSPHRASE } from '$env/static/public';
 
@@ -10,7 +9,7 @@ export const load: LayoutServerLoad = async ({ depends }) => {
     const tradingPostContract = new Contract(trading_post.options.contractId);
 
     const returnObj: {
-        instance: Record<string, any>;
+        instance: Record<string, boolean | string | string[] | number>;
         contractKale: number;
         vegetables: VegetableAsset[];
     } = {
@@ -56,7 +55,7 @@ export const load: LayoutServerLoad = async ({ depends }) => {
         }
     });
 
-    const vegetableFootprints = returnObj.instance.Vegetables.map((v: string) => {
+    const vegetableFootprints = (returnObj.instance.Vegetables as string[]).map((v: string) => {
         return new Contract(v).getFootprint();
     });
     const { entries: vegetablesMeta } = await rpc.getLedgerEntries(...vegetableFootprints);

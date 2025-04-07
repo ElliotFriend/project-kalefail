@@ -4,4 +4,4 @@ export type VegetableAsset = {
     contractAddress: string;
 };
 
-export type InstanceStorageValue = string | VegetableAsset[] | boolean;
+export type InstanceStorageValue = string | VegetableAsset[] | boolean | number;

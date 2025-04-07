@@ -37,7 +37,7 @@ export const GET: RequestHandler = async ({ params }) => {
     const searchIndex = farmIndex ? scValToNative(farmIndex?.val()) - 1 : 0;
 
     if (searchIndex === 0) {
-        error(500, 'Could not find current KALE block. Please try again later');
+        error(500, { message: 'Could not find current KALE block. Please try again later' });
     }
 
     // search one batch of 200 pails
