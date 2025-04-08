@@ -1,6 +1,6 @@
 <script lang="ts">
     import { PUBLIC_STELLAR_NETWORK } from '$env/static/public';
-    import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
+    import Truncated from '$lib/components/ui/Truncated.svelte';
 
     let { address }: { address: string } = $props();
 
@@ -9,4 +9,4 @@
         : `https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/account/${address}`;
 </script>
 
-<a href={seHref} target="_blank" class="anchor"><TruncatedAddress {address} /></a>
+<a href={seHref} target="_blank" class="anchor"><Truncated text={address} /></a>
