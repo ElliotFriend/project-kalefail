@@ -10,7 +10,6 @@
     import { keyId } from '$lib/state/keyId';
     import { wallet } from '$lib/state/Wallet.svelte';
     import StellarExpertLink from '$lib/components/ui/StellarExpertLink.svelte';
-    import { page } from '$app/state';
     import base64url from 'base64url';
     import { PUBLIC_STELLAR_NETWORK_PASSPHRASE, PUBLIC_STELLAR_RPC_URL } from '$env/static/public';
     import { onMount } from 'svelte';
@@ -25,6 +24,7 @@
 
             wallet.address = contractId;
             console.log('walletAddress', wallet.address);
+            wallet.getWasmHash();
         }
     });
 
@@ -75,7 +75,7 @@
             wallet.address = contractId;
             console.log('walletAddress', wallet.address);
 
-            wallet.getBalances(page.data.vegetables);
+            wallet.getWasmHash();
         } catch (err) {
             console.error(err);
             toastStore.trigger({
