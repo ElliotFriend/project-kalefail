@@ -58,6 +58,10 @@
     async function harvestPails() {
         console.log('harvesting pails');
         isHarvesting = true;
+
+        // 29 pails per batch
+        selectedPails = harvestablePails.slice(0, 29);
+
         try {
             let at = await kale_tractor.harvest({
                 farmer: farmerAddress,
@@ -172,20 +176,29 @@
                     </label>
 
                     <hr class="!border-t-2" />
+                <p class="text-center mb-2">
+                
+                <strong>Ready :</strong> First batch loaded to the tractor.
+                </p>
 
-                    <div class="columns-2">
-                        {#each harvestablePails as pail (pail)}
-                            <label class="flex items-center space-x-2">
-                                <input
-                                    class="checkbox"
-                                    type="checkbox"
-                                    value={pail}
-                                    bind:group={selectedPails}
-                                />
-                                <p>{pail}</p>
-                            </label>
-                        {/each}
-                    </div>
+                <div class="columns-2">
+                    {#each harvestablePails as pail, i}
+                        <label
+                            class="flex items-center space-x-2"
+                            style="color: {i < 29 ? 'palegreen' : 'pale'}; font-weight: {i < 29 ? 'bold' : 'italic'}"
+                        >
+                            <input
+                                class="checkbox"
+                                type="checkbox"
+                                value={pail}
+                                disabled
+                                checked={i < 29}
+                            />
+                            <p>{pail}</p>
+                        </label>
+                    {/each}
+                </div>
+
                 </div>
             {:else if hasFetched}
                 <p>No harvestable pails found. Great work!</p>
@@ -195,11 +208,13 @@
         </section>
         {#if harvestablePails.length}
             <footer class="card-footer text-center">
-                <button
+               <button
                     class="btn variant-filled"
-                    disabled={isHarvesting || isFetching || selectedPails.length == 0}
-                    onclick={harvestPails}>Harvest KALE</button
-                >
+                    disabled={isHarvesting || isFetching || harvestablePails.length === 0}
+                    onclick={harvestPails}>
+                    Harvest KALE
+                </button>
+
             </footer>
         {/if}
     </div>
