@@ -52,6 +52,7 @@
     "type": "module",
     "dependencies": {
         "@stellar/stellar-sdk": "^13.2.0",
+        "@vercel/analytics": "^1.5.0",
         "base64url": "^3.0.1",
         "kale_salad": "file:packages/kale_salad",
         "kale_tractor": "file:packages/kale_tractor",
