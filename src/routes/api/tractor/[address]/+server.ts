@@ -65,6 +65,6 @@ export const GET: RequestHandler = async ({ params }) => {
 
     return json({
         index: searchIndex,
-        pails: harvestablePails.filter((p) => p),
+        pails: harvestablePails.filter((p) => p).sort(),
     });
 };
