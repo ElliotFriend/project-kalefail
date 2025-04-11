@@ -18,30 +18,30 @@
     let isFetching = $state(false);
     let hasFetched = $state(false);
     let isHarvesting = $state(false);
-    let shouldBulkSelect = $state(false)
+    let shouldBulkSelect = $state(false);
 
     let tooManyPailsFound = $derived(harvestablePails.length > MAX_PAILS_PER_HARVEST);
     let bulkSelectChecked = $derived.by(() => {
         if (tooManyPailsFound) {
-            return shouldBulkSelect
+            return shouldBulkSelect;
         } else {
-            return selectedPails.length > 0 && selectedPails.length === harvestablePails.length
+            return selectedPails.length > 0 && selectedPails.length === harvestablePails.length;
         }
     });
     let somePailsSelected = $derived.by(() => {
         if (tooManyPailsFound) {
-            return false
+            return false;
         } else {
-            return selectedPails.length > 0 && selectedPails.length < harvestablePails.length
+            return selectedPails.length > 0 && selectedPails.length < harvestablePails.length;
         }
     });
 
     function sliceHarvestablePails(): number[] {
-        return harvestablePails.slice(0, MAX_PAILS_PER_HARVEST)
+        return harvestablePails.slice(0, MAX_PAILS_PER_HARVEST);
     }
 
     function selectPailsBatch(event: Event) {
-        shouldBulkSelect = (event.target as HTMLInputElement).checked
+        shouldBulkSelect = (event.target as HTMLInputElement).checked;
         if (shouldBulkSelect) {
             selectedPails = sliceHarvestablePails();
         } else {
@@ -63,7 +63,7 @@
             harvestablePails = tractorJson.pails;
 
             if (shouldBulkSelect) {
-                selectedPails = sliceHarvestablePails()
+                selectedPails = sliceHarvestablePails();
             } else {
                 selectedPails = [];
             }
@@ -200,7 +200,8 @@
                         />
                         <p>
                             {#if tooManyPailsFound}
-                                <strong>Auto-Select Pails</strong> (max. {MAX_PAILS_PER_HARVEST} per harvest)
+                                <strong>Auto-Select Pails</strong> (max. {MAX_PAILS_PER_HARVEST} per
+                                harvest)
                             {:else}
                                 <strong>Select All Pails</strong>
                             {/if}
@@ -208,23 +209,21 @@
                     </label>
 
                     <hr class="!border-t-2" />
-                <div class="columns-2">
-                    {#each harvestablePails as pail (pail)}
-                        <label
-                            class="flex items-center space-x-2"
-                        >
-                            <input
-                                class="checkbox"
-                                type="checkbox"
-                                value={pail}
-                                bind:group={selectedPails}
-                                disabled={!selectedPails.includes(pail) && selectedPails.length === MAX_PAILS_PER_HARVEST}
-                            />
-                            <p>{pail}</p>
-                        </label>
-                    {/each}
-                </div>
-
+                    <div class="columns-2">
+                        {#each harvestablePails as pail (pail)}
+                            <label class="flex items-center space-x-2">
+                                <input
+                                    class="checkbox"
+                                    type="checkbox"
+                                    value={pail}
+                                    bind:group={selectedPails}
+                                    disabled={!selectedPails.includes(pail) &&
+                                        selectedPails.length === MAX_PAILS_PER_HARVEST}
+                                />
+                                <p>{pail}</p>
+                            </label>
+                        {/each}
+                    </div>
                 </div>
             {:else if hasFetched}
                 <p>No harvestable pails found. Great work!</p>
@@ -234,13 +233,13 @@
         </section>
         {#if harvestablePails.length}
             <footer class="card-footer text-center">
-               <button
+                <button
                     class="btn variant-filled"
                     disabled={isHarvesting || isFetching || harvestablePails.length === 0}
-                    onclick={harvestPails}>
+                    onclick={harvestPails}
+                >
                     Harvest KALE
                 </button>
-
             </footer>
         {/if}
     </div>
