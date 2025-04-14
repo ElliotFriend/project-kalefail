@@ -9,22 +9,44 @@
 
     import { getToastStore } from '@skeletonlabs/skeleton';
     const toastStore = getToastStore();
+    const MAX_PAILS_PER_HARVEST: number = 29;
 
     let farmerAddress = $state('');
     let harvestablePails: number[] = $state([]);
     let selectedPails: number[] = $state([]);
 
-    let allPailsSelected = $derived(selectedPails.length === harvestablePails.length);
-    let somePailsSelected = $derived(
-        selectedPails.length > 0 && selectedPails.length < harvestablePails.length,
-    );
-
     let isFetching = $state(false);
     let hasFetched = $state(false);
     let isHarvesting = $state(false);
+    let shouldBulkSelect = $state(false);
 
-    function togglePails(event: Event) {
-        selectedPails = (event.target as HTMLInputElement).checked ? [...harvestablePails] : [];
+    let tooManyPailsFound = $derived(harvestablePails.length > MAX_PAILS_PER_HARVEST);
+    let bulkSelectChecked = $derived.by(() => {
+        if (tooManyPailsFound) {
+            return shouldBulkSelect;
+        } else {
+            return selectedPails.length > 0 && selectedPails.length === harvestablePails.length;
+        }
+    });
+    let somePailsSelected = $derived.by(() => {
+        if (tooManyPailsFound) {
+            return false;
+        } else {
+            return selectedPails.length > 0 && selectedPails.length < harvestablePails.length;
+        }
+    });
+
+    function sliceHarvestablePails(): number[] {
+        return harvestablePails.slice(0, MAX_PAILS_PER_HARVEST);
+    }
+
+    function selectPailsBatch(event: Event) {
+        shouldBulkSelect = (event.target as HTMLInputElement).checked;
+        if (shouldBulkSelect) {
+            selectedPails = sliceHarvestablePails();
+        } else {
+            selectedPails = [];
+        }
     }
 
     async function fetchPails() {
@@ -39,6 +61,13 @@
             }
 
             harvestablePails = tractorJson.pails;
+
+            if (shouldBulkSelect) {
+                selectedPails = sliceHarvestablePails();
+            } else {
+                selectedPails = [];
+            }
+
             hasFetched = true;
         } catch (err: unknown) {
             console.error('error', err);
@@ -58,6 +87,7 @@
     async function harvestPails() {
         console.log('harvesting pails');
         isHarvesting = true;
+
         try {
             let at = await kale_tractor.harvest({
                 farmer: farmerAddress,
@@ -164,15 +194,21 @@
                         <input
                             class="checkbox"
                             type="checkbox"
-                            onchange={togglePails}
-                            checked={allPailsSelected}
+                            onchange={selectPailsBatch}
+                            checked={bulkSelectChecked}
                             indeterminate={somePailsSelected}
                         />
-                        <p><strong>Select All Pails</strong></p>
+                        <p>
+                            {#if tooManyPailsFound}
+                                <strong>Auto-Select Pails</strong> (max. {MAX_PAILS_PER_HARVEST} per
+                                harvest)
+                            {:else}
+                                <strong>Select All Pails</strong>
+                            {/if}
+                        </p>
                     </label>
 
                     <hr class="!border-t-2" />
-
                     <div class="columns-2">
                         {#each harvestablePails as pail (pail)}
                             <label class="flex items-center space-x-2">
@@ -181,6 +217,8 @@
                                     type="checkbox"
                                     value={pail}
                                     bind:group={selectedPails}
+                                    disabled={!selectedPails.includes(pail) &&
+                                        selectedPails.length === MAX_PAILS_PER_HARVEST}
                                 />
                                 <p>{pail}</p>
                             </label>
@@ -197,9 +235,11 @@
             <footer class="card-footer text-center">
                 <button
                     class="btn variant-filled"
-                    disabled={isHarvesting || isFetching || selectedPails.length == 0}
-                    onclick={harvestPails}>Harvest KALE</button
+                    disabled={isHarvesting || isFetching || harvestablePails.length === 0}
+                    onclick={harvestPails}
                 >
+                    Harvest KALE
+                </button>
             </footer>
         {/if}
     </div>
