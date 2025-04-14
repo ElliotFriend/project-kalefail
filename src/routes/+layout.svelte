@@ -7,6 +7,7 @@
     import UpgradeWalletBar from '$lib/components/ui/UpgradeWalletBar.svelte';
     import PageContent from '$lib/components/ui/PageContent.svelte';
     import Footer from '$lib/components/ui/Footer.svelte';
+    import Analytics from '$lib/components/Analytics.svelte';
 
     import { initializeStores, Modal, Toast, autoModeWatcher } from '@skeletonlabs/skeleton';
     import type { LayoutProps } from './$types';
@@ -18,6 +19,7 @@
 
 <svelte:head>{@html '<script>(' + autoModeWatcher.toString() + ')();</script>'}</svelte:head>
 
+<Analytics />
 <Toast />
 <SidebarDrawer />
 <Modal />
