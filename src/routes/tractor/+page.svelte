@@ -235,7 +235,7 @@
             <footer class="card-footer text-center">
                 <button
                     class="btn variant-filled"
-                    disabled={isHarvesting || isFetching || harvestablePails.length === 0}
+                    disabled={isHarvesting || isFetching || selectedPails.length === 0}
                     onclick={harvestPails}
                 >
                     Harvest KALE
