@@ -23,6 +23,7 @@ export const account = new PasskeyKit({
     rpcUrl: PUBLIC_STELLAR_RPC_URL,
     networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
     walletWasmHash: PUBLIC_WALLET_WASM_HASH,
+    timeoutInSeconds: 30,
 });
 
 /**
