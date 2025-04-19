@@ -35,7 +35,7 @@
         "eslint-plugin-svelte": "^3.5.1",
         "glob": "^11.0.1",
         "globals": "^16.0.0",
-        "lucide-svelte": "^0.487.0",
+        "lucide-svelte": "^0.501.0",
         "postcss": "^8.5.3",
         "prettier": "^3.5.3",
         "prettier-plugin-svelte": "^3.3.3",
@@ -55,7 +55,7 @@
         "base64url": "^3.0.1",
         "kale_salad": "file:packages/kale_salad",
         "kale_tractor": "file:packages/kale_tractor",
-        "passkey-kit": "^0.10.20",
+        "passkey-kit": "^0.10.21",
         "svelte-persisted-store": "^0.12.0",
         "trading_post": "file:packages/trading_post"
     }
