@@ -64,7 +64,7 @@ export const GET: RequestHandler = async ({ params, setHeaders }) => {
     });
 
     setHeaders({
-        'cache-control': 'public, s-maxage=300, stale-while-revalidate=60' // cache for 5 minutes
+        'cache-control': 'public, s-maxage=900, stale-while-revalidate=300' // cache for 5 minutes
     })
 
     return json({
