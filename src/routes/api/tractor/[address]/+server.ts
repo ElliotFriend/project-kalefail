@@ -21,7 +21,7 @@ function createPailLedgerKeys(index: number, address: string): xdr.LedgerKey[] {
     );
 }
 
-export const GET: RequestHandler = async ({ params }) => {
+export const GET: RequestHandler = async ({ params, setHeaders }) => {
     if (!params.address) {
         error(400, { message: 'address required for tractor hunt.' });
     }
@@ -62,6 +62,10 @@ export const GET: RequestHandler = async ({ params }) => {
             return e.key.contractData().key().vec()?.[2].u32();
         }
     });
+
+    setHeaders({
+        'cache-control': 'public, s-maxage=300, stale-while-revalidate=60' // cache for 5 minutes
+    })
 
     return json({
         index: searchIndex,
